@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qwen-image-text-eval"
+version = "0.1.0"
+description = "图片摘要与解读的本地生成和细粒度测评工具"
+requires-python = ">=3.10"
+dependencies = ["Pillow>=10.4,<13", "jsonschema>=4.20,<5", "opencc-python-reimplemented>=0.1.7,<0.2"]
+
+[project.optional-dependencies]
+generation = ["transformers>=5.3,<6", "accelerate>=1.2,<2", "torch>=2.6", "torchvision>=0.21", "safetensors>=0.4"]
+
+[project.scripts]
+qwen-text-eval = "qwen_text_eval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/qwen-text-eval/prompts" = ["prompts/*.json", "prompts/*.txt"]
+"share/qwen-text-eval/configs" = ["configs/*.json"]

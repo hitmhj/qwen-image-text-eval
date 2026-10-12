@@ -1,0 +1,21 @@
+{
+  "model_label": "Qwen3.5-35B-A3B",
+  "dtype": "bfloat16",
+  "device_map": "auto",
+  "attn_implementation": "sdpa",
+  "seed": 20261012,
+  "enable_thinking": false,
+  "do_sample": false,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "repetition_penalty": 1.0,
+  "image_min_pixels": 65536,
+  "image_max_pixels": 2097152,
+  "max_new_tokens": {
+    "summary": 192,
+    "interpretation": 2048
+  },
+  "max_memory": null,
+  "offload_folder": null
+}

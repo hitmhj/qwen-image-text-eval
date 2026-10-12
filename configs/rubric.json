@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "version": "evidence_rubric_v1",
+  "scale": {
+    "min": 0,
+    "max": 4,
+    "anchors": {
+      "0": "完全未满足，主体/关键事实错误或维度任务失败。",
+      "1": "仅少部分满足，存在多处重要问题。",
+      "2": "部分满足，存在明确重要不足。",
+      "3": "基本满足，仅有轻微局部问题。",
+      "4": "满足该维度，未见实质问题。"
+    },
+    "null_policy": "仅用于客观不适用或证据不足，必须给出理由；已观察到的错误不能置 null。"
+  },
+  "aggregation": {
+    "score_range": [
+      0,
+      100
+    ],
+    "formula": "100 * sum(weight * score / 4) / sum(applicable_weight)",
+    "null_handling": "从分子和分母移除 null 维度，记录适用权重；适用权重为 0 时总分为空。",
+    "coverage_formula": "sum(importance of covered high-confidence facts required_for task) / sum(importance of all high-confidence facts required_for task)",
+    "coverage_empty_denominator": "无高置信必需事实时覆盖率为空，不视为满分。",
+    "caveat": "评审模型不计算总分。总分不能掩盖严重错误、未核验结果及适用维度差异；不同适用权重的均分应附上下文。"
+  },
+  "tasks": {
+    "summary": {
+      "dimensions": {
+        "factual_accuracy": {
+          "name": "事实准确性",
+          "weight": 20,
+          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录。"
+        },
+        "key_information": {
+          "name": "关键信息覆盖",
+          "weight": 15,
+          "description": "按该任务高置信必需事实及重要程度衡量覆盖；摘要只考查容量内的少量重点。"
+        },
+        "translation": {
+          "name": "翻译准确性",
+          "weight": 10,
+          "description": "忠实保留原文语义、否定、条件和专有名词；不强制单一中文译名。"
+        },
+        "numeric_accuracy": {
+          "name": "数字与价格准确性",
+          "weight": 10,
+          "description": "数值、单位、币种、菜品/套餐/份量绑定与收费条件一致；不明确的币种不能推定。"
+        },
+        "non_hallucination": {
+          "name": "无依据内容控制",
+          "weight": 15,
+          "description": "区分图片事实、未知、建议和外部背景；不得从菜名推断过敏原、安全保证或配方。"
+        },
+        "readability": {
+          "name": "中文可读性",
+          "weight": 5,
+          "description": "中文自然、指代清楚、信息易理解；不以辞藻或评审个人风格作为依据。"
+        },
+        "conciseness": {
+          "name": "简洁与信息密度",
+          "weight": 5,
+          "description": "满足容量约束，避免重复、套话和冗长抄录，同时不以遗漏重点换取简洁。"
+        },
+        "prompt_following": {
+          "name": "提示词遵循",
+          "weight": 10,
+          "description": "严格两行，标题不超过10字、描述不超过30字；简体中文、无前缀/Markdown/emoji/主观评价，示例冲突按明确硬约束。"
+        },
+        "subject_identification": {
+          "name": "主体识别",
+          "weight": 5,
+          "description": "标题准确点名主体，区分菜单、餐厅及其他图片类型。"
+        },
+        "title_description_complementarity": {
+          "name": "标题描述互补",
+          "weight": 5,
+          "description": "描述补充标题未包含的关键事实，避免重复、空泛引导和夸赞。"
+        }
+      }
+    },
+    "interpretation": {
+      "dimensions": {
+        "factual_accuracy": {
+          "name": "事实准确性",
+          "weight": 20,
+          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录。"
+        },
+        "key_information": {
+          "name": "关键信息覆盖",
+          "weight": 15,
+          "description": "按该任务高置信必需事实及重要程度衡量覆盖；摘要只考查容量内的少量重点。"
+        },
+        "translation": {
+          "name": "翻译准确性",
+          "weight": 10,
+          "description": "忠实保留原文语义、否定、条件和专有名词；不强制单一中文译名。"
+        },
+        "numeric_accuracy": {
+          "name": "数字与价格准确性",
+          "weight": 10,
+          "description": "数值、单位、币种、菜品/套餐/份量绑定与收费条件一致；不明确的币种不能推定。"
+        },
+        "non_hallucination": {
+          "name": "无依据内容控制",
+          "weight": 15,
+          "description": "区分图片事实、未知、建议和外部背景；不得从菜名推断过敏原、安全保证或配方。"
+        },
+        "readability": {
+          "name": "中文可读性",
+          "weight": 5,
+          "description": "中文自然、指代清楚、信息易理解；不以辞藻或评审个人风格作为依据。"
+        },
+        "conciseness": {
+          "name": "简洁与信息密度",
+          "weight": 5,
+          "description": "满足容量约束，避免重复、套话和冗长抄录，同时不以遗漏重点换取简洁。"
+        },
+        "prompt_following": {
+          "name": "提示词遵循",
+          "weight": 5,
+          "description": "遵循语言、禁用前缀/emoji/主观评价和医疗免责声明等要求；菜单原文名冲突单独记录规范歧义。"
+        },
+        "scene_understanding": {
+          "name": "场景理解",
+          "weight": 5,
+          "description": "理解图片所属场景并选择相关信息；餐厅整体照片使用通用核心角度，不误套完整菜单。"
+        },
+        "structure": {
+          "name": "解读结构",
+          "weight": 3,
+          "description": "首段速览、1~3核心模块、每核心模块2~4条、0~2可选增量模块与【】标题；增量信息不足可合并或省略，不能编造事实凑条目。"
+        },
+        "usefulness": {
+          "name": "解释价值",
+          "weight": 7,
+          "description": "围绕图中内容帮助理解和决策，建议有依据且限定清楚；不以主观推荐或冗长背景代替信息。"
+        }
+      }
+    }
+  },
+  "critical_policy": {
+    "independent_metrics": [
+      "严重错误样本率",
+      "已确认严重错误数量",
+      "待人工复核样本率",
+      "参考人工核验比例"
+    ],
+    "definition": "有可靠依据的饮食/用药等安全错误或明确关键安全限制遗漏独立记录；不能被高总分抵消。",
+    "unverifiable": "严重疑点但证据不足时进入人工复核，不作为已确认严重错误。",
+    "publication": "正式结论同时报告总分、各维度、适用权重、置信与人工核验状态。"
+  }
+}
