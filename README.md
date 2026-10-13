@@ -2,6 +2,21 @@
 
 第一平台只调用本地 Qwen；第二平台负责 GPT 构造独立事实参考、GPT 评分和 HTML。两个平台通过**一个 handoff.json 文件**交接，包含原图完整字节、图片哈希、三任务答案、推荐要求和实际提示词。第二平台无需第一平台的文件路径、图片目录、断点目录或项目依赖。
 
+## 已集成平台接口的完整评估文件
+
+[评估.py](评估.py) 是独立完整脚本，已集成您提供的 `hm_aigc.aigc_managed` 调用。第二平台只复制该文件和 `handoff.json`。在文件顶部填写 `DEFAULT_ACCOUNT`、`DEFAULT_MODEL`、`DEFAULT_MODEL_VERSION`；`DEFAULT_MODEL_AGENT` 沿用 `yibu`，SDK模块名按实际填写。如果平台需要先创建客户端，在顶部放入您已有的导入和初始化代码，得到 `hm_aigc` 对象。
+
+配置完成后，参考和评分可独立运行，结果保存在同一文件：
+
+```bash
+python 评估.py handoff.json --stage reference
+python 评估.py handoff.json --stage score
+```
+
+也可以运行 `python 评估.py handoff.json` 顺序完成全部阶段。输出只有平铺的 `results.json` 和 `report.html`；两套数据在文件内独立统计。`--prepare-only` 只生成请求与预览。原图直接读取交接包，系统提示词保留，接口失败及非法JSON会重试；成功参考和评分立即保存，重跑复用已完成记录。完整文件已通过虚拟SDK及独立目录测试，真实子账号与实际SDK服务需在目标平台验证。
+
+以下通用 `evaluate.py` 保留原有请求准备与真实回包导入流程；使用平台接口时直接采用上面的完整 `评估.py`。
+
 ## 最短使用流程
 
 1. 第一平台运行 scripts/generate.sh，自动得到 OUTPUT_ROOT/handoff.json。
