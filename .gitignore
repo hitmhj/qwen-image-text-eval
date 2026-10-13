@@ -50,3 +50,7 @@ dist/
 # 仅这20张公开来源菜单作为随仓库提供的独立辅助集。
 !datasets/menu_reference/**/*.jpg
 !datasets/menu_reference/图片清单.csv
+# 用户指定公开的历史 Agent 文字实验展示：仅这20张合成菜单输入图。
+!docs/agent-text-report/assets/menus/*.jpg
+!docs/agent-text-report/data/
+!docs/agent-text-report/data/*.json
