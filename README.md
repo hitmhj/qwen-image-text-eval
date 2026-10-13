@@ -1,198 +1,227 @@
 # 三任务图片文本测评
 
-第一平台只调用本地 Qwen；第二平台负责 GPT 构造独立事实参考、GPT 评分和 HTML。两个平台通过**一个 handoff.json 文件**交接，包含原图完整字节、图片哈希、三任务答案、推荐要求和实际提示词。第二平台无需第一平台的文件路径、图片目录、断点目录或项目依赖。
+对每张图片生成摘要、解读和菜品推荐，再使用 GPT 构造独立事实参考并评估。当前生成模型为本地 Hugging Face 格式的 **Qwen3.5-35B-A3B**，运行在 NVIDIA GPU 上。
 
-## 已集成平台接口的完整评估文件
+三个阶段解耦：
 
-[评估.py](评估.py) 是独立完整脚本，已集成您提供的 `hm_aigc.aigc_managed` 调用。第二平台只复制该文件和 `handoff.json`。在文件顶部填写 `DEFAULT_ACCOUNT`、`DEFAULT_MODEL`、`DEFAULT_MODEL_VERSION`；`DEFAULT_MODEL_AGENT` 沿用 `yibu`，SDK模块名按实际填写。如果平台需要先创建客户端，在顶部放入您已有的导入和初始化代码，得到 `hm_aigc` 对象。
+| 阶段 | 平台 | 工作与产物 |
+| --- | --- | --- |
+| 1. Qwen 生成 | 第一平台（华为机器） | 读取本地图片、生成三个任务，导出一个 `handoff.json` |
+| 2. GPT 构造事实参考 | 第二平台 | 只看原图和推荐要求，生成独立参考，不看 Qwen 答案 |
+| 3. GPT 评估及报告 | 第二平台 | 根据原图、独立参考和 Qwen 答案核验，程序计算指标并生成 HTML |
 
-配置完成后，参考和评分可独立运行，结果保存在同一文件：
-
-```bash
-python 评估.py handoff.json --stage reference
-python 评估.py handoff.json --stage score
-```
-
-也可以运行 `python 评估.py handoff.json` 顺序完成全部阶段。输出只有平铺的 `results.json` 和 `report.html`；两套数据在文件内独立统计。`--prepare-only` 只生成请求与预览。原图直接读取交接包，系统提示词保留，接口失败及非法JSON会重试；成功参考和评分立即保存，重跑复用已完成记录。完整文件已通过虚拟SDK及独立目录测试，真实子账号与实际SDK服务需在目标平台验证。
-
-以下通用 `evaluate.py` 保留原有请求准备与真实回包导入流程；使用平台接口时直接采用上面的完整 `评估.py`。
-
-## 最短使用流程
-
-1. 第一平台运行 scripts/generate.sh，自动得到 OUTPUT_ROOT/handoff.json。
-2. 按您的跨平台复制流程，把 **handoff.json 和 evaluate.py 两个文件**放到第二平台同一目录。
-3. 在第二平台运行：
-
-```bash
-python evaluate.py handoff.json
-```
-
-输出为 report.html 和 results.json，默认写到 handoff.json 所在目录。原图已内嵌，无需另复制图片文件夹。GPT 接口明天提供后集中接入 evaluate.py 的 call_gpt()；目前运行会准备参考请求并生成预览报告，语义评分显示“未测”。
+第二平台只需要完整 [评估.py](评估.py) 和 `handoff.json`。HTML 也在第二平台生成，不需要把评分结果送回第一平台。跨平台交接文件包含原图，应按所在平台允许的数据流转方式使用。
 
 ## 获取代码
 
-私有仓库使用有读取权限的 GitHub 账号：
+使用有私有仓库读取权限的 GitHub 账号：
 
 ```bash
 git clone https://github.com/hitmhj/qwen-image-text-eval.git
 cd qwen-image-text-eval
 ```
 
-已有旧版执行 git pull --ff-only。
-
-## 第一平台：配置模型并生成
-
-### 给他人使用的简易启动
-
-在仓库根目录打开 [start.sh](start.sh)，只需填写开头的三个目录：
+已有仓库更新：
 
 ```bash
-ENV_DIR="/实际路径/envs/qwen-local"          # 环境目录，必须含 bin/python
-MODEL_DIR="/实际路径/Qwen3.5-35B-A3B"      # 模型目录，必须含 config.json 和完整权重
-PRIMARY_IMAGE_ROOT="/实际路径/原始图片集"    # 其下为语种目录及截图、实拍子目录
+git pull --ff-only
 ```
 
-然后在 Linux / 华为机器上执行：
+以下命令均在仓库根目录运行。第一阶段直接使用原有的 `scripts/generate.sh`。
+
+## 第一平台：激活已有环境
+
+你提供的环境目录为 `dataset/lzm_dataset/hjma/envs/qwen-local`。以下按 `dataset` 位于 `/home/ma-user/work` 写成绝对路径；如果实际位置不同，请相应替换，不要将该相对路径拼接到仓库目录下。
 
 ```bash
-bash start.sh
+source /home/ma-user/anaconda3/etc/profile.d/conda.sh
+conda activate /home/ma-user/work/dataset/lzm_dataset/hjma/envs/qwen-local
+
+# 确认使用环境内的解释器；当前加载器要求 Python 3.10 或以上。
+"$CONDA_PREFIX/bin/python" -c 'import sys; print(sys.executable); print(sys.version)'
 ```
 
-脚本会自动激活指定的 qwen-local 环境，使用该环境自己的 Python，完成摘要、解读、菜品推荐，并导出 `results/simple_run/handoff.json`。环境中应已安装生成依赖；脚本不会安装依赖。无需提前手动激活、执行 `conda init` 或安装本项目包。从其他工作目录也可用 `bash /仓库绝对路径/start.sh` 启动。
+`conda activate` 使用环境的绝对目录。提示符显示 `(qwen-local)` 还不够：该目录必须有自己的 `bin/python`。后续通过 `PYTHON_BIN` 明确指定它，避免运行到 base 环境。
 
-可选设置也集中在脚本顶部：`OUTPUT_ROOT` 改输出目录，`CUDA_VISIBLE_DEVICES` 选择 GPU，`DATASET=primary` 只运行原始图片，`DATASET=both` 同时运行原始图片和辅助菜单，两套数据仍分别保存。辅助图片目录由 `MENU_IMAGE_ROOT` 指定，两套输入目录不能相同或互相包含。`GENERATION_CONFIG` 指向现有生成配置，`FX_CONTEXT` 可填写现有汇率 JSON。自动找不到 Conda 时，填写 `CONDA_BASE`，如 `/home/ma-user/anaconda3`；它是 Conda 安装目录，`ENV_DIR` 才是模型环境目录。也可在命令前设置这些同名环境变量覆盖默认值。
+已有环境能够运行生成时直接使用，不需要重新安装。本项目通过源码启动，无需 `pip install -e`。首次准备环境或缺少依赖时，在已激活且满足 Python 版本的环境中安装：
 
-同一输出目录再次启动会续跑；更换模型、图片集、提示词或生成参数时使用新输出目录。完成后把 `handoff.json` 和完整 `评估.py` 放到第二平台运行评估，HTML 在第二平台生成。
+```bash
+# 华为 A800、驱动 535 对应的既定安装方案；已安装就跳过。
+"$CONDA_PREFIX/bin/python" -m pip install 'torch==2.6.0+cu118' 'torchvision==0.21.0+cu118' --index-url https://download.pytorch.org/whl/cu118
+"$CONDA_PREFIX/bin/python" -m pip install -r requirements-generation.txt
+```
 
-**更换模型或改用 API：**
+安装细节见 [模型运行说明](docs/模型运行.md)。依赖安装只在允许的软件源或离线准备方式下进行；生成脚本本身不会下载依赖或模型。
 
-- 换同架构 Qwen3.5-35B-A3B 模型文件或微调权重：修改 `MODEL_DIR`，并更新现有 `configs/generation.json` 中的 `model_label`，使用新输出目录。`model_label` 只是记录名称；当前加载器检查 `model_type=qwen3_5_moe`，改名称不会改变模型架构。
-- 换其他模型架构：需要适配现有 `src/qwen_text_eval/generation.py` 中的 `_model_identity()`、`_QwenRuntime`（模型类、处理器、图片输入和生成方法）。仅修改路径不能保证运行。
-- 第一阶段改用模型 API：当前入口没有 API 开关，需要在上述生成模块适配 `_model_identity()` / `_load_runtime()` 和运行时对象的接口请求，保留三任务提示词、要求池、逐图记录、断点和 `handoff.json` 导出协议；接口返回的文本写入原有任务结果。地址、模型名和密钥从环境变量读取。远程多模态 API 会收到图片，应按所在平台的数据规定选用可用接口。此次只增加启动脚本与说明，未增加 API 实现。
-- 第二阶段的 GPT 评估 API 已在完整 `评估.py` 中集成，按该文件顶部配置子账号及模型名；无需更改 `start.sh`。
+## 第一平台：图片输入和运行命令
 
-原始图片按语言分组，截图和实拍一起处理，来源字段保留：
+原始图片根目录按语种组织，其下的截图和实拍一起处理；来源信息仍保留：
 
 ```text
-原始图片根目录/
+原始图片集/
 ├── 英语/
 │   ├── 截图/图片一.png
 │   └── 实拍/图片二.jpg
-└── 日语/……
+└── 日语/
+    ├── 截图/……
+    └── 实拍/……
 ```
 
-第一平台需要 Python 3.10 以上、NVIDIA CUDA，以及完整的本地 Qwen3.5-35B-A3B 多模态模型。模型位置已在 .sh 顶部预留。安装生成依赖：
+将下面的模型、图片和输出路径替换为实际绝对路径，然后执行：
 
 ```bash
-python -m pip install -e '.[generation]'
-```
-
-华为 A800、驱动 535、现有 Python 3.9 环境请采用[指定目录的最小安装步骤](docs/模型运行.md#华为a800驱动535的最小安装)：单独准备 Python 3.10，安装 CUDA 11.8 版 torch 2.6.0 / torchvision 0.21.0，再执行 `python -m pip install -r requirements-generation.txt`。生成入口直接运行仓库源码，无需安装本项目，生成平台也无需 jsonschema 或 OpenCC。要求池、三任务提示词和交接格式保持一致。
-
-填写目录后运行：
-
-```bash
-MODEL_DIR=/模型目录/Qwen3.5-35B-A3B \
-PRIMARY_IMAGE_ROOT=/原始图片目录 \
-OUTPUT_ROOT=/输出目录/三任务基线 \
-CUDA_VISIBLE_DEVICES=0,1 \
+MODEL_DIR="/实际模型目录/Qwen3.5-35B-A3B" \
+PRIMARY_IMAGE_ROOT="/实际路径/原始图片集" \
+OUTPUT_ROOT="/实际路径/生成结果/run_01" \
+CUDA_VISIBLE_DEVICES="0" \
+PYTHON_BIN="$CONDA_PREFIX/bin/python" \
+DATASET="both" \
 bash scripts/generate.sh
 ```
 
-默认同时运行原始图片集 primary 和仓库内的 20 张清晰、无手菜单集 menu_reference。设置 DATASET=primary 或 DATASET=menu_reference 可只运行一套；辅助菜单路径可用 MENU_IMAGE_ROOT 覆盖。
+| 配置 | 说明 |
+| --- | --- |
+| `MODEL_DIR` | 完整本地模型目录，包含 `config.json`、处理器、分词器、聊天模板和全部权重 |
+| `PRIMARY_IMAGE_ROOT` | 原始图片集根目录，不是某一语种目录，也不是两套数据的共同父目录 |
+| `OUTPUT_ROOT` | 生成结果目录，程序自动创建 |
+| `CUDA_VISIBLE_DEVICES` | 单卡填写 `0`，多卡如 `0,1`；仍为单进程生成 |
+| `PYTHON_BIN` | 指定已激活环境的 `bin/python` |
+| `DATASET` | `both` 两套都运行；`primary` 只运行原始集；`menu_reference` 只运行辅助菜单集 |
+| `MENU_IMAGE_ROOT` | 可选，默认 `datasets/menu_reference`；可替换辅助菜单目录 |
+| `GENERATION_CONFIG` | 可选，默认 `configs/generation.json`，控制输出长度、采样、图像像素预算和显存配置 |
+| `FX_CONTEXT` | 可选，显式汇率 JSON 文件路径；未提供时不猜测汇率 |
 
-每张图分别生成摘要、解读、菜品推荐，三个任务使用独立对话。推荐从 16 条要求池中固定抽取一条，由图片内容哈希、要求池指纹和种子确定，复测不会重新挑要求。预算、忌口、人数、偏好和实际提示词一起写入交接文件。
+原始图片目录可以和 `menu_reference` 同级，两套根目录不能相同或互相包含。默认辅助集是仓库内的 20 张清晰、无手菜单原图；两套数据分别生成和测评。
 
-外币菜单需要预算换算时，用 FX_CONTEXT=/汇率配置.json 显式输入汇率；未提供时不猜汇率。模型只从本地加载，生成脚本不调用评审 API。模型依赖、配置和资源说明见 [模型运行说明](docs/模型运行.md)。
+每张有效图片分别运行摘要、解读和菜品推荐，三个任务使用独立对话。推荐要求从 [要求池](configs/requirements_pool.json) 中抽取，例如“我一个人，总预算50元人民币，不能吃辣，请推荐一份主食”。抽取由图片哈希、要求池指纹和种子确定，同一实验复测保持一致。要求的预算、人数、忌口、偏好和汇率信息一并保存。
 
-运行后只需复制 OUTPUT_ROOT/handoff.json。primary/、menu_reference/ 等工作目录用于断点和追溯，可留在第一平台。原图按原文件字节内嵌，未再次压缩、缩放或裁剪。
+本地生成不调用评估 API。同一命令再次运行会跳过成功任务并重试失败任务。更换模型、图片集、提示词、依赖或生成参数时使用新的 `OUTPUT_ROOT`；同一输出目录只运行一个生成进程。
 
-## 第二平台：一个 Python 文件、一条命令
-
-第二平台只准备以下两个文件，Python 3.10 以上标准库可运行：
+## 第一阶段输出与跨平台交接
 
 ```text
-第二平台任意目录/
-├── evaluate.py
-└── handoff.json
+OUTPUT_ROOT/
+├── handoff.json                    # 跨平台只需复制这一份生成产物
+├── primary/                        # 原始集的断点与运行记录
+│   ├── generation_results.jsonl
+│   ├── run.json
+│   ├── manifest.jsonl
+│   ├── generation_meta.json
+│   ├── prompts/
+│   └── samples/图片ID/
+│       ├── summary.json
+│       ├── interpretation.json
+│       └── recommendation.json
+└── menu_reference/                 # 辅助集使用同样结构，独立保存
 ```
+
+`handoff.json` 包含两套数据标识、三任务原文、实际提示词、推荐要求、模型运行信息和图片 SHA256。原图以 Base64 保存完整文件字节，没有再次压缩或模糊处理，因此 JSON 文件可能较大。
+
+把 `handoff.json` 和完整 `评估.py` 放到第二平台即可。无需复制原始图片目录、模型、生成环境或第一平台的断点目录。生成任务中的 `status=ok` 只表示模型生成成功，不代表答案正确；非菜单图片输出“无法推荐”是否合理，由第二平台根据原图独立判断。
+
+## 第二平台：接口配置与评估
+
+完整 [评估.py](评估.py) 已集成 `hm_aigc.aigc_managed`，包含参考构造、评分、指标计算和 HTML 生成。第二平台需要 Python 3.10 或以上，以及平台提供的接口 SDK；不需要安装 Qwen、torch、Transformers 或本项目包。
+
+在该文件顶部填写：
+
+| 配置 | 用途 |
+| --- | --- |
+| `DEFAULT_ACCOUNT` | 平台子账号 |
+| `DEFAULT_MODEL` | 接口实际模型名称，决定调用哪个模型 |
+| `DEFAULT_MODEL_VERSION` | 测评记录中的模型或服务版本标识，不决定调用模型；未知时可填写“未提供”，同一实验保持一致 |
+| `DEFAULT_MODEL_AGENT` | 默认 `yibu`，按平台配置使用 |
+| `DEFAULT_HM_SDK_MODULE` | 实际 SDK 模块名，默认 `hm_aigc` |
+| `DEFAULT_TIMEOUT` / `DEFAULT_MAX_RETRIES` | 超时秒数与最多调用次数 |
+
+如平台需要初始化客户端，在文件顶部使用已有的导入与初始化代码，得到 `hm_aigc` 对象。接口配置齐全后运行：
 
 ```bash
-python evaluate.py handoff.json
+python 评估.py handoff.json --output-dir eval_v3
 ```
 
-输出默认写到 handoff.json 所在目录：
+默认依次完成独立参考、评分和 HTML，也可以分开执行：
+
+```bash
+python 评估.py handoff.json --output-dir eval_v3 --stage reference
+python 评估.py handoff.json --output-dir eval_v3 --stage score
+```
+
+两次命令使用同一输出目录，第二次复用已保存的参考。参考构造不接收 Qwen 答案；评分接收原图、该图独立参考、任务答案及推荐要求。成功回包立即保存，重跑复用已完成记录，接口失败或非法 JSON 会重试。
+
+仅检查交接文件并准备请求、预览时运行 `python 评估.py handoff.json --output-dir eval_v3 --prepare-only`，此时不会调用接口，也不会得到真实语义评分。通用 `evaluate.py` 保留回包准备与导入流程；使用已提供的平台 SDK 时直接使用 `评估.py`。
 
 ```text
-第二平台任意目录/
-├── evaluate.py
+第二平台目录/
+├── 评估.py
 ├── handoff.json
-├── results.json             # 参考、评分、指标和运行状态统一保存
-├── report.html              # 原图、三任务原文、证据、理由和详细结果
-└── reference_requests.json  # 接口未接入时准备的参考请求
+└── eval_v3/
+    ├── results.json                # 参考、评分、指标和进度
+    └── report.html                 # 原图、三任务答案、证据、分数及原因
 ```
 
-原图从 handoff.json 读取并核验 SHA256。第二平台不安装 Qwen、torch、Transformers 或本项目包，不复制提示词、配置、图片目录，也不填写第一平台路径。评审提示词、量表、协议、规则和报告生成器都在 evaluate.py 中。
+没有指定 `--output-dir` 时，结果默认写到 `handoff.json` 所在目录。尚有未完成请求时可能额外保存请求 JSON。HTML 可离线打开，两套数据分开展示，支持查看每张图的原文、事实参考、计算分子分母、推荐要求和判断依据。
 
-参考构造与评分是两次独立调用：参考只接收原图与固定要求，不接收 Qwen 答案；评分接收原图、独立参考和该任务答案。接口接入后由同一个入口按这个顺序执行，最后自动生成 HTML。
+新版评估使用 `task_metrics_v3`；旧评审回包和结果目录不能直接续用，需重新构造参考、评分并使用新输出目录。第一阶段和已有 `handoff.json` 无需重跑。
 
-如需导入已经取得的真实回包，在同一入口增加 --references 参考回包.json、--scores 评分回包.json，支持 JSON 数组或 JSONL。--output-dir 可改输出位置。未来调用接口使用 --call-api --gpt-model 实际模型 --gpt-version 实际版本，接口尚未提供时不会完成真实评分。
+## 三个任务的提示词
 
-需要分开执行参考和评分时，可选 --stage reference 或 --stage score；参考保存在同一个 results.json，后续评分自动读取。通常使用默认的一条命令即可。
+完整原文见 [三个任务提示词](docs/三个任务提示词原文.md)，对应实际生成使用的文件：
 
-## 两套数据独立测评
-
-| 标识 | 图片 | 报告方式 |
+| 任务 | 提示词 | 输出要求概览 |
 | --- | --- | --- |
-| primary | 原来的语种目录、截图及实拍 | 自己的三任务评分、分组和分母 |
-| menu_reference | 本次整理的 20 张清晰、无手菜单原图 | 自己的三任务评分、分组和分母 |
+| 摘要 | [v04_summary](prompts/v04_summary.json) | 两行：标题不超过10字，描述不超过30字；简体中文，不编造事实 |
+| 解读 | [v04_interpret](prompts/v04_interpret.json) | 自判场景，速览不超过50字，1～3个核心模块、0～2个增量模块 |
+| 菜品推荐 | [v01_recommendation](prompts/v01_recommendation.json) | 根据图片和抽取要求处理预算、人数、忌口、偏好及未知信息 |
 
-两套数据可以装在同一个 handoff.json 中，但始终保留独立 dataset_id。results.json 分数据集保存参考、评分和指标，HTML 分开呈现两套数据，不合并均分、排名或成功率。辅助菜单来源、作者、许可和清晰度说明见 datasets/menu_reference/图片清单.json。部分原菜单没有价格，未知项不会被当作已满足条件。
+摘要与解读保留用户提供的提示词原文。菜单、餐厅之外的图片也保留三任务生成结果，以观察适用性判断和合理拒绝；评估阶段按独立证据处理。
 
-## 三个任务的提示词与指标
+## 评测指标与适用性
 
-[三个任务提示词完整原文](docs/三个任务提示词原文.md) 包含三组完整的系统提示词和用户提示词，与实际 JSON 逐字一致：
+详细定义及示例见 [三页修订版 Word](docs/Qwen三任务评测指标说明_修订版.docx)。不同任务使用各自指标，不计算跨任务总分，也不使用启发式权重。
 
-- 摘要：prompts/v04_summary.json，保留您提供的原文。
-- 解读：prompts/v04_interpret.json，保留您提供的原文。
-- 菜品推荐：prompts/v01_recommendation.json，约束预算、忌口、证据、未知信息和输出。
-
-| 任务 | 主要结果与计算口径 |
+| 任务 | 主要指标及算法 |
 | --- | --- |
-| 摘要 | 逐图事实正确率、名词准确率：正确项除以可判定项；未知单列，逐图结果等权平均 |
-| 解读 | 事实正确率；内容分＝100 ×（正确核心点＋合格增量点）÷（全部核心点＋增量机会），各点均为1点 |
-| 推荐 | 推荐正确率＝正确图片÷（正确＋不正确图片）；逐图等级0为不正确，1为正确但有经核验的更优组合，2为正确且全部明示偏好满足或没有软偏好 |
+| 摘要 | 每图事实正确率＝正确原子事实÷可判定原子事实；名词准确率＝正确实体名词÷可判定实体名词。跨图分别等权平均 |
+| 解读 | 同样计算事实正确率；内容分＝100×（正确核心点数＋合格增量点数）÷（独立参考中的核心点数＋增量机会数），各点均为1点 |
+| 推荐 | 正确率＝正确图片数÷（正确图片数＋不正确图片数）；同时给出逐图0、1、2等级或待判定 |
 
-完整独立入口 [评估.py](评估.py) 使用 `task_metrics_v3`，取消四分制、启发式权重和跨任务总分。GPT返回原子事实、实体、内容点和约束核验，程序负责计算；详细口径见 [三页修订版 Word](docs/Qwen三任务评测指标说明_修订版.docx)。
+事实判定依据原图可见证据及独立参考，未知项单列，不作为正确项。内容点在参考阶段独立选定，必须适合原有篇幅要求；增量内容只有准确、相关、有价值且不重复时得分。未被独立参考充分覆盖的新内容需要复核，不自动作为错误或奖励。
 
-推荐依据原图是否有可用餐品信息过滤，不能只看场景标签。非菜单及待判定数量单列，不进推荐正确率分母；已证实无解时有依据的合理拒绝算正确。软偏好比较不充分时等级为空，仍可保留已确认的硬性正确性。1级必须给出实际、更符合明示偏好的组合，并复算价格和全部硬约束；2级不宣称全局最优。
+推荐先判断图片是否存在可用餐品信息，再判断要求是否可行。非菜单标签本身不能直接排除：餐品海报有足够信息也可适用；没有可用餐品信息的图片标记不适用。缺价格、忌口证据或汇率则保留不确定性，不假装满足约束。已证实无解时，有图片依据的合理拒绝可以算正确；有可行方案却直接拒绝算不正确。
 
-旧评审回包和结果目录与新版协议不兼容。填写顶部接口配置后，用新的输出目录运行：`python 评估.py handoff.json --output-dir eval_v3`。第一阶段和已有交接文件无需重跑或修改。
+推荐等级分别为：
 
-## 代码与第一平台工作目录
+- **0级**：已确认不正确，例如虚构菜品、价格算错、超预算或违反硬性要求。
+- **1级**：已确认正确，但存在经事实、价格和硬约束核验的替代组合，至少改善一项明示软偏好且其他明示偏好不退步。
+- **2级**：已确认正确，全部明示软偏好满足或没有软偏好；有依据的无解拒绝也为2级。不代表已证明全局最优。
+- **待判定**：正确性或偏好比较所需证据不足。软偏好待判定不抹去已经确认的硬性正确性。
+
+价格、数量、必收费用和显式汇率由程序使用十进制复算；未知费用不能默认零，币种不能凭符号猜测。推荐正确率同时展示正确、不正确、待判定和排除数量，待判定及不适用不进入分母。摘要与解读也显示有效样本数；适用图片上的空输出或纯拒绝按零分处理。
+
+## 两套数据和代码结构
+
+| 数据集 | 内容 | 统计方式 |
+| --- | --- | --- |
+| `primary` | 用户原始图片集，含多语种、截图和实拍 | 独立统计三任务指标与分母 |
+| `menu_reference` | 整理的20张清晰、无手菜单原图 | 独立统计，不与原始集混合均分或正确率 |
+
+辅助图片来源和清单见 [图片清单](datasets/menu_reference/图片清单.json)。部分菜单没有价格，其预算结论需保留未知。
 
 ```text
 qwen-image-text-eval/
-├── generate.py                    # 第一平台：两套数据三任务生成及交接导出
-├── evaluate.py                    # 第二平台：单文件参考、评分和HTML
-├── scripts/generate.sh            # 预留模型、图片、输出和GPU配置
-├── prompts/                       # 三份生成提示词、两份评审提示词
-├── configs/                       # 生成设置、要求池、指标权重
-├── datasets/menu_reference/       # 20张菜单及来源清单
-├── src/qwen_text_eval/             # 扫描、抽样、模型生成、断点与导出
-├── docs/
+├── README.md
+├── generate.py                     # 第一平台：三任务生成和交接导出
+├── scripts/generate.sh             # 第一阶段启动脚本，支持环境变量配置
+├── 评估.py                         # 第二平台：已集成SDK的独立完整入口
+├── evaluate.py                     # 通用单文件参考、评分和报告入口
+├── requirements-generation.txt     # 本地生成依赖
+├── prompts/                        # 生成及评审提示词
+├── configs/                        # 生成参数和推荐要求池
+├── datasets/menu_reference/        # 辅助菜单原图与来源清单
+├── src/qwen_text_eval/              # 扫描、抽样、生成、断点和交接导出
+├── docs/                           # 提示词原文、模型说明和指标Word
 └── tests/
-
-第一平台OUTPUT_ROOT/
-├── handoff.json                   # 唯一需要跨平台复制的生成产物
-├── primary/                      # 第一平台工作目录，保留断点
-│   ├── generation_results.jsonl
-│   ├── run.json、manifest.jsonl、generation_meta.json
-│   ├── prompts/
-│   └── samples/图片ID/三任务.json
-└── menu_reference/               # 辅助集独立工作目录
 ```
 
-旧版 reference、score、report 子命令保留用于兼容已有 JSONL 流程；新运行统一使用 handoff.json 单文件入口。
-
-测试命令：python -m unittest discover -s tests -v。测试使用虚拟模型及合成回包，实际 35B GPU 推理和 GPT 接口尚未运行。
+自动测试覆盖模拟模型、交接、评估协议、预算计算和模拟 SDK 调用，不代表真实 GPU 或接口已在所有平台验证。GPT 构造的是待核验事实参考；重要结论、疑难图片及模型间分歧需人工复核，不能保证语义判定完全无误。
