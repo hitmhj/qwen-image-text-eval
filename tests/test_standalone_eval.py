@@ -33,26 +33,30 @@ def image_fixture(root):
     for task in ev.TASKS:
         row[task] = {"status": "ok", "text": texts[task], "raw_text": texts[task], "latency_seconds": 0.2,
             "image_sha256": digest, "prompt_sha256": ev.fingerprint(prompts[task]), "finish_reason": "stop", "error": None}
-    reference = {"schema_version": 2, "dataset_id": "primary", "image_id": "img001", "image_sha256": digest,
+    reference = {"schema_version": 3, "dataset_id": "primary", "image_id": "img001", "image_sha256": digest,
         "scene": "menu", "image_quality": {"readability": "clear", "issues": []}, "unreadable_regions": [],
         "reference_status": "draft", "annotator": {"model": "test-gpt", "version": "test-v1"},
         "requirement_sha256": ev.fingerprint(row["recommendation_requirement"]),
         "recommendation_feasibility": {"requirement_id": "req01", "status": "feasible", "reason": "价格明确且未超预算", "evidence_fact_ids": ["f001", "f002"], "fees_status": "complete", "mandatory_fees": []},
         "facts": [{"fact_id": "f001", "category": "name", "source_text": "牛肉面", "normalized_zh": "牛肉面",
-            "evidence": "第一行左侧菜名", "confidence": "high", "importance": 3, "required_for": ev.TASKS, "numeric": None},
+            "evidence": "第一行左侧菜名", "confidence": "high", "importance": 1, "required_for": ev.TASKS, "numeric": None},
             {"fact_id": "f002", "category": "price", "source_text": "20元", "normalized_zh": "牛肉面每份20元",
-                "evidence": "菜名右侧价格", "confidence": "high", "importance": 2, "required_for": ["interpretation", "recommendation"],
+                "evidence": "菜名右侧价格", "confidence": "high", "importance": 1, "required_for": ["interpretation", "recommendation"],
                 "numeric": {"value": "20", "unit": "份", "currency": "CNY", "qualifier": "每份"}}]}
+    reference["task_applicability"] = {task: {"status": "applicable", "reason": "主体事实可辨", "evidence_fact_ids": ["f001"]} for task in ev.TASKS}
+    reference["interpretation_points"] = [
+        {"point_id": "k001", "kind": "core", "description": "牛肉面", "evidence_fact_ids": ["f001"], "reasoning": "主体菜品"},
+        {"point_id": "k002", "kind": "core", "description": "每份20元", "evidence_fact_ids": ["f002"], "reasoning": "关键价格"}]
     return row, reference
 
 
 def score_fixture(image, reference, task):
-    score = {"schema_version": 2, "dataset_id": image["dataset_id"], "image_id": image["image_id"], "task": task,
+    score = {"schema_version": 3, "dataset_id": image["dataset_id"], "image_id": image["image_id"], "task": task,
         "candidate_sha256": ev.text_sha256(image[task]["text"]), "reference_sha256": ev.fingerprint(reference),
         "judge_prompt_sha256": ev.text_sha256(ev.JUDGE_SYSTEM), "scene": "menu",
         "source_evidence_mode": "reference_only", "task_prompt_sha256": ev.fingerprint(image["prompts"][task]),
         "requirement_sha256": ev.fingerprint(image["recommendation_requirement"]) if task == "recommendation" else None,
-        "dimensions": {name: {"score": 4, "reason": "已按图示核验", "evidence_fact_ids": ["f001"]} for name in ev.RUBRIC["tasks"][task]["dimensions"]},
+        "answer_kind": "content", "entities": [], "point_checks": [], "unmatched_enrichments": [], "review_scope": [],
         "claims": [{"claim_id": "c001", "text": "牛肉面", "verdict": "supported", "fact_ids": ["f001"], "severity": "minor", "explanation": "菜名可见", "category": "name"},
             {"claim_id": "c002", "text": "牛肉面20元", "verdict": "supported", "fact_ids": ["f002"], "severity": "major", "explanation": "实体与价格对应", "category": "price"}],
         "covered_fact_ids": ["f001"] if task == "summary" else ["f001", "f002"], "critical_errors": [],
@@ -62,6 +66,13 @@ def score_fixture(image, reference, task):
             "requirement_checks": [{"constraint_id": key, "status": "met", "reason": "符合需求", "evidence_fact_ids": ["f002"]} for key in ["budget", "diners"]],
             "plan": {"items": [{"name": "牛肉面", "quantity": "1", "unit_price": "20", "currency": "CNY", "price_fact_ids": ["f002"], "person": "一人"}],
                 "subtotal": "20", "mandatory_fees": [], "total": "20", "currency": "CNY", "fx": None, "budget_total": "20", "budget_currency": "CNY"}}
+    if task == "summary":
+        score["entities"] = [{"entity_id": "n001", "text": "牛肉面", "verdict": "supported", "fact_ids": ["f001"], "reason": "菜名正确"}]
+    elif task == "interpretation":
+        score["point_checks"] = [{"point_id": p["point_id"], "status": "covered", "claim_ids": ["c001" if p["point_id"] == "k001" else "c002"],
+            "accurate": True, "relevant": True, "adds_value": True, "nonredundant": True, "reason": "已表达参考事实"} for p in reference["interpretation_points"]]
+    else:
+        score["recommendation"].update(refusal_assessment=None, preference_checks=[], better_alternative=None)
     return score
 
 
@@ -132,26 +143,21 @@ class StandaloneEvaluationTests(unittest.TestCase):
             claim = {**extra, "verdict": verdict, "claim_id": claim_id}
             score["claims"].append(claim)
         metrics = ev.score_judgement(score, self.reference)
-        self.assertEqual(metrics["factual_error_rate"], 0.5)
-        self.assertEqual(metrics["hallucination_rate"], 0.25)
-        self.assertEqual(metrics["contradiction_rate"], 0.25)
-        self.assertEqual(metrics["numeric_claim_accuracy"], 1 / 3)
-        self.assertEqual(metrics["conservative_numeric_accuracy"], 1 / 4)
-        self.assertEqual(metrics["numeric_unverifiable_rate"], 1 / 4)
+        self.assertEqual(metrics["accuracy"], 0.5)
+        self.assertEqual(metrics["claim_counts"]["contradicted"], 1)
+        self.assertEqual(metrics["claim_counts"]["unsupported"], 1)
+        self.assertEqual(metrics["fact_unknown"], 1)
 
     def test_null_dimensions_and_empty_denominators_are_unmeasured(self):
         score = score_fixture(self.image, self.reference, "summary")
-        for dimension in score["dimensions"].values():
-            dimension["score"] = None
+        score["entities"] = []
         score["claims"] = []
         score["covered_fact_ids"] = []
         reference = copy.deepcopy(self.reference)
         reference["facts"] = []
         metrics = ev.score_judgement(score, reference)
-        self.assertIsNone(metrics["quality_score"])
-        self.assertIsNone(metrics["factual_precision"])
-        self.assertIsNone(metrics["numeric_claim_accuracy"])
-        self.assertIsNone(metrics["weighted_key_fact_coverage"])
+        self.assertIsNone(metrics["accuracy"])
+        self.assertIsNone(metrics["noun_accuracy"])
 
     def test_recommendation_hard_constraints_and_decimal_cost(self):
         score = score_fixture(self.image, self.reference, "recommendation")
@@ -210,7 +216,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
 
     def test_omitted_ground_truth_fee_is_still_computed(self):
         fee = {"fact_id": "f003", "category": "price", "source_text": "服务费40元", "normalized_zh": "每单必付服务费40元",
-            "evidence": "菜单底部明确收费", "confidence": "high", "importance": 3, "required_for": ["recommendation"],
+            "evidence": "菜单底部明确收费", "confidence": "high", "importance": 1, "required_for": ["recommendation"],
             "numeric": {"value": "40", "unit": "单", "currency": "CNY", "qualifier": "必付服务费"}}
         self.reference["facts"].append(fee)
         self.reference["recommendation_feasibility"]["mandatory_fees"] = [{"fact_id": "f003", "name": "服务费", "kind": "flat", "amount": "40", "currency": "CNY", "scope": "per_order"}]
@@ -220,7 +226,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
         self.assertEqual(check["computed_total"], "60")
         self.assertIs(check["budget_overrun"], True)
         report = ev.build_report([self.image], {"img001": self.reference}, {("img001", "recommendation"): score}, self.output)
-        self.assertEqual(report["tasks"]["recommendation"]["recommendation_success_rate"], 0)
+        self.assertEqual(report["tasks"]["recommendation"]["recommendation_correct_rate"], 0)
 
     def test_unmarked_fees_are_unknown_and_known_lower_bound_can_exceed_budget(self):
         self.reference["recommendation_feasibility"]["fees_status"] = "unmarked"
@@ -236,12 +242,14 @@ class StandaloneEvaluationTests(unittest.TestCase):
         self.assertIs(check["budget_overrun"], True)
         report = ev.build_report([self.image], {"img001": self.reference}, {("img001", "recommendation"): score}, self.output)
         stats = report["tasks"]["recommendation"]
-        self.assertEqual(stats["budget_overrun_rate"], 1)
-        self.assertEqual(stats["metric_denominators"]["budget_overrun_rate"]["n"], 1)
+        self.assertEqual(stats["recommendation_correct_rate"], 0)
+        sample = next(row for row in report["samples"] if row["task"] == "recommendation")
+        self.assertIs(sample["budget_check"]["budget_overrun"], True)
+        self.assertEqual(sample["recommendation_grade"], 0)
 
     def test_unstructured_visible_fees_do_not_silently_pass(self):
         self.reference["facts"].append({"fact_id": "f003", "category": "restriction", "source_text": "另付服务费",
-            "normalized_zh": "服务费另付，金额未标注", "evidence": "菜单底部", "confidence": "high", "importance": 3,
+            "normalized_zh": "服务费另付，金额未标注", "evidence": "菜单底部", "confidence": "high", "importance": 1,
             "required_for": [], "numeric": None})
         score = score_fixture(self.image, self.reference, "recommendation")
         self.assertEqual(ev.check_recommendation_budget(score, self.image, self.reference)["status"], "unknown")
@@ -293,8 +301,8 @@ class StandaloneEvaluationTests(unittest.TestCase):
         score = score_fixture(self.image, self.reference, "recommendation")
         score["recommendation"]["requirement_checks"][0]["status"] = "unknown"
         report = ev.build_report([self.image], {"img001": self.reference}, {("img001", "recommendation"): score}, self.output)
-        self.assertEqual(report["tasks"]["recommendation"]["recommendation_success_rate"], 0)
-        self.assertEqual(report["tasks"]["recommendation"]["hard_constraint_unknown_rate"], 0.5)
+        self.assertIsNone(report["tasks"]["recommendation"]["recommendation_correct_rate"])
+        self.assertEqual(report["tasks"]["recommendation"]["recommendation_counts"]["unknown"], 1)
 
     def test_stale_scores_are_visible_but_excluded(self):
         score = score_fixture(self.image, self.reference, "summary")
@@ -303,7 +311,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
         metrics = report["tasks"]["summary"]
         self.assertEqual(metrics["judge_stale"], 1)
         self.assertEqual(metrics["judge_evaluated"], 0)
-        self.assertIsNone(metrics["quality_score"]["mean"])
+        self.assertIsNone(metrics["accuracy"]["mean"])
 
     def test_invalid_image_without_hash_is_retained_in_report(self):
         invalid = copy.deepcopy(self.image)
@@ -313,7 +321,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
         ev.write_jsonl(self.input, [self.image, invalid])
         rows = ev.load_generation(self.input)
         report = ev.build_report(rows, {}, {}, self.output)
-        self.assertEqual(report["tasks"]["summary"]["expected_pairs"], 2)
+        self.assertEqual(report["tasks"]["summary"]["total_images"], 2)
         self.assertEqual(report["tasks"]["summary"]["invalid_image_pairs"], 1)
 
     def test_full_offline_workflow_and_flat_outputs(self):
@@ -327,7 +335,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
         self.assertEqual(result["evaluated"], 3)
         self.assertEqual(result["generated"], 3)
         metrics = json.loads((self.output / "metrics.json").read_text(encoding="utf-8"))
-        self.assertEqual(metrics["tasks"]["recommendation"]["recommendation_success_rate"], 1)
+        self.assertEqual(metrics["tasks"]["recommendation"]["recommendation_correct_rate"], 1)
         self.assertTrue((self.output / "report.html").exists())
         self.assertFalse(any(path.is_dir() for path in self.output.iterdir()))
 
@@ -335,7 +343,7 @@ class StandaloneEvaluationTests(unittest.TestCase):
         self.image["summary"]["text"] = "<script>alert('x')</script>"
         report = ev.build_report([self.image], {}, {}, self.output)
         self.assertEqual(report["tasks"]["summary"]["judge_evaluated"], 0)
-        self.assertIsNone(report["tasks"]["summary"]["quality_score"]["mean"])
+        self.assertIsNone(report["tasks"]["summary"]["accuracy"]["mean"])
         rendered = (self.output / "report.html").read_text(encoding="utf-8")
         self.assertNotIn("<script>alert('x')</script>", rendered)
         self.assertIn("未测", rendered)

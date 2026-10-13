@@ -63,7 +63,7 @@ class PortableHandoffTests(unittest.TestCase):
             self.assertEqual(set(report["tasks"]), set(ev.TASKS))
             for stats in report["tasks"].values():
                 self.assertEqual(stats["judge_evaluated"], 0)
-                self.assertIsNone(stats["quality_score"]["mean"])
+                self.assertIsNone(stats.get("accuracy", {}).get("mean"))
         document = (self.input.parent / "report.html").read_text(encoding="utf-8")
         self.assertIn("data:image/png;base64,", document)
         self.assertIn("两套数据分别统计，不计算混合总分", document)
@@ -102,8 +102,13 @@ class PortableHandoffTests(unittest.TestCase):
                 score = score_fixture(row, self.references[dataset_id], task)
                 score["source_evidence_mode"] = "image_and_reference"
                 if dataset_id == "primary":
-                    for value in score["dimensions"].values():
-                        value["score"] = 0
+                    for claim in score["claims"]:
+                        claim["verdict"] = "contradicted"
+                    score["covered_fact_ids"] = []
+                    for entity in score["entities"]:
+                        entity["verdict"] = "contradicted"
+                    for check in score["point_checks"]:
+                        check.update(status="missed", accurate=False, claim_ids=[])
                 scores.append(score)
         ev.atomic_json(scores_path, scores)
         return refs_path, scores_path
@@ -119,8 +124,8 @@ class PortableHandoffTests(unittest.TestCase):
         actual = self.results()
         self.assertEqual(len(actual["references"]), 2)
         self.assertEqual(len(actual["scores"]), 6)
-        self.assertEqual(actual["datasets"]["primary"]["tasks"]["summary"]["quality_score"]["mean"], 0)
-        self.assertEqual(actual["datasets"]["menu_reference"]["tasks"]["summary"]["quality_score"]["mean"], 100)
+        self.assertEqual(actual["datasets"]["primary"]["tasks"]["summary"]["accuracy"]["mean"], 0)
+        self.assertEqual(actual["datasets"]["menu_reference"]["tasks"]["summary"]["accuracy"]["mean"], 1)
         self.assertEqual(set(path.name for path in self.input.parent.iterdir()), {"handoff.json", "results.json", "report.html"})
         self.assertEqual(ev.main([str(self.input)])["stage"], "evaluated")
 

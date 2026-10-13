@@ -95,9 +95,9 @@ class HandoffEndToEndTests(unittest.TestCase):
             for dataset_id, report in results["datasets"].items():
                 self.assertEqual(report["dataset_id"], dataset_id)
                 for task in ["summary", "interpretation", "recommendation"]:
-                    self.assertEqual(report["tasks"][task]["expected_pairs"], 1)
+                    self.assertEqual(report["tasks"][task]["total_images"], 1)
                     self.assertEqual(report["tasks"][task]["generation_ok"], 1)
-                    self.assertIsNone(report["tasks"][task]["quality_score"]["mean"])
+                    self.assertIsNone(report["tasks"][task].get("accuracy", {}).get("mean"))
 
 
 if __name__ == "__main__":

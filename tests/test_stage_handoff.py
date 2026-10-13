@@ -70,9 +70,9 @@ class StageHandoffTests(unittest.TestCase):
             stats = read_json(evaluation / "metrics.json")
             self.assertEqual(stats["dataset_id"], dataset_id)
             for task in ["summary", "interpretation", "recommendation"]:
-                self.assertEqual(stats["tasks"][task]["expected_pairs"], count)
+                self.assertEqual(stats["tasks"][task]["total_images"], count)
                 self.assertEqual(stats["tasks"][task]["generation_ok"], count)
-                self.assertIsNone(stats["tasks"][task]["quality_score"]["mean"])
+                self.assertIsNone(stats["tasks"][task].get("accuracy", {}).get("mean"))
             self.assertTrue((evaluation / "report.html").is_file())
             self.assertIn("data:image/", (evaluation / "report.html").read_text(encoding="utf-8"))
             self.assertFalse(any(path.is_dir() for path in evaluation.iterdir()))
