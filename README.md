@@ -42,6 +42,35 @@ cd qwen-image-text-eval
 
 ## 第一平台：配置模型并生成
 
+### 给他人使用的简易启动
+
+在仓库根目录打开 [start.sh](start.sh)，只需填写开头的三个目录：
+
+```bash
+ENV_DIR="/实际路径/envs/qwen-local"          # 环境目录，必须含 bin/python
+MODEL_DIR="/实际路径/Qwen3.5-35B-A3B"      # 模型目录，必须含 config.json 和完整权重
+PRIMARY_IMAGE_ROOT="/实际路径/原始图片集"    # 其下为语种目录及截图、实拍子目录
+```
+
+然后在 Linux / 华为机器上执行：
+
+```bash
+bash start.sh
+```
+
+脚本会自动激活指定的 qwen-local 环境，使用该环境自己的 Python，完成摘要、解读、菜品推荐，并导出 `results/simple_run/handoff.json`。环境中应已安装生成依赖；脚本不会安装依赖。无需提前手动激活、执行 `conda init` 或安装本项目包。从其他工作目录也可用 `bash /仓库绝对路径/start.sh` 启动。
+
+可选设置也集中在脚本顶部：`OUTPUT_ROOT` 改输出目录，`CUDA_VISIBLE_DEVICES` 选择 GPU，`DATASET=primary` 只运行原始图片，`DATASET=both` 同时运行原始图片和辅助菜单，两套数据仍分别保存。辅助图片目录由 `MENU_IMAGE_ROOT` 指定，两套输入目录不能相同或互相包含。`GENERATION_CONFIG` 指向现有生成配置，`FX_CONTEXT` 可填写现有汇率 JSON。自动找不到 Conda 时，填写 `CONDA_BASE`，如 `/home/ma-user/anaconda3`；它是 Conda 安装目录，`ENV_DIR` 才是模型环境目录。也可在命令前设置这些同名环境变量覆盖默认值。
+
+同一输出目录再次启动会续跑；更换模型、图片集、提示词或生成参数时使用新输出目录。完成后把 `handoff.json` 和完整 `评估.py` 放到第二平台运行评估，HTML 在第二平台生成。
+
+**更换模型或改用 API：**
+
+- 换同架构 Qwen3.5-35B-A3B 模型文件或微调权重：修改 `MODEL_DIR`，并更新现有 `configs/generation.json` 中的 `model_label`，使用新输出目录。`model_label` 只是记录名称；当前加载器检查 `model_type=qwen3_5_moe`，改名称不会改变模型架构。
+- 换其他模型架构：需要适配现有 `src/qwen_text_eval/generation.py` 中的 `_model_identity()`、`_QwenRuntime`（模型类、处理器、图片输入和生成方法）。仅修改路径不能保证运行。
+- 第一阶段改用模型 API：当前入口没有 API 开关，需要在上述生成模块适配 `_model_identity()` / `_load_runtime()` 和运行时对象的接口请求，保留三任务提示词、要求池、逐图记录、断点和 `handoff.json` 导出协议；接口返回的文本写入原有任务结果。地址、模型名和密钥从环境变量读取。远程多模态 API 会收到图片，应按所在平台的数据规定选用可用接口。此次只增加启动脚本与说明，未增加 API 实现。
+- 第二阶段的 GPT 评估 API 已在完整 `评估.py` 中集成，按该文件顶部配置子账号及模型名；无需更改 `start.sh`。
+
 原始图片按语言分组，截图和实拍一起处理，来源字段保留：
 
 ```text
