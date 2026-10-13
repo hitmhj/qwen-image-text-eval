@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""平台二：独立事实参考、逐项评审与离线 HTML。仅需要本文件和 Python 3.10+。
+"""平台二：复制本文件与handoff.json，运行 python evaluate.py handoff.json。
 
-GPT 接口尚未接入。默认只准备请求；--responses 导入真实回包。
+原图已内嵌交接文件，不依赖平台一图片目录。仅需Python 3.10+标准库。
+GPT接口尚未接入。默认只准备请求和预览；--references/--scores导入真实回包。
 ground_truth 是独立的机器事实草稿，人工核验状态须操作者显式确认。
 """
 from __future__ import annotations
@@ -227,7 +228,10 @@ def validate_schema(value, schema, field="根对象"):
 
 
 def load_generation(path):
-    rows = read_jsonl(path)
+    return validate_generation_rows(read_jsonl(path))
+
+
+def validate_generation_rows(rows):
     if not rows:
         raise ValueError("生成结果为空")
     ids, datasets, runs = set(), set(), set()
@@ -442,12 +446,15 @@ def validate_judgement(judgement, reference, image, task, expected_mode="referen
 
 
 def call_gpt(request, image_path=None, model=None, version=None):
-    """待接口明确后仅替换本函数。把 image_path 的像素附上，禁止传文件名作为证据。
+    """待接口明确后仅替换本函数。
+
+    简化交接模式的 request.attachments[].data_url 已包含经过校验的原图像素，
+    不需要 image_path，也不得用附件路径或文件名代替原图。
 
     实际模型/版本填 input.annotator 或 input.judge；遵循 response_schema。
     本占位函数不会联网，不读取环境中的 API key，也不会伪造生成或评分。
     """
-    raise NotImplementedError("GPT 接口尚未接入；请提供接口后实现 call_gpt，当前可用 --responses 导入真实回包")
+    raise NotImplementedError("GPT接口尚未接入；请提供接口后实现call_gpt，当前可先导入真实参考/评分回包")
 
 
 def merge_responses(path, new, key_function, replace=False):
@@ -460,12 +467,16 @@ def merge_responses(path, new, key_function, replace=False):
 
 
 def request_attachment(image, image_root):
+    if image.get("image") is not None:
+        return {"kind": "embedded_image", "image_id": image["image_id"],
+            "sha256": image["image_sha256"], "mime_type": image["image"]["mime_type"],
+            "data_url": embedded_image_url(image)}
     path = validated_image(image, image_root)
     return {"kind": "local_image", "image_id": image["image_id"], "sha256": image["image_sha256"],
             "local_path": str(path) if path else None, "relative_path": image["relative_path"]}
 
 
-def prepare_reference(rows, output, image_root=None):
+def prepare_reference(rows, output=None, image_root=None):
     requests = []
     for image in rows:
         if image["image_status"] != "ok":
@@ -475,15 +486,16 @@ def prepare_reference(rows, output, image_root=None):
         inputs["requirement_sha256"] = fingerprint(image["recommendation_requirement"]) if image.get("recommendation_requirement") else None
         if image.get("recommendation_requirement"):
             inputs["recommendation_requirement"] = image["recommendation_requirement"]
-        requests.append({"schema_version": 2, "request_id": f"reference:{image['image_id']}", "stage": "reference",
+        requests.append({"schema_version": 2, "request_id": f"reference:{image['dataset_id']}:{image['image_id']}", "stage": "reference",
             "system": REFERENCE_SYSTEM, "input": inputs,
             "adapter_required_metadata": ["annotator.model", "annotator.version"],
             "attachments": [request_attachment(image, image_root)], "response_schema": REFERENCE_SCHEMA})
-    write_jsonl(Path(output) / "reference_requests.jsonl", requests)
+    if output is not None:
+        write_jsonl(Path(output) / "reference_requests.jsonl", requests)
     return requests
 
 
-def prepare_scores(rows, references, output, image_root=None):
+def prepare_scores(rows, references, output=None, image_root=None):
     requests = []
     for image in rows:
         reference = references.get(image["image_id"])
@@ -500,14 +512,15 @@ def prepare_scores(rows, references, output, image_root=None):
                 "rubric": RUBRIC["tasks"][task], "score_scale": RUBRIC["scale"]}
             inputs["task_prompt_sha256"] = fingerprint(image["prompts"][task])
             inputs["requirement_sha256"] = fingerprint(image["recommendation_requirement"]) if task == "recommendation" and image.get("recommendation_requirement") else None
-            inputs["expected_source_evidence_mode"] = "image_and_reference" if image_root else "reference_only"
+            inputs["expected_source_evidence_mode"] = "image_and_reference" if image_root or image.get("image") else "reference_only"
             if task == "recommendation":
                 inputs["recommendation_requirement"] = image.get("recommendation_requirement")
                 inputs["required_constraint_ids"] = constraint_ids(image.get("recommendation_requirement"))
-            requests.append({"schema_version": 2, "request_id": f"judge:{image['image_id']}:{task}", "stage": "judge",
+            requests.append({"schema_version": 2, "request_id": f"judge:{image['dataset_id']}:{image['image_id']}:{task}", "stage": "judge",
                 "system": JUDGE_SYSTEM, "input": inputs, "adapter_required_metadata": ["judge.model", "judge.version"],
                 "attachments": [request_attachment(image, image_root)], "response_schema": JUDGE_SCHEMA})
-    write_jsonl(Path(output) / "score_requests.jsonl", requests)
+    if output is not None:
+        write_jsonl(Path(output) / "score_requests.jsonl", requests)
     return requests
 
 
@@ -1037,11 +1050,11 @@ def recommendation_rules(text):
         "hard_pass": False if not text.strip() else None, "needs_review": bool(text.strip())}
 
 
-def build_report(rows, references, scores, output, image_root=None):
+def build_report(rows, references, scores, output=None, image_root=None):
     images = {image["image_id"]: image for image in rows}
     evidence_modes = {}
-    request_path = Path(output) / "score_requests.jsonl"
-    if request_path.exists():
+    request_path = Path(output) / "score_requests.jsonl" if output is not None else None
+    if request_path is not None and request_path.exists():
         for request in read_jsonl(request_path):
             payload = request.get("input", {})
             evidence_modes[(payload.get("image_id"), payload.get("task"))] = payload.get("expected_source_evidence_mode")
@@ -1076,7 +1089,7 @@ def build_report(rows, references, scores, output, image_root=None):
                     try:
                         if reference is None:
                             raise ValueError("缺少独立参考")
-                        expected_mode = evidence_modes.get((image["image_id"], task)) or ("image_and_reference" if image_root else "reference_only")
+                        expected_mode = evidence_modes.get((image["image_id"], task)) or ("image_and_reference" if image_root or image.get("image") else "reference_only")
                         validate_judgement(judgement, reference, image, task, expected_mode)
                     except ValueError as error:
                         row["judge_status"] = "stale"
@@ -1118,6 +1131,8 @@ def build_report(rows, references, scores, output, image_root=None):
         "notes": ["未导入 GPT 回包时语义指标为空，不能当作零分或已完成。", "GPT 事实参考属于草稿，不是客观真值；人工核验比例独立报告。", "总分0～100、维度0～4、比例0～1；空分母显示未测。", "primary 和 menu_reference 独立报告，不能混入客户数据总分。", "预算仅凭已核验的价格、数量、币种和收费条件计算。"],
         "metric_definitions": {"factual_error_rate": "(与证据矛盾+无依据)/可判定事实声明", "hallucination_rate": "无依据/可判定事实声明", "contradiction_rate": "与证据矛盾/可判定事实声明", "unverifiable_rate": "无法核验/全部事实声明", "weighted_key_fact_coverage": "正确覆盖的高置信必需事实重要度/全部高置信必需事实重要度", "numeric_claim_accuracy": "正确数字声明/可判定数字声明", "conservative_numeric_accuracy": "正确数字声明/全部数字声明", "numeric_unverifiable_rate": "无法核验数字声明/全部数字声明", "recommendation_success_rate": "GT确认可行时，全部硬约束满足且程序预算核验通过、没有重要错误、明确推荐的样本/已评审的GT可行样本"},
         "samples": samples}
+    if output is None:
+        return report
     atomic_json(Path(output) / "metrics.json", report)
     # 只为HTML读原图字节，不改变原图；控制大文件批次的报告体积。
     preview_cache, preview_bytes = {}, 0
@@ -1704,6 +1719,242 @@ def render_html(report: dict, samples: list[dict], *, title: str = "图片文本
 # END_EMBEDDED_HTML_RENDERER
 
 
+def embedded_image_url(row):
+    """校验真实图片附件；没有路径依赖，也不把图片写到磁盘。"""
+    image = row.get("image")
+    if not isinstance(image, dict) or set(image) != {"mime_type", "base64", "sha256"}:
+        raise ValueError("交接包的图片必须包含 mime_type、base64、sha256")
+    mime = image["mime_type"]
+    if mime not in {"image/jpeg", "image/png", "image/webp", "image/bmp", "image/tiff", "image/gif"}:
+        raise ValueError("交接包包含不支持的图片MIME类型")
+    encoded = image["base64"]
+    if not isinstance(encoded, str):
+        raise ValueError("交接包图片base64必须为字符串")
+    try:
+        raw = base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as error:
+        raise ValueError("交接包图片base64无效") from error
+    if not raw or base64.b64encode(raw).decode("ascii") != encoded:
+        raise ValueError("交接包图片base64非规范编码或内容为空")
+    signatures = {
+        "image/jpeg": raw.startswith(b"\xff\xd8\xff"),
+        "image/png": raw.startswith(b"\x89PNG\r\n\x1a\n"),
+        "image/webp": raw.startswith(b"RIFF") and raw[8:12] == b"WEBP",
+        "image/bmp": raw.startswith(b"BM"),
+        "image/tiff": raw.startswith((b"II*\x00", b"MM\x00*", b"II+\x00", b"MM\x00+")),
+        "image/gif": raw.startswith((b"GIF87a", b"GIF89a")),
+    }
+    if not signatures[mime]:
+        raise ValueError("交接包图片MIME与原始字节格式不符")
+    digest = hashlib.sha256(raw).hexdigest()
+    if image["sha256"] != digest or row.get("image_sha256") != digest:
+        raise ValueError("交接包内嵌原图SHA256不一致，不能与生成结果混评")
+    return f"data:{mime};base64,{encoded}"
+
+
+def load_handoff(path):
+    package = json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    if not isinstance(package, dict) or type(package.get("schema_version")) is not int or package.get("schema_version") != 1 or package.get("artifact_type") != "qwen_eval_handoff":
+        raise ValueError("输入必须为第一平台导出的自包含 handoff.json")
+    datasets = package.get("datasets")
+    if not isinstance(datasets, list) or not datasets:
+        raise ValueError("交接包缺少独立数据集")
+    seen = set()
+    for dataset in datasets:
+        if not isinstance(dataset, dict) or dataset.get("dataset_id") not in DATASETS or dataset["dataset_id"] in seen:
+            raise ValueError("交接包数据集标识无效或重复")
+        seen.add(dataset["dataset_id"])
+        rows = dataset.get("generation_results")
+        if not isinstance(rows, list):
+            raise ValueError("交接包 generation_results 必须为数组")
+        validate_generation_rows(rows)
+        if any(row["dataset_id"] != dataset["dataset_id"] or row["run_id"] != dataset.get("run_id") for row in rows):
+            raise ValueError("交接包数据集、运行标识与图片结果不一致")
+        for row in rows:
+            if row["image_status"] == "ok":
+                embedded_image_url(row)
+            elif row.get("image") is not None:
+                raise ValueError("无效图片的内嵌附件必须为null")
+    return package
+
+
+def read_response_objects(path):
+    content = Path(path).read_text(encoding="utf-8-sig").strip()
+    if not content:
+        return []
+    if content.startswith("["):
+        rows = json.loads(content)
+    else:
+        rows = [json.loads(line) for line in content.splitlines() if line.strip()]
+    if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+        raise ValueError("回包文件必须为JSON对象数组或JSONL")
+    return rows
+
+
+def handoff_html(reports, datasets):
+    """一个HTML内独立展示两个统计报告，隔离筛选控件且没有混合总分。"""
+    sections = []
+    for dataset in datasets:
+        name = _DATASET_NAMES[dataset["dataset_id"]]
+        report = reports[dataset["dataset_id"]]
+        images = {row["image_id"]: row for row in dataset["generation_results"]}
+        samples = []
+        for sample in report["samples"]:
+            visual = dict(sample)
+            row = images[sample["image_id"]]
+            if row.get("image"):
+                visual["image_data_url"] = f"data:{row['image']['mime_type']};base64,{row['image']['base64']}"
+                if row["image"]["mime_type"] in {"image/bmp", "image/tiff", "image/gif"}:
+                    visual["image_path"] = "原图已内嵌交接包；当前HTML预览仅支持JPEG、PNG和WebP"
+            samples.append(visual)
+        document = render_html(report, samples, title=name + "：三任务测评")
+        sections.append(f'<section><h2>{html.escape(name)}</h2><iframe title="{html.escape(name)}" srcdoc="{html.escape(document, quote=True)}"></iframe></section>')
+    return ('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>三任务独立数据集测评</title><style>body{margin:24px;background:#f2f5f8;font-family:system-ui;color:#172b3a}'
+        'iframe{display:block;width:100%;height:1600px;border:1px solid #cad6df;border-radius:12px;background:white}'
+        'section{margin:24px 0}h1,h2{font-weight:650}</style></head><body><h1>图片文本质量测评</h1>'
+        '<p>两套数据分别统计，不计算混合总分。未接入接口或未导入真实回包时，只展示生成结果和规则检查，语义评分显示未测。</p>'
+        + ''.join(sections) + '</body></html>')
+
+
+def execute_handoff(args):
+    package = load_handoff(args.input)
+    output = args.output_dir or args.input.resolve().parent
+    output.mkdir(parents=True, exist_ok=True)
+    result_path = output / "results.json"
+    frozen = {"handoff_sha256": fingerprint(package), "rubric_sha256": fingerprint(RUBRIC),
+        "reference_prompt_sha256": text_sha256(REFERENCE_SYSTEM), "judge_prompt_sha256": text_sha256(JUDGE_SYSTEM)}
+    cached = json.loads(result_path.read_text(encoding="utf-8-sig")) if result_path.exists() else {}
+    if cached and cached.get("input_snapshot") != frozen:
+        raise ValueError("当前交接包或评分配置与results.json不同；请指定新的--output-dir")
+    images = {(row["dataset_id"], row["image_id"]): row for dataset in package["datasets"] for row in dataset["generation_results"]}
+    references, scores = {}, {}
+    for reference in cached.get("references", []):
+        key = (reference.get("dataset_id"), reference.get("image_id"))
+        if key not in images or key in references:
+            raise ValueError("缓存参考包含未知或重复图片")
+        validate_reference(reference, images[key])
+        references[key] = reference
+    if args.references:
+        seen = set()
+        for reference in read_response_objects(args.references):
+            key = (reference.get("dataset_id"), reference.get("image_id"))
+            if key not in images or key in seen or images[key]["image_status"] != "ok":
+                raise ValueError("参考回包包含未知、无效或重复图片")
+            seen.add(key)
+            if reference.get("reference_status") == "human_verified" and not args.human_verified:
+                raise ValueError("人工核验参考须显式使用--human-verified，GPT不能自行认证")
+            if args.human_verified:
+                reference["reference_status"] = "human_verified"
+            validate_reference(reference, images[key])
+            references[key] = reference
+    identities = {}
+    def accept_score(score):
+        key = (score.get("dataset_id"), score.get("image_id"), score.get("task"))
+        image_key = key[:2]
+        if image_key not in images or image_key not in references or key[2] not in TASKS:
+            raise ValueError("评分回包包含未知图片任务或缺少独立参考")
+        validate_judgement(score, references[image_key], images[image_key], key[2], "image_and_reference")
+        identity = fingerprint(score.get("judge"))
+        if key[0] in identities and identities[key[0]] != identity:
+            raise ValueError("同一数据集不能混合不同评分模型或版本")
+        identities[key[0]] = identity
+        scores[key] = score
+    for score in cached.get("scores", []):
+        image_key = (score.get("dataset_id"), score.get("image_id"))
+        if image_key in references and score.get("reference_sha256") == fingerprint(references[image_key]):
+            accept_score(score)
+    def checkpoint():
+        # 每次成功接口回包立即存入同一扁平文件；中断重跑不重复付费。
+        atomic_json(result_path, {"schema_version": 1, "artifact_type": "qwen_eval_results", "status": "in_progress",
+            "input_snapshot": frozen, "references": list(references.values()), "scores": list(scores.values())})
+    pending_reference = []
+    for dataset in package["datasets"]:
+        pending_reference.extend(request for request in prepare_reference(dataset["generation_results"])
+            if (dataset["dataset_id"], request["input"]["image_id"]) not in references)
+    calls = 0
+    if args.stage == "score" and pending_reference:
+        raise ValueError("评分阶段缺少独立参考；请先运行--stage reference或使用--references导入")
+    if args.call_api and args.stage != "score":
+        for request in pending_reference:
+            request["input"]["annotator"] = {"model": args.gpt_model, "version": args.gpt_version}
+            reference = call_gpt(request, model=args.gpt_model, version=args.gpt_version)
+            calls += 1
+            key = (request["input"]["dataset_id"], request["input"]["image_id"])
+            if reference.get("reference_status") != "draft":
+                raise ValueError("GPT生成参考必须为draft，不能自称人工核验")
+            if reference.get("annotator") != request["input"]["annotator"]:
+                raise ValueError("参考回包的模型、版本与实际调用不一致")
+            validate_reference(reference, images[key])
+            references[key] = reference
+            checkpoint()
+        pending_reference = []
+    if args.scores:
+        seen = set()
+        for score in read_response_objects(args.scores):
+            key = (score.get("dataset_id"), score.get("image_id"), score.get("task"))
+            if key in seen:
+                raise ValueError("评分回包包含重复图片任务")
+            seen.add(key)
+            accept_score(score)
+    pending_scores = []
+    for dataset in package["datasets"]:
+        dataset_id = dataset["dataset_id"]
+        subset = {image_id: reference for (source, image_id), reference in references.items() if source == dataset_id}
+        if args.stage != "reference":
+            pending_scores.extend(request for request in prepare_scores(dataset["generation_results"], subset)
+                if (dataset_id, request["input"]["image_id"], request["input"]["task"]) not in scores)
+    if args.call_api and args.stage != "reference":
+        for request in pending_scores:
+            request["input"]["judge"] = {"model": args.gpt_model, "version": args.gpt_version}
+            score = call_gpt(request, model=args.gpt_model, version=args.gpt_version)
+            calls += 1
+            if score.get("judge") != request["input"]["judge"]:
+                raise ValueError("评分回包的模型、版本与实际调用不一致")
+            accept_score(score)
+            checkpoint()
+        pending_scores = []
+    reports = {}
+    for dataset in package["datasets"]:
+        dataset_id = dataset["dataset_id"]
+        refs = {image_id: reference for (source, image_id), reference in references.items() if source == dataset_id}
+        judgements = {(image_id, task): score for (source, image_id, task), score in scores.items() if source == dataset_id}
+        reports[dataset_id] = build_report(dataset["generation_results"], refs, judgements)
+    status = ("reference_ready" if args.stage == "reference" and not pending_reference else
+        "evaluated" if not pending_reference and not pending_scores and bool(scores) else
+        "awaiting_reference" if pending_reference else "awaiting_scores")
+    result = {"schema_version": 1, "artifact_type": "qwen_eval_results", "status": status,
+        "input_snapshot": frozen, "reference_system": REFERENCE_SYSTEM, "judge_system": JUDGE_SYSTEM,
+        "rubric": RUBRIC, "references": list(references.values()), "scores": list(scores.values()), "datasets": reports,
+        "pending_reference_count": len(pending_reference), "pending_score_count": len(pending_scores)}
+    atomic_json(result_path, result)
+    atomic_text(output / "report.html", handoff_html(reports, package["datasets"]))
+    for filename, requests in [("reference_requests.json", pending_reference), ("score_requests.json", pending_scores)]:
+        path = output / filename
+        if requests:
+            atomic_json(path, requests)
+        elif path.exists():
+            path.unlink()
+    return {"stage": status, "datasets": {key: {"generated": sum(value["generation_ok"] for value in report["tasks"].values()),
+        "evaluated": sum(value["judge_evaluated"] for value in report["tasks"].values())} for key, report in reports.items()},
+        "report": str(output / "report.html"), "results": str(result_path), "network_calls": calls}
+
+
+def handoff_parser():
+    result = argparse.ArgumentParser(description="平台二：只复制evaluate.py与handoff.json，单条命令完成独立参考、评分和HTML")
+    result.add_argument("input", type=Path, help="第一平台唯一交接文件handoff.json，已包含原图与三个任务输出")
+    result.add_argument("--output-dir", type=Path, help="可选：默认在handoff.json同目录扁平输出")
+    result.add_argument("--stage", choices=["all", "reference", "score"], default="all", help="默认全部；参考和评分也可分开执行，复用同目录results.json")
+    result.add_argument("--references", type=Path, help="可选：导入真实独立参考回包JSON数组或JSONL")
+    result.add_argument("--scores", type=Path, help="可选：导入真实评分回包JSON数组或JSONL")
+    result.add_argument("--human-verified", action="store_true", help="操作者明确确认导入参考已人工核验")
+    result.add_argument("--call-api", action="store_true", help="接口接入后自动参考→评分→报告；当前明确报接口未接入")
+    result.add_argument("--gpt-model", help="接口实际模型标识")
+    result.add_argument("--gpt-version", help="接口实际模型版本")
+    return result
+
+
 def execute(args):
     rows = load_generation(args.input)
     output = Path(args.output_dir)
@@ -1780,7 +2031,15 @@ def parser():
 
 
 def main(argv=None):
-    args = parser().parse_args(argv)
+    values = list(sys.argv[1:] if argv is None else argv)
+    if not values or values[0] not in {"reference", "score", "report"}:
+        args = handoff_parser().parse_args(values)
+        if args.call_api and not (args.gpt_model and args.gpt_version):
+            raise ValueError("调用GPT必须提供实际--gpt-model与--gpt-version；原图已内嵌交接包")
+        if args.call_api and (args.references or args.scores):
+            raise ValueError("--call-api与回包导入选项不能同时使用")
+        return execute_handoff(args)
+    args = parser().parse_args(values)
     if getattr(args, "call_api", False) and not (args.gpt_model and args.gpt_version and args.image_root):
         raise ValueError("调用 GPT 必须提供实际 --gpt-model、--gpt-version 和 --image-root")
     if getattr(args, "call_api", False) and getattr(args, "responses", None):

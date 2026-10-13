@@ -6,6 +6,14 @@ output/
 outputs/
 artifacts/
 local/
+# 跨平台交接与评审文件可能内含原图、模型答案及事实参考。
+handoff.json
+results.json
+reference_requests.json
+score_requests.json
+report.html
+metrics.json
+eval_meta.json
 *.local.json
 *.local.toml
 *.local.yaml

@@ -1,6 +1,7 @@
 """平台一入口：原始客户图与清晰菜单图分别运行，分别导出三任务结果。"""
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -8,6 +9,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from qwen_text_eval.cli import main as generate_main
+from qwen_text_eval.exporting import export_handoff
 
 
 def main(argv=None):
@@ -53,6 +55,15 @@ def main(argv=None):
         torch = sys.modules.get("torch")
         if torch is not None and torch.cuda.is_available():
             torch.cuda.empty_cache()
+    if result < 2:
+        try:
+            handoff = export_handoff([(dataset_id, args.output_root / dataset_id, images)
+                                      for dataset_id, images in selected], args.output_root / "handoff.json")
+            print("第一平台交接文件已生成；第二平台只需复制此文件和 evaluate.py：", flush=True)
+            print(json.dumps(handoff, ensure_ascii=False, indent=2), flush=True)
+        except (ValueError, TypeError, KeyError, FileNotFoundError, OSError) as error:
+            print(f"交接文件导出失败：{error}", file=sys.stderr)
+            return 2
     return result
 
 
