@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "version": "evidence_rubric_v1",
+  "schema_version": 2,
+  "version": "evidence_rubric_v2",
   "scale": {
     "min": 0,
     "max": 4,
@@ -22,20 +22,21 @@
     "null_handling": "从分子和分母移除 null 维度，记录适用权重；适用权重为 0 时总分为空。",
     "coverage_formula": "sum(importance of covered high-confidence facts required_for task) / sum(importance of all high-confidence facts required_for task)",
     "coverage_empty_denominator": "无高置信必需事实时覆盖率为空，不视为满分。",
-    "caveat": "评审模型不计算总分。总分不能掩盖严重错误、未核验结果及适用维度差异；不同适用权重的均分应附上下文。"
+    "caveat": "v2变更维度及权重，与v1总分不可直接比较。评审模型不计算总分。总分不能掩盖严重错误、未核验结果及适用维度差异；不同适用权重的均分应附上下文。",
+    "cohort_policy": "primary与menu_reference分别出指标和报告；禁止合并分母、均分或排名。"
   },
   "tasks": {
     "summary": {
       "dimensions": {
         "factual_accuracy": {
           "name": "事实准确性",
-          "weight": 20,
-          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录。"
+          "weight": 35,
+          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录；包含无依据内容控制，严重错误独立记录。"
         },
         "key_information": {
           "name": "关键信息覆盖",
-          "weight": 15,
-          "description": "按该任务高置信必需事实及重要程度衡量覆盖；摘要只考查容量内的少量重点。"
+          "weight": 25,
+          "description": "按该任务高置信必需事实及重要程度衡量覆盖；摘要只考查容量内的少量重点；兼顾主体识别与标题描述互补。"
         },
         "translation": {
           "name": "翻译准确性",
@@ -47,35 +48,15 @@
           "weight": 10,
           "description": "数值、单位、币种、菜品/套餐/份量绑定与收费条件一致；不明确的币种不能推定。"
         },
-        "non_hallucination": {
-          "name": "无依据内容控制",
-          "weight": 15,
-          "description": "区分图片事实、未知、建议和外部背景；不得从菜名推断过敏原、安全保证或配方。"
-        },
         "readability": {
-          "name": "中文可读性",
-          "weight": 5,
-          "description": "中文自然、指代清楚、信息易理解；不以辞藻或评审个人风格作为依据。"
-        },
-        "conciseness": {
-          "name": "简洁与信息密度",
-          "weight": 5,
-          "description": "满足容量约束，避免重复、套话和冗长抄录，同时不以遗漏重点换取简洁。"
+          "name": "可读与简洁",
+          "weight": 10,
+          "description": "中文自然、指代清楚、信息易理解；不以辞藻或评审个人风格作为依据。避免重复和空话，不以省略重点换取简洁。"
         },
         "prompt_following": {
           "name": "提示词遵循",
           "weight": 10,
           "description": "严格两行，标题不超过10字、描述不超过30字；简体中文、无前缀/Markdown/emoji/主观评价，示例冲突按明确硬约束。"
-        },
-        "subject_identification": {
-          "name": "主体识别",
-          "weight": 5,
-          "description": "标题准确点名主体，区分菜单、餐厅及其他图片类型。"
-        },
-        "title_description_complementarity": {
-          "name": "标题描述互补",
-          "weight": 5,
-          "description": "描述补充标题未包含的关键事实，避免重复、空泛引导和夸赞。"
         }
       }
     },
@@ -83,12 +64,12 @@
       "dimensions": {
         "factual_accuracy": {
           "name": "事实准确性",
-          "weight": 20,
-          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录。"
+          "weight": 35,
+          "description": "已陈述的主体、实体、关系与图片事实一致；错误严重程度独立记录；包含无依据内容控制，严重错误独立记录。"
         },
         "key_information": {
           "name": "关键信息覆盖",
-          "weight": 15,
+          "weight": 25,
           "description": "按该任务高置信必需事实及重要程度衡量覆盖；摘要只考查容量内的少量重点。"
         },
         "translation": {
@@ -101,40 +82,49 @@
           "weight": 10,
           "description": "数值、单位、币种、菜品/套餐/份量绑定与收费条件一致；不明确的币种不能推定。"
         },
-        "non_hallucination": {
-          "name": "无依据内容控制",
-          "weight": 15,
-          "description": "区分图片事实、未知、建议和外部背景；不得从菜名推断过敏原、安全保证或配方。"
+        "structure": {
+          "name": "场景与结构",
+          "weight": 10,
+          "description": "首段速览、1~3核心模块、每核心模块2~4条、0~2可选增量模块与【】标题；增量信息不足可合并或省略，不能编造事实凑条目。正确理解图片场景并选择相关模块。"
         },
-        "readability": {
-          "name": "中文可读性",
+        "usefulness": {
+          "name": "解释价值",
           "weight": 5,
-          "description": "中文自然、指代清楚、信息易理解；不以辞藻或评审个人风格作为依据。"
-        },
-        "conciseness": {
-          "name": "简洁与信息密度",
-          "weight": 5,
-          "description": "满足容量约束，避免重复、套话和冗长抄录，同时不以遗漏重点换取简洁。"
+          "description": "围绕图中内容帮助理解和决策，建议有依据且限定清楚；不以主观推荐或冗长背景代替信息。"
         },
         "prompt_following": {
           "name": "提示词遵循",
           "weight": 5,
           "description": "遵循语言、禁用前缀/emoji/主观评价和医疗免责声明等要求；菜单原文名冲突单独记录规范歧义。"
+        }
+      }
+    },
+    "recommendation": {
+      "dimensions": {
+        "factual_accuracy": {
+          "name": "推荐事实准确性",
+          "weight": 25,
+          "description": "推荐菜品、价格、配方/辣度/过敏原及套餐条件有图片证据，不把未知说成确定事实。"
         },
-        "scene_understanding": {
-          "name": "场景理解",
-          "weight": 5,
-          "description": "理解图片所属场景并选择相关信息；餐厅整体照片使用通用核心角度，不误套完整菜单。"
+        "requirement_following": {
+          "name": "需求满足",
+          "weight": 30,
+          "description": "逐项核对预算、人数、数量与硬约束；软偏好不能替代硬约束，unknown不能算met。"
         },
-        "structure": {
-          "name": "解读结构",
-          "weight": 3,
-          "description": "首段速览、1~3核心模块、每核心模块2~4条、0~2可选增量模块与【】标题；增量信息不足可合并或省略，不能编造事实凑条目。"
+        "budget_accuracy": {
+          "name": "费用准确性",
+          "weight": 20,
+          "description": "数量×单价、必付税费/服务费、币种和显式汇率换算可复核；不确定费用清楚标注，不虚构符合预算。"
         },
         "usefulness": {
-          "name": "解释价值",
-          "weight": 7,
-          "description": "围绕图中内容帮助理解和决策，建议有依据且限定清楚；不以主观推荐或冗长背景代替信息。"
+          "name": "推荐价值",
+          "weight": 15,
+          "description": "有帮助的组合或合理拒绝，条件、替代和待确认事项具体；存在可行方案时不能无依据拒绝。"
+        },
+        "readability": {
+          "name": "清楚与结构",
+          "weight": 10,
+          "description": "简体中文、350字内，按【推荐组合】【费用】【推荐依据】【待确认】合理表达，不以主观评价替代依据。"
         }
       }
     }
@@ -144,10 +134,20 @@
       "严重错误样本率",
       "已确认严重错误数量",
       "待人工复核样本率",
-      "参考人工核验比例"
+      "参考人工核验比例",
+      "推荐已确认成功率",
+      "推荐未知/有条件/无法确认比例"
     ],
     "definition": "有可靠依据的饮食/用药等安全错误或明确关键安全限制遗漏独立记录；不能被高总分抵消。",
     "unverifiable": "严重疑点但证据不足时进入人工复核，不作为已确认严重错误。",
-    "publication": "正式结论同时报告总分、各维度、适用权重、置信与人工核验状态。"
+    "publication": "三任务分开、两测试集分开，报告分母、适用权重、GT可行性与核验状态。"
+  },
+  "diagnostics": {
+    "hallucination_rate": "unsupported / (supported + contradicted + unsupported)，不把contradicted并入幻觉率。",
+    "contradiction_rate": "contradicted / (supported + contradicted + unsupported)。",
+    "unknown_claim_rate": "unverifiable / (supported + contradicted + unsupported + unverifiable)。",
+    "numeric_accuracy": "可核对数值声明中准确率与数值unknown比例分别报告；全部unknown不算满分。",
+    "recommendation_success": "仅参考可行性feasible，且预算、人数、全部非null数量要求及所有硬约束均met时记成功；unknown、条件式和合理拒绝不算已确认成功。",
+    "uncertainty_handling": "可行性unknown时，正确指出未知和合理拒绝可获质量分，但不能提高已确认推荐成功率。"
   }
 }

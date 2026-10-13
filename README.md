@@ -1,175 +1,204 @@
-# 图片摘要与解读测评
+# 三任务图片文本测评
 
-本项目面向 Android 识图摘要卡片和解读正文：读取本地 **Qwen3.5-35B-A3B** 模型，对每张图片分别执行原版 `v04_summary`、`v04_interpret` 提示词，保存原文并做细粒度测评。截图和实拍一起处理，保留语种、来源和场景分组。
+本项目将本地 Qwen 生成、GPT 事实参考构造、GPT 评分分成三个独立阶段。第一阶段在 NVIDIA 平台运行；第二、第三阶段在另一平台仅需要一个独立的 `evaluate.py`。GPT 接口未提供，当前只准备请求、导入回包和生成报告，默认不联网。
 
-当前已经实现生成、规则检查、独立事实参考请求、逐断言评审请求、回包校验和报告。**大模型接口尚未接入；没有执行任何外部 API 请求。** 没有评审回包时，语义质量指标显示为空，不能解释为零分。
+## 两套数据分别测评
 
-## 在华为机器上开始
+| 数据集标识 | 图片来源 | 用途 |
+|---|---|---|
+| `primary` | 您原来的图片大目录 | 正式图片集，包含各语种截图与实拍 |
+| `menu_reference` | 本次整理的20张清晰、无手菜单原图 | 独立辅助集，随代码提供 |
 
-拉取代码使用 `git clone` 或已有仓库的 `git pull`。`git push` 是把本地内容上传到远端，本流程只需要获取代码。
+两套数据各自生成、构造参考、评分、汇总和输出HTML，不能合并成一个总体分数。脚本拒绝两个输入根目录相同或互相包含；评审器拒绝将不同数据集或运行的结果混在同一输入中。
+
+辅助集保存原始像素和文件内容，没有再次压缩、缩放、裁剪或去手。它们是之前公开来源测试素材中的**原始实拍菜单**，来源、作者、许可、文件摘要及质量说明记录于 `datasets/menu_reference/图片清单.json` 和CSV。部分原菜单没有价格，已注明，测评不能要求恢复未标注信息。它与本目录旁的 `gen_image` 中20张图片内容完全一致。
+
+公司图片、模型、运行结果和密钥不会进入 Git。仓库公开来源菜单是唯一允许随代码提交的图片目录。
+
+## 三份生成提示词原文
+
+[三个任务提示词原文](docs/三个任务提示词原文.md) 包含摘要、解读、菜品推荐的完整系统提示词和用户提示词，六个正文块与实际JSON逐字一致。
+
+- `prompts/v04_summary.json`：摘要，保留您提供的原版。
+- `prompts/v04_interpret.json`：解读，保留您提供的原版。
+- `prompts/v01_recommendation.json`：菜品推荐，采用讨论确认的提示词。
+
+摘要示例字数、解读示例条目数、菜单原文括注等规范冲突在测评设计中明确说明，生成端不擅自修改或裁字。
+
+`configs/requirements_pool.json` 保存16条自然语言推荐要求及预算、人数、硬约束、偏好的结构。每张图片按图片SHA256、要求池指纹和固定种子抽取一条，不因难度、无解或未知重抽。两个模型复测同一图片、池和种子时使用同一要求；要求正文及结构写入生成结果。三个任务采用独立对话，摘要或解读的答案不会喂给推荐。
+
+## 获取代码与依赖
+
+私有仓库需要有读取权限的GitHub账号：
 
 ```bash
 git clone https://github.com/hitmhj/qwen-image-text-eval.git
 cd qwen-image-text-eval
 ```
 
-仓库为私有，需要具有读取权限的 GitHub 身份。仓库只包含代码、提示词、配置样例、文档及使用合成数据的测试。公司图片、模型、输出和评审记录不进入 Git；运行目录建议放在仓库外的华为内部存储。
+已拉取过旧版时，在仓库中运行 `git pull --ff-only`。
 
-建议使用 Linux、Python 3.10 及以上、NVIDIA CUDA 环境。先在允许的环境准备适配 CUDA 的 PyTorch/torchvision、Transformers 和依赖；详情见 [模型运行说明](docs/模型运行.md)。环境已准备好时：
+平台一建议 Linux、Python 3.10以上、NVIDIA CUDA。需要包含完整多模态权重、分词器、图像处理配置和聊天模板的本地 `Qwen3.5-35B-A3B` 目录。PyTorch、torchvision与目标驱动须匹配，环境准备见 [模型运行说明](docs/模型运行.md)。在允许的源或准备环境中：
 
 ```bash
-# 基础安装只用于扫描、规则检查、导入和报告。
-python -m pip install -e .
-
-# 生成环境需增加 GPU 依赖；如已安装匹配的依赖，可用 --no-deps。
 python -m pip install -e '.[generation]'
 ```
 
-华为环境不能访问外部软件源时，使用提前准备并获准进入环境的依赖目录：
+离线安装应准备匹配目标OS、Python和CUDA的wheel文件及构建依赖：
 
 ```bash
-python -m pip install --no-index --find-links /内部依赖目录 -e '.[generation]'
+python -m pip install --no-index --find-links /内部依赖目录 setuptools
+python -m pip install --no-index --find-links /内部依赖目录 --no-build-isolation -e '.[generation]'
 ```
 
-脚本不会自动下载模型或安装依赖。运行阶段强制 Hugging Face 离线读取。**35B 是总权重规模，A3B 是激活参数规模**；BF16 权重约需 70GB，另需预留视觉编码、缓存和运行空间。默认 `device_map=auto` 可使用多张可见 GPU。具体显存和驱动兼容性必须在目标机器上确认。
+运行脚本不会下载模型和依赖。35B为总权重规模，A3B为激活参数规模；BF16约70GB权重之外还需视觉编码、缓存和运行空间。默认允许一个进程使用多张可见GPU。
 
-## 输入结构
+平台二仅需Python 3.10以上与 `evaluate.py`。标准库即可运行；可选安装OpenCC增强简体检查，缺少时相关检查标为待复核。无需安装torch、Transformers、本项目包，也不需要携带任何提示词或配置文件：评审提示词、量表、协议、规则和HTML渲染器都嵌入在单文件中。
+
+## 第一阶段：输入并调用本地Qwen
+
+原始图片输入结构：
 
 ```text
-图片根目录/
+原始图片根目录/
 ├── 英语/
-│   ├── 截图/
-│   │   ├── 图片一.png
-│   │   └── 更深的子目录/图片二.jpg
-│   └── 实拍/图片三.jpg
+│   ├── 截图/图片一.png
+│   └── 实拍/图片二.jpg
 ├── 日语/
-│   ├── 截图/图片四.png
-│   └── 实拍/图片五.jpg
+│   ├── 截图/图片三.png
+│   └── 实拍/图片四.jpg
 └── 其他语种/...
 ```
 
-语言使用第一级目录名；来源使用第二级目录名，支持 `截图/截屏/screenshot/screenshots` 和 `实拍/拍摄/photo/photos/camera`。不符合结构的图片也会处理，并标为 `unknown`，不会静默丢弃。支持 JPG、JPEG、PNG、WebP、BMP、TIFF，扩展名不区分大小写。损坏图片进入错误清单；相同内容的副本仍生成，但另给去重后的统计。
+递归处理全部支持图片，截图和实拍进入同一批任务，保留分组字段。文件夹名可以不同；无法识别来源的图片标为unknown并处理。JPG/JPEG/PNG/WebP/BMP/TIFF均可；损坏图片、重复内容和失败结果明确记录。
 
-## 一键生成
-
-打开 `scripts/generate.sh`，开头预留了模型、图片、输出目录以及 GPU 编号。也可用环境变量填写，路径支持空格：
+编辑 `scripts/generate.sh` 开头，预留字段为MODEL_DIR、PRIMARY_IMAGE_ROOT、OUTPUT_ROOT和GPU编号。辅助菜单路径默认是仓库内 `datasets/menu_reference`，也可用MENU_IMAGE_ROOT指向您当前的 `gen_image`：
 
 ```bash
 MODEL_DIR=/内部模型/Qwen3.5-35B-A3B \
-IMAGE_ROOT=/内部数据/图片根目录 \
-RUN_DIR=/内部结果/基线一 \
+PRIMARY_IMAGE_ROOT=/内部数据/原始图片 \
+OUTPUT_ROOT=/内部结果/三任务基线一 \
 CUDA_VISIBLE_DEVICES=0,1 \
 bash scripts/generate.sh
 ```
 
-每张图运行两次，两个任务没有共享对话，不把摘要喂给解读。默认关闭思考、关闭采样；实际参数、软件版本、模型文件元数据及提示词均保存。生成文本不会被裁字、改写或去掉思考标签来制造合规结果；末尾协议令牌的解码边界另行保留在原始字段中。
+仅运行辅助集可设置 `DATASET=menu_reference`，不需要原始图片目录；只运行正式集可设置 `DATASET=primary`。
 
-重跑相同命令会继续未完成和失败任务，成功任务跳过；图片内容、提示词、模型元数据或设置变化时拒绝混用旧结果，请更换 `RUN_DIR`。运行时持续打印进度；任一任务出错或清单中存在损坏图片，最终退出码为 1；任务错误会留下结果并继续其他图片。启动配置错误为 2。对显存不足应先调整硬件或配置，再开新运行目录。
-
-## 本地规则与当前阶段报告
-
-只需要复制运行目录到另一个**已获准处理这些数据的内部平台**，无需携带模型权重。仓库本身不传输数据；跨平台的数据流向由华为既有流程确定。
+也可直接运行Python入口：
 
 ```bash
-RUN_DIR=/内部结果/基线一 bash scripts/evaluate.sh
+python generate.py \
+  --model-dir /内部模型/Qwen3.5-35B-A3B \
+  --primary-images /内部数据/原始图片 \
+  --output-root /内部结果/三任务基线一
 ```
 
-此命令执行规则检查、准备事实参考请求及报告，不调用大模型。也可以单独执行：
+模型输出原文、原始解码、耗时、令牌数、终止原因及错误均保存。相同命令断点继续；图片内容、模型、依赖、提示词、要求池或汇率设置变化时新建输出目录。每套数据最终导出一个 `generation_results.jsonl`，每行一张图，内含三个答案、推荐要求、图片身份和提示词快照。
+
+外币菜单配人民币预算时，可以使用 `--fx-context /内部配置/汇率.json` 或脚本环境变量FX_CONTEXT。格式是 `{ "as_of": "日期", "source": "内部提供来源", "rates": { "EUR": { "CNY": "明确的正数汇率" } } }`，含义为1单位来源币种等于给定数量目标币种。没有输入就不换算、不联网查汇率、不保证符合人民币预算；相关条件进入未知状态。
+
+## 第二阶段：独立GPT事实参考
+
+将该数据集的生成结果文件提供给已获准处理数据的第二平台，同批原图须可访问。此项目没有跨平台数据传输功能，使用既有内部流程。
 
 ```bash
-python -m qwen_text_eval rules --run-dir /内部结果/基线一
-python -m qwen_text_eval report --run-dir /内部结果/基线一
+python evaluate.py reference \
+  --input /内部结果/三任务基线一/primary/generation_results.jsonl \
+  --image-root /第二平台图片/原始图片 \
+  --output-dir /第二平台结果/primary
 ```
 
-规则明确区分通过、失败、待复核、不适用。字数按去除全部空白后的 Unicode 码点统计，标点、数字、字母各计 1；摘要允许单个末尾换行，额外空行失败。它不把专有名词中的英文直接判错，也不猜图片事实。
+当前生成平铺的 `reference_requests.jsonl`，并校验原图哈希；请求只含原图及推荐要求，不含Qwen答案。实际GPT视觉接口由您提供后接入 `call_gpt()`。接口应注入真实模型与版本、真正装配图像像素；默认不发送请求。
 
-## 独立事实参考与大模型评审
-
-流程是**原图 → 独立事实标注 → 人工抽查／纠正 → 原图、事实参考和候选文本 → 逐断言评审 → 程序汇总**。参考标注不能看到 Qwen 输出，也不能把另一模型写出的整段“标准摘要”当作唯一答案。允许多种准确表达，以可定位的原子事实核验。
+取得接口回包后：
 
 ```bash
-# 可在生成前执行；请求中完全没有候选文本。
-python -m qwen_text_eval prepare-reference --run-dir /内部结果/基线一
-
-# 等接口适配器或人工标注产生回包后导入，一行一个 JSON 对象。
-python -m qwen_text_eval import-reference \
-  --run-dir /内部结果/基线一 --input /内部回包/事实参考.jsonl
-
-# 已逐条人工核验的子集可单独导入；--human-verified 不能用来替代核验。
-python -m qwen_text_eval import-reference \
-  --run-dir /内部结果/基线一 --input /内部回包/人工核验子集.jsonl \
-  --human-verified --replace
-
-python -m qwen_text_eval prepare-judge --run-dir /内部结果/基线一
-python -m qwen_text_eval import-judge \
-  --run-dir /内部结果/基线一 --input /内部回包/文本评审.jsonl
-
-# 有可靠场景后重跑规则，确定菜单字数豁免、医学免责声明等条件。
-python -m qwen_text_eval rules --run-dir /内部结果/基线一
-python -m qwen_text_eval report --run-dir /内部结果/基线一
+python evaluate.py reference \
+  --input /内部结果/三任务基线一/primary/generation_results.jsonl \
+  --image-root /第二平台图片/原始图片 \
+  --output-dir /第二平台结果/primary \
+  --responses /内部回包/primary_reference.jsonl
 ```
 
-请求是厂商无关的本地 JSONL：`system` 为评审提示词，`input` 为待评内容，`attachments` 只包含原图相对路径与校验值；不嵌入图片，不发送请求。明天接入接口时，适配器在内部图片根目录解析路径、验证哈希，按接口要求装配图片，并注入真实的 `annotator.model/version` 或 `judge.model/version` 元数据。文本接口单凭 Qwen 输出无法判断视觉幻觉；应支持看图，或者使用已人工核验的事实参考并明确视觉盲区。
+程序校验后生成 `ground_truth.jsonl`。它是带位置证据、置信度、任务重点的原子事实参考，推荐另外记录可行性与硬约束相关信息，允许多个正确推荐方案。模型默认draft，人工核验子集后才使用 `--human-verified`；`--replace`用于明确替换已有回包，旧评分随后失效。
 
-回包结构可查看：
+辅助集另执行一遍：input指向menu_reference的生成结果，image-root指向同一套20张菜单的图片根目录，output-dir使用独立的 `/第二平台结果/menu_reference`。
+
+## 第三阶段：GPT评分与HTML
 
 ```bash
-python -m qwen_text_eval schema reference
-python -m qwen_text_eval schema judge
+python evaluate.py score \
+  --input /内部结果/三任务基线一/primary/generation_results.jsonl \
+  --image-root /第二平台图片/原始图片 \
+  --ground-truth /第二平台结果/primary/ground_truth.jsonl \
+  --output-dir /第二平台结果/primary
 ```
 
-回包需包含请求中的图片标识和校验值；评审还必须带候选文本、事实参考和评审提示词的 SHA256，并引用存在的事实标识。每条断言必须给类别，避免漏算价格、币种等数值错误。同一运行固定评分量表、评审提示词及评审模型／版本，改变评分口径请另建目录。参考修改或文本变化后，旧评审会显示过期，不混入有效均分。普通导入不能把模型标注自封为 `human_verified`。整份导入先校验后落盘，校验失败不导入其中一部分。
+当前准备平铺 `score_requests.jsonl`。取得评分回包后，同命令增加 `--responses /内部回包/primary_scores.jsonl`，导入后立即生成 `scores.jsonl`、`metrics.json` 和 `report.html`。
 
-## 输出目录
+随时可独立重新生成报告：
+
+```bash
+python evaluate.py report \
+  --input /内部结果/三任务基线一/primary/generation_results.jsonl \
+  --image-root /第二平台图片/原始图片 \
+  --output-dir /第二平台结果/primary
+```
+
+缺少回包时只报告已完成环节，语义指标显示未测；不能解释为零分或完成评分。对menu_reference分别执行相同三条命令，保持另一输出目录。
+
+HTML展示当前数据集、三任务及语种/来源分组，逐图展开原图、Qwen原文、抽中要求、事实证据、声明判定、维度理由、格式检查、预算复算、错误和未知条件。所有资源在本地，不依赖CDN。传入image-root时可嵌入原图供离线浏览；单图超过4MiB或总原图字节超过64MiB时不嵌入，保留原图路径，避免大批次报告失控。
+
+## 输出结构
 
 ```text
-基线一/
-├── run.json                       # 清单统计、运行标识、数据根目录
-├── manifest.jsonl                 # 相对路径、语种、来源、哈希、尺寸、重复和错误
-├── generation_meta.json           # 模型、配置、运行环境、指纹
-├── prompts/{summary,interpretation}.json
-├── evaluation_prompts/{reference,judge}_system.txt
-├── judge_meta.json                # 实际评审模型、版本和提示词校验值
-├── samples/<图片标识>/
-│   ├── summary.json               # 生成原文、原始解码、令牌、耗时、终止原因
-│   └── interpretation.json
-├── requests/{reference,judge}.jsonl
-├── references/<图片标识>.json      # 独立事实、证据、置信度、核验状态
-├── judgements/<图片标识>/{summary,interpretation}.json
-├── rubric.json                    # 评分配置快照
-├── rules/<图片标识>/{summary,interpretation}.json
-└── reports/
-    ├── aggregate.json             # 汇总、语种／来源／场景分组、去重统计、适用分母
-    ├── per_sample.jsonl
-    ├── per_sample.csv             # 每张图每个任务及原文
-    ├── review.csv                 # 错误、截断、过期、歧义、关键事实等复核列表
-    └── report.md
+平台一输出根目录/
+├── primary/
+│   ├── generation_results.jsonl     # 移交另一平台的单个结果文件
+│   ├── run.json、manifest.jsonl、generation_meta.json
+│   ├── prompts/                    # 三份实际提示词快照
+│   └── samples/<图片ID>/            # 三任务原文及断点记录
+└── menu_reference/                 # 同结构，20图独立生成
+
+平台二结果根目录/
+├── primary/
+│   ├── eval_meta.json              # 指纹与评分配置快照
+│   ├── reference_requests.jsonl    # 接口待接入期间的请求文件
+│   ├── ground_truth.jsonl
+│   ├── score_requests.jsonl
+│   ├── scores.jsonl
+│   ├── metrics.json
+│   └── report.html
+└── menu_reference/                 # 同结构，独立评分和HTML
 ```
 
-CSV 使用 UTF-8 BOM，方便中文表格软件打开；可能被当作公式的文本加前导单引号。`per_sample.jsonl` 和原始生成文件保留未改写文本。
+第二平台没有每张图一个子目录。请求文件是接口尚未接入时的中间产物，接口实现后可直接运行两个阶段；事实参考、评分和报告保持独立。
 
-## 重点看哪些指标
+## 代码结构
 
-| 类别 | 指标与用途 |
-|---|---|
-| 提示词遵循 | 两行、10/30字、50字速览、模块和条目数、500字限制、禁用前缀与 emoji、简体中文和医学声明 |
-| 语义质量 | 事实准确、重点覆盖、翻译、数字价格、无依据内容、可读性、简洁、提示词遵循 |
-| 摘要专项 | 主体识别、标题与描述互补 |
-| 解读专项 | 场景理解、结构组织、实用价值 |
-| 事实级 | 支持／矛盾／无依据／无法核验／背景；关键事实加权覆盖、数字断言正确率 |
-| 运行质量 | 生成成功率、错误、缺失、截断、耗时、评审覆盖率 |
-| 结果可信度 | 人工核验比例、无法核验占比、严重错误、适用维度权重、各指标样本数 |
+```text
+qwen-image-text-eval/
+├── generate.py                    # 平台一：两个数据集的生成入口
+├── evaluate.py                    # 平台二：参考、评分、HTML，全在一个文件
+├── scripts/generate.sh            # 预留本地模型/图片/输出/GPU路径
+├── prompts/                       # 三份生成prompt及两份评审prompt原文
+├── configs/                       # 生成设置、16条要求池、权重、接口样例
+├── datasets/menu_reference/       # 20张公开来源菜单，按语种/实拍分类
+├── src/qwen_text_eval/             # 本地生成、扫描、稳定抽样、导出及兼容旧接口
+├── docs/                          # 三prompt全文、指标设计、模型运行说明
+└── tests/                         # 合成图、虚拟模型、回包和隔离性验证
+```
 
-维度打分为 0～4，程序按固定权重换算为 0～100；不适用项为空并重新归一化，同时保留适用权重。重要事实错误和安全严重错误分别独立统计，不能被可读性得分抵消；各断言标注价格、币种、过敏原等类别。事实精确率同时给可判定分母和含无法核验项的保守口径；没有事实或数值时，相关指标为空。
+生成库中storage负责原子落盘，dataset负责语种/来源扫描，requirements负责稳定抽样，generation负责本地模型三任务，exporting负责单文件交接。包内历史评审模块保留用于旧版测试；旧CLI评审入口已停用，本次三任务评审统一使用根目录evaluate.py。
 
-详细评分锚点、参考标注、人审抽样、提示词冲突及偏差控制见 [测评设计](docs/测评设计.md)。
+## 指标与验证范围
 
-## 接口接入和验证范围
+摘要/解读采用事实依据、重点覆盖、翻译、数字、表达/结构与提示词遵循；推荐采用菜品事实25%、需求符合30%、价格预算20%、合理性15%、表达10%。维度0~4分，程序按适用权重换算0~100；事实准确率、无依据率、矛盾率、未知比例、重点覆盖、数字正确率、硬约束违规与可确认推荐成功等另行计算并显示分母。
 
-`configs/judge_api.example.json` 只预留配置，默认关闭，密钥应来自环境变量。明天确认实际协议、鉴权、图片输入方式、可使用的内部模型和返回格式后再实现调用适配器。没有获准的数据外发路径时，不能把图片或模型输出发送到公共 GPT 接口；评审应在允许的数据边界内完成。
+价格、份量、币种和套餐条件要绑定正确对象；预算计入图片明确的必付费用，未知不算满足。参考中没有收录不直接判幻觉；无原图的文本评审保留视觉盲区。严重错误独立展示。详细公式、规范冲突和人工抽检见 [测评设计](docs/测评设计.md)。
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-测试使用代码生成的合成图片、虚拟模型和虚拟评分回包，覆盖路径、双任务断点、指纹变化、格式边界、错误导入、缺失分母、过期评审和报告。**已验证离线代码流程；尚未在华为 NVIDIA GPU 上运行实际 35B 模型，未生成真实图片测评结论。**
+测试使用合成数据、虚拟运行器和虚拟GPT回包，实际35B GPU推理和GPT接口尚未运行，未生成真实测评结论。20张菜单只完成素材筛选、内容哈希核验和输入扫描。

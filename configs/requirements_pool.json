@@ -1,0 +1,423 @@
+{
+  "version": "requirements_pool_v1",
+  "requirements": [
+    {
+      "id": "req01",
+      "text": "我一个人，总预算50元人民币，不能吃辣，请推荐一份主食。",
+      "constraints": {
+        "budget": {
+          "amount": "50",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [
+          {
+            "id": "no_spicy",
+            "type": "spice",
+            "value": "不能吃辣",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 1,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req02",
+      "text": "我一个人，总预算80元人民币，喜欢鸡肉，优先推荐鸡肉类主食。",
+      "constraints": {
+        "budget": {
+          "amount": "80",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_chicken_main",
+            "type": "ingredient",
+            "value": "优先鸡肉类主食",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req03",
+      "text": "我一个人，总预算60元人民币，不吃牛肉，请推荐一份主食。",
+      "constraints": {
+        "budget": {
+          "amount": "60",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [
+          {
+            "id": "no_beef",
+            "type": "ingredient",
+            "value": "不吃牛肉",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 1,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req04",
+      "text": "我们两个人，总预算100元人民币，每人需要一份主食。",
+      "constraints": {
+        "budget": {
+          "amount": "100",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 2,
+        "hard_constraints": [],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 2,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req05",
+      "text": "我们两个人，总预算100元人民币，都不吃海鲜，每人需要一份主食。",
+      "constraints": {
+        "budget": {
+          "amount": "100",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 2,
+        "hard_constraints": [
+          {
+            "id": "no_seafood",
+            "type": "ingredient",
+            "value": "不吃海鲜",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 2,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req06",
+      "text": "我们两个人，总预算150元人民币，需要两份主食和一杯无酒精饮品。",
+      "constraints": {
+        "budget": {
+          "amount": "150",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 2,
+        "hard_constraints": [],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 2,
+          "min_non_alcoholic_drinks": 1
+        }
+      }
+    },
+    {
+      "id": "req07",
+      "text": "我们三个人，总预算200元人民币，至少需要三份主食。",
+      "constraints": {
+        "budget": {
+          "amount": "200",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 3,
+        "hard_constraints": [],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": 3,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req08",
+      "text": "我一个人，总预算80元人民币，不能吃辣，需要一份主食和一杯无酒精饮品。",
+      "constraints": {
+        "budget": {
+          "amount": "80",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [
+          {
+            "id": "no_spicy",
+            "type": "spice",
+            "value": "不能吃辣",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 1,
+          "min_non_alcoholic_drinks": 1
+        }
+      }
+    },
+    {
+      "id": "req09",
+      "text": "我一个人，总预算60元人民币，只点一道主食，优先选择能确认价格的较低价选项。",
+      "constraints": {
+        "budget": {
+          "amount": "60",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_lower_confirmed_price",
+            "type": "cost",
+            "value": "优先能确认价格的较低价选项",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 1,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req10",
+      "text": "我一个人，总预算70元人民币，希望以蔬菜类菜品为主，这是偏好，不是严格素食要求。",
+      "constraints": {
+        "budget": {
+          "amount": "70",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_vegetables",
+            "type": "category",
+            "value": "以蔬菜类菜品为主；非严格素食",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req11",
+      "text": "我一个人，总预算50元人民币，对花生过敏，请只推荐能够确认适合这一要求的选项。",
+      "constraints": {
+        "budget": {
+          "amount": "50",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [
+          {
+            "id": "peanut_allergy",
+            "type": "allergen",
+            "value": "花生过敏；必须有可靠过敏原及交叉接触信息",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req12",
+      "text": "我一个人，总预算100元人民币，严格纯素，不吃肉、鱼、蛋、奶和动物汤底。",
+      "constraints": {
+        "budget": {
+          "amount": "100",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [
+          {
+            "id": "strict_vegan",
+            "type": "diet",
+            "value": "严格纯素；不含肉、鱼、蛋、奶、动物汤底",
+            "scope": "all"
+          }
+        ],
+        "preferences": [],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req13",
+      "text": "我们两个人，总预算120元人民币，每人一份主食，一人不能吃辣，另一人喜欢辣。",
+      "constraints": {
+        "budget": {
+          "amount": "120",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 2,
+        "hard_constraints": [
+          {
+            "id": "no_spicy_person_1",
+            "type": "spice",
+            "value": "不能吃辣",
+            "scope": "person_1"
+          }
+        ],
+        "preferences": [
+          {
+            "id": "prefer_spicy_person_2",
+            "type": "spice",
+            "value": "喜欢辣",
+            "scope": "person_2"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 2,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req14",
+      "text": "我一个人，总预算80元人民币，优先尝试菜单明确标注的特色菜。",
+      "constraints": {
+        "budget": {
+          "amount": "80",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_signature",
+            "type": "category",
+            "value": "优先菜单明确标注的特色菜",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req15",
+      "text": "我一个人，总预算100元人民币，希望尝试至少两种不同菜品。",
+      "constraints": {
+        "budget": {
+          "amount": "100",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_diversity",
+            "type": "diversity",
+            "value": "希望至少两种不同菜品",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": null,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    },
+    {
+      "id": "req16",
+      "text": "我一个人，总预算60元人民币，想吃一份主食，偏好不带汤的。",
+      "constraints": {
+        "budget": {
+          "amount": "60",
+          "currency": "CNY",
+          "scope": "total"
+        },
+        "diners": 1,
+        "hard_constraints": [],
+        "preferences": [
+          {
+            "id": "prefer_no_soup",
+            "type": "preparation",
+            "value": "偏好不带汤",
+            "scope": "all"
+          }
+        ],
+        "meal_requirements": {
+          "min_main_dishes": null,
+          "min_dishes": null,
+          "exact_main_dishes": 1,
+          "min_non_alcoholic_drinks": null
+        }
+      }
+    }
+  ]
+}

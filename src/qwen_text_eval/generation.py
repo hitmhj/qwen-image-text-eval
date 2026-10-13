@@ -13,8 +13,9 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from .storage import atomic_json, fingerprint, read_jsonl, sha256_file, utc_now
+from .requirements import render_recommendation_prompt, select_requirement, validate_fx_context, validate_pool
 
-TASKS = ("summary", "interpretation")
+TASKS = ("summary", "interpretation", "recommendation")
 DEFAULT_CONFIG: dict[str, Any] = {
     "model_label": "Qwen3.5-35B-A3B",
     "dtype": "bfloat16",
@@ -29,7 +30,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "repetition_penalty": 1.0,
     "image_min_pixels": 65536,
     "image_max_pixels": 2097152,
-    "max_new_tokens": {"summary": 192, "interpretation": 2048},
+    "max_new_tokens": {"summary": 192, "interpretation": 2048, "recommendation": 1536},
     "max_memory": None,
     "offload_folder": None,
 }
@@ -43,7 +44,7 @@ def _effective_config(config: dict[str, Any]) -> dict[str, Any]:
     merged.update(copy.deepcopy(config))
     if "max_new_tokens" in config:
         if not isinstance(config["max_new_tokens"], dict):
-            raise ValueError("max_new_tokens 必须分别设置 summary 与 interpretation")
+            raise ValueError("max_new_tokens 必须分别设置摘要、解读、推荐的上限")
         if set(config["max_new_tokens"]) - set(TASKS):
             raise ValueError("max_new_tokens 存在未知任务")
         merged["max_new_tokens"] = {
@@ -277,24 +278,34 @@ def run_generation(
     config: dict[str, Any],
     prompts: dict[str, dict[str, Any]],
     resume: bool = True,
+    requirements_pool: dict[str, Any] | None = None,
+    fx_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """两项任务互相独立；成功结果断点续跑，错误下次重试，改配置需新目录。"""
+    """三项任务使用独立对话；按图固定推荐要求，保留双任务旧接口兼容性。"""
     os.environ.update({
         "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
         "HF_HUB_DISABLE_TELEMETRY": "1", "DO_NOT_TRACK": "1",
     })
     run_dir, model_dir, image_root = (Path(p).resolve() for p in (run_dir, model_dir, image_root))
     effective = _effective_config(config)
-    if set(prompts) != set(TASKS):
-        raise ValueError("必须同时提供 summary 与 interpretation 两套提示词")
-    for task in TASKS:
+    if set(prompts) not in (set(TASKS), {"summary", "interpretation"}):
+        raise ValueError("必须提供摘要、解读及推荐三套提示词")
+    tasks = tuple(task for task in TASKS if task in prompts)
+    if "recommendation" in tasks:
+        if requirements_pool is None:
+            raise ValueError("推荐任务需要要求池")
+        validate_pool(requirements_pool)
+        validate_fx_context(fx_context)
+    for task in tasks:
         if any(not isinstance(prompts[task].get(key), str) or not prompts[task][key]
                for key in ("version", "system", "user")):
             raise ValueError(f"{task} 缺少非空 version、system 或 user")
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     manifest = read_jsonl(run_dir / "manifest.jsonl")
     identity = _model_identity(model_dir)
-    settings = {"config": effective, "model": identity, "software_versions": _software_versions(), "prompts": prompts}
+    settings = {"config": effective, "model": identity, "software_versions": _software_versions(), "prompts": prompts,
+                "requirements_pool": requirements_pool, "fx_context": fx_context,
+                "dataset_id": run.get("dataset_id", "primary")}
     settings_fingerprint = fingerprint(settings)
     meta_path = run_dir / "generation_meta.json"
     if meta_path.exists():
@@ -323,7 +334,7 @@ def run_generation(
         if image_id in seen_ids:
             raise ValueError("清单存在重复 image_id")
         seen_ids.add(image_id)
-        for task in TASKS:
+        for task in tasks:
             output_path = run_dir / "samples" / image_id / f"{task}.json"
             if output_path.exists():
                 cached = json.loads(output_path.read_text(encoding="utf-8"))
@@ -345,20 +356,24 @@ def run_generation(
     atomic_json(meta_path, meta)
     for index, (record, task, output_path) in enumerate(pending, 1):
         seed = _stable_seed(effective["seed"], record["image_id"], task)
+        requirement = select_requirement(record["sha256"], requirements_pool, effective["seed"], fx_context) if task == "recommendation" else None
+        actual_prompt = render_recommendation_prompt(prompts[task], requirement) if requirement else prompts[task]
         result: dict[str, Any] = {
-            "schema_version": 1, "run_id": run["run_id"], "image_id": record["image_id"],
+            "schema_version": 2, "run_id": run["run_id"], "dataset_id": run.get("dataset_id", "primary"), "image_id": record["image_id"],
             "task": task, "prompt_version": prompts[task]["version"],
             "prompt_sha256": fingerprint(prompts[task]), "image_sha256": record["sha256"],
             "settings_fingerprint": settings_fingerprint, "seed": seed,
             "created_at": utc_now(), "status": "error", "text": "", "raw_text": "",
             "latency_seconds": None, "input_tokens": None, "output_tokens": None,
             "finish_reason": "error", "error": None,
+            "recommendation_requirement": requirement, "user_prompt": actual_prompt["user"],
+            "rendered_prompt_sha256": fingerprint(actual_prompt),
         }
         started = time.perf_counter()
         failed = False
         try:
             path = _image_path(image_root, record)
-            result.update(runtime.generate(path, prompts[task], task, seed))
+            result.update(runtime.generate(path, actual_prompt, task, seed))
             result["status"] = "ok"
             stats["generated_ok"] += 1
         except Exception as exc:

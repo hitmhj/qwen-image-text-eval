@@ -27,7 +27,8 @@ def assets_root() -> Path:
 def load_prompts(directory: Path | None = None) -> dict:
     directory = directory or assets_root() / "prompts"
     result = {"summary": read_json(directory / "v04_summary.json"),
-              "interpretation": read_json(directory / "v04_interpret.json")}
+              "interpretation": read_json(directory / "v04_interpret.json"),
+              "recommendation": read_json(directory / "v01_recommendation.json")}
     for task, prompt in result.items():
         if prompt.get("task") != task or not all(isinstance(prompt.get(key), str) and prompt[key] for key in ["version", "system", "user"]):
             raise ValueError("提示词必须包含正确任务以及非空 version、system、user")
@@ -49,13 +50,20 @@ def parser() -> argparse.ArgumentParser:
     scan = commands.add_parser("scan", help="扫描全部语种与截图／实拍，建立清单")
     scan.add_argument("--image-root", type=Path, required=True, help="图片大目录")
     scan.add_argument("--run-dir", type=Path, required=True, help="新的输出目录")
-    generation = commands.add_parser("generate", help="读取本地 Qwen3.5-35B-A3B，每张图生成摘要和解读")
+    scan.add_argument("--dataset-id", choices=["primary", "menu_reference"], default="primary")
+    generation = commands.add_parser("generate", help="读取本地 Qwen3.5-35B-A3B，每张图生成三个任务")
     generation.add_argument("--image-root", type=Path, required=True)
     generation.add_argument("--run-dir", type=Path, required=True)
     generation.add_argument("--model-dir", type=Path, required=True, help="本地 Hugging Face 模型目录")
     generation.add_argument("--config", type=Path, help="生成配置；默认使用 configs/generation.json")
     generation.add_argument("--prompts-dir", type=Path, help="可选提示词目录")
     generation.add_argument("--no-resume", action="store_true", help="拒绝复用已有成功样本")
+    generation.add_argument("--dataset-id", choices=["primary", "menu_reference"], default="primary")
+    generation.add_argument("--requirements-pool", type=Path)
+    generation.add_argument("--fx-context", type=Path, help="可选的冻结汇率文件；不自动获取汇率")
+    export = commands.add_parser("export", help="导出每图一行的三任务结果给另一平台")
+    export.add_argument("--run-dir", type=Path, required=True)
+    export.add_argument("--output", type=Path)
     reference = commands.add_parser("prepare-reference", help="准备独立看图标注请求，不提供 Qwen 答案")
     reference.add_argument("--run-dir", type=Path, required=True)
     reference.add_argument("--system-prompt", type=Path)
@@ -86,15 +94,20 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv=None) -> int:
     args = parser().parse_args(argv)
+    if args.command not in {"scan", "generate", "export"}:
+        print("旧包内评审入口已停用；三任务参考、评分和HTML请使用根目录 evaluate.py。", file=sys.stderr)
+        return 2
     try:
         if args.command == "scan":
-            result = create_manifest(args.image_root, args.run_dir)
+            result = create_manifest(args.image_root, args.run_dir, args.dataset_id)
         elif args.command == "generate":
             from .generation import run_generation
             if not (args.run_dir / "run.json").exists():
-                create_manifest(args.image_root, args.run_dir)
+                create_manifest(args.image_root, args.run_dir, args.dataset_id)
             else:
                 load_manifest(args.run_dir)
+                if read_json(args.run_dir / "run.json").get("dataset_id", "primary") != args.dataset_id:
+                    raise ValueError("数据集标识与已有运行不同，请分开生成和测评")
             prompts = load_prompts(args.prompts_dir)
             config = read_json(args.config or assets_root() / "configs" / "generation.json")
             # 模型加载前只写未存在的快照；已有快照由生成模块验证。
@@ -104,7 +117,15 @@ def main(argv=None) -> int:
                     raise ValueError("提示词与旧运行不同，请另建运行目录")
             for task, prompt in prompts.items():
                 atomic_json(args.run_dir / "prompts" / f"{task}.json", prompt)
-            result = run_generation(args.run_dir, args.model_dir, args.image_root, config, prompts, resume=not args.no_resume)
+            pool = read_json(args.requirements_pool or assets_root() / "configs" / "requirements_pool.json")
+            fx = read_json(args.fx_context) if args.fx_context else None
+            result = run_generation(args.run_dir, args.model_dir, args.image_root, config, prompts,
+                                    resume=not args.no_resume, requirements_pool=pool, fx_context=fx)
+            from .exporting import export_generation_results
+            result["export"] = export_generation_results(args.run_dir)
+        elif args.command == "export":
+            from .exporting import export_generation_results
+            result = export_generation_results(args.run_dir, args.output)
         elif args.command == "prepare-reference":
             result = prepare_reference_requests(args.run_dir, args.system_prompt or assets_root() / "prompts" / "reference_system.txt")
         elif args.command == "import-reference":

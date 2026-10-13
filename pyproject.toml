@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qwen-image-text-eval"
-version = "0.1.0"
-description = "图片摘要与解读的本地生成和细粒度测评工具"
+version = "0.2.0"
+description = "图片摘要、解读与菜品推荐的本地生成和细粒度测评工具"
 requires-python = ">=3.10"
 dependencies = ["Pillow>=10.4,<13", "jsonschema>=4.20,<5", "opencc-python-reimplemented>=0.1.7,<0.2"]
 

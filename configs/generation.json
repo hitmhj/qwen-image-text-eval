@@ -14,7 +14,8 @@
   "image_max_pixels": 2097152,
   "max_new_tokens": {
     "summary": 192,
-    "interpretation": 2048
+    "interpretation": 2048,
+    "recommendation": 1536
   },
   "max_memory": null,
   "offload_folder": null

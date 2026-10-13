@@ -1,6 +1,7 @@
 """扫描语种／来源文件夹；截图和实拍进入同一批任务。"""
 
 from pathlib import Path
+from uuid import uuid4
 
 from .storage import atomic_json, fingerprint, read_json, read_jsonl, sha256_file, utc_now, write_jsonl
 
@@ -51,7 +52,9 @@ def scan_images(root: Path) -> list[dict]:
     return rows
 
 
-def create_manifest(image_root: Path, run_dir: Path) -> dict:
+def create_manifest(image_root: Path, run_dir: Path, dataset_id: str = "primary") -> dict:
+    if dataset_id not in {"primary", "menu_reference"}:
+        raise ValueError("数据集标识只能是 primary 或 menu_reference")
     run_dir = Path(run_dir).resolve()
     # 整批结果必须隔离，避免重扫描掩盖图片或参数变化。
     if (run_dir / "run.json").exists() or (run_dir / "manifest.jsonl").exists():
@@ -59,12 +62,12 @@ def create_manifest(image_root: Path, run_dir: Path) -> dict:
     rows = scan_images(image_root)
     if len({row["image_id"] for row in rows}) != len(rows):
         raise ValueError("图片标识冲突，清单未写入")
-    metadata = {"schema_version": 1, "run_id": run_dir.name, "created_at": utc_now(),
+    metadata = {"schema_version": 2, "run_id": f"{dataset_id}-{uuid4().hex[:12]}", "dataset_id": dataset_id, "created_at": utc_now(),
                 "dataset_root": str(Path(image_root).resolve()), "manifest_sha256": fingerprint(rows),
                 "image_count": len(rows), "valid_images": sum(r["status"] == "ok" for r in rows),
                 "invalid_images": sum(r["status"] != "ok" for r in rows),
                 "duplicate_images": sum(r["duplicate_of"] is not None for r in rows),
-                "tasks": ["summary", "interpretation"]}
+                "tasks": ["summary", "interpretation", "recommendation"]}
     write_jsonl(run_dir / "manifest.jsonl", rows)
     atomic_json(run_dir / "run.json", metadata)
     return metadata

@@ -39,3 +39,6 @@ build/
 dist/
 .pytest_cache/
 .ruff_cache/
+# 仅这20张公开来源菜单作为随仓库提供的独立辅助集。
+!datasets/menu_reference/**/*.jpg
+!datasets/menu_reference/图片清单.csv

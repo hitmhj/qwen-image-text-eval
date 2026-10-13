@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-RUN_DIR="${RUN_DIR:-/请填写输出目录/首次基线}"
+STEP="${STEP:-report}"
+GENERATION_INPUT="${GENERATION_INPUT:-/请填写单个数据集/generation_results.jsonl}"
+OUTPUT_DIR="${OUTPUT_DIR:-/请填写对应数据集的评测目录}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-export PYTHONPATH="$REPO_ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
-export HF_HUB_OFFLINE=1
-export HF_HUB_DISABLE_TELEMETRY=1
-
-"$PYTHON_BIN" -m qwen_text_eval rules --run-dir "$RUN_DIR"
-"$PYTHON_BIN" -m qwen_text_eval prepare-reference --run-dir "$RUN_DIR"
-"$PYTHON_BIN" -m qwen_text_eval report --run-dir "$RUN_DIR"
-printf '%s\n' '规则和阶段报告已生成。事实参考及语义评分等待接口或人工标注回包；没有执行联网调用。'
+ARGS=("$STEP" --input "$GENERATION_INPUT" --output-dir "$OUTPUT_DIR")
+if [[ -n "${IMAGE_ROOT:-}" ]]; then ARGS+=(--image-root "$IMAGE_ROOT"); fi
+if [[ -n "${GROUND_TRUTH:-}" ]]; then ARGS+=(--ground-truth "$GROUND_TRUTH"); fi
+if [[ -n "${SCORES:-}" ]]; then ARGS+=(--scores "$SCORES"); fi
+if [[ -n "${RESPONSES:-}" ]]; then ARGS+=(--responses "$RESPONSES"); fi
+exec "$PYTHON_BIN" "$REPO_ROOT/evaluate.py" "${ARGS[@]}" "$@"
