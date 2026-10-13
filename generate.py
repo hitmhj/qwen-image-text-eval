@@ -5,6 +5,12 @@ import json
 import sys
 from pathlib import Path
 
+# 先检查解释器，避免在 Python 3.9 中导入新版本依赖时出现难懂的异常。
+if sys.version_info < (3, 10):
+    print("Qwen3.5 生成需要 Python 3.10 或以上；请使用独立模型环境中的 Python，"
+          "例如通过 PYTHON_BIN 指定该环境的解释器。", file=sys.stderr)
+    raise SystemExit(2)
+
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 

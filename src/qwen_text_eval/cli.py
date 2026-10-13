@@ -7,11 +7,7 @@ import sysconfig
 from pathlib import Path
 
 from .dataset import create_manifest, load_manifest
-from .evaluation import (evaluate_run_rules, import_judgements, import_references,
-                         prepare_judge_requests, prepare_reference_requests)
-from .reporting import build_report
 from .storage import atomic_json, read_json
-from .validation import JUDGE_SCHEMA, REFERENCE_SCHEMA, validate_rubric
 
 
 def assets_root() -> Path:
@@ -36,6 +32,7 @@ def load_prompts(directory: Path | None = None) -> dict:
 
 
 def rubric_for_run(run_dir: Path, explicit: Path | None = None) -> dict:
+    from .validation import validate_rubric
     saved = run_dir / "rubric.json"
     rubric = read_json(explicit) if explicit else read_json(saved if saved.exists() else assets_root() / "configs" / "rubric.json")
     validate_rubric(rubric)
@@ -126,21 +123,6 @@ def main(argv=None) -> int:
         elif args.command == "export":
             from .exporting import export_generation_results
             result = export_generation_results(args.run_dir, args.output)
-        elif args.command == "prepare-reference":
-            result = prepare_reference_requests(args.run_dir, args.system_prompt or assets_root() / "prompts" / "reference_system.txt")
-        elif args.command == "import-reference":
-            result = import_references(args.run_dir, args.input, args.human_verified, args.replace)
-        elif args.command == "prepare-judge":
-            result = prepare_judge_requests(args.run_dir, args.system_prompt or assets_root() / "prompts" / "judge_system.txt",
-                                            rubric_for_run(args.run_dir, args.rubric), load_prompts(args.prompts_dir))
-        elif args.command == "import-judge":
-            result = import_judgements(args.run_dir, args.input, rubric_for_run(args.run_dir, args.rubric), args.replace)
-        elif args.command == "rules":
-            result = evaluate_run_rules(args.run_dir)
-        elif args.command == "report":
-            result = build_report(args.run_dir, rubric_for_run(args.run_dir, args.rubric))
-        else:
-            result = REFERENCE_SCHEMA if args.kind == "reference" else JUDGE_SCHEMA
         print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
         return 1 if args.command == "generate" and (result.get("generated_error", 0) or result.get("skipped_invalid_images", 0)) else 0
     except (ValueError, TypeError, KeyError, FileNotFoundError, RuntimeError, OSError) as error:

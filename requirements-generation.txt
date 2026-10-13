@@ -1,0 +1,8 @@
+# 华为 A800 环境的直接运行依赖；无需 pip install -e 安装本项目。
+# 先安装官方 CUDA 11.8 轮子：torch==2.6.0+cu118、torchvision==0.21.0+cu118。
+# 本文件沿用用户提供的 Pillow、NumPy 版本；其余传递依赖由 pip 补齐。
+Pillow==11.1.0
+numpy==2.0.2
+transformers==5.3.0
+accelerate>=1.2,<2
+safetensors>=0.4.3,<1

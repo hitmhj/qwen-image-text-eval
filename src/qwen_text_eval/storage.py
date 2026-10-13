@@ -34,6 +34,23 @@ def read_json(path: Path):
         return json.load(source)
 
 
+def load_generated_result(run_dir: Path, manifest: dict, task: str) -> dict | None:
+    """读取生成断点；不依赖评审协议或 jsonschema。"""
+    path = Path(run_dir) / "samples" / manifest["image_id"] / f"{task}.json"
+    if not path.exists():
+        return None
+    result = read_json(path)
+    if not isinstance(result, dict):
+        raise ValueError("生成结果必须是 JSON 对象")
+    if result.get("image_id") != manifest["image_id"] or result.get("task") != task:
+        raise ValueError("生成结果的图片标识或任务不一致")
+    if result.get("image_sha256") != manifest["sha256"]:
+        raise ValueError("生成结果与清单图片不一致")
+    if result.get("status") == "ok" and not isinstance(result.get("text"), str):
+        raise ValueError("成功生成的结果必须包含文本")
+    return result
+
+
 def read_jsonl(path: Path) -> list[dict]:
     result = []
     with Path(path).open(encoding="utf-8-sig") as source:

@@ -43,6 +43,8 @@ cd qwen-image-text-eval
 python -m pip install -e '.[generation]'
 ```
 
+华为 A800、驱动 535、现有 Python 3.9 环境请采用[指定目录的最小安装步骤](docs/模型运行.md#华为a800驱动535的最小安装)：单独准备 Python 3.10，安装 CUDA 11.8 版 torch 2.6.0 / torchvision 0.21.0，再执行 `python -m pip install -r requirements-generation.txt`。生成入口直接运行仓库源码，无需安装本项目，生成平台也无需 jsonschema 或 OpenCC。要求池、三任务提示词和交接格式保持一致。
+
 填写目录后运行：
 
 ```bash

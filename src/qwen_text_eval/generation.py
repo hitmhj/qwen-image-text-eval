@@ -146,7 +146,7 @@ class _QwenRuntime:
             from transformers import AutoProcessor, Qwen3_5MoeForConditionalGeneration, set_seed
         except ImportError as exc:
             raise RuntimeError(
-                "生成依赖不可用：请离线安装支持 Qwen3.5 的 transformers>=5.3.0、"
+                f"生成依赖不可用（{exc}）：请安装支持 Qwen3.5 的 transformers>=5.3.0、"
                 "accelerate，以及与 NVIDIA CUDA 匹配的 torch/torchvision 和 Pillow"
             ) from exc
         if not torch.cuda.is_available():

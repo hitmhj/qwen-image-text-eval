@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from .dataset import load_manifest
-from .storage import atomic_json, atomic_text, fingerprint, read_json, read_jsonl, text_sha256, utc_now, write_jsonl
+from .storage import atomic_json, atomic_text, fingerprint, load_generated_result, read_json, read_jsonl, text_sha256, utc_now, write_jsonl
 from .validation import JUDGE_SCHEMA, REFERENCE_SCHEMA, TASKS, validate_judgement, validate_reference, validate_rubric
 
 
@@ -12,17 +12,7 @@ def sample_path(run_dir: Path, image_id: str, task: str) -> Path:
 
 
 def load_candidate(run_dir: Path, manifest: dict, task: str) -> dict | None:
-    path = sample_path(run_dir, manifest["image_id"], task)
-    if not path.exists():
-        return None
-    result = read_json(path)
-    if result.get("image_id") != manifest["image_id"] or result.get("task") != task:
-        raise ValueError("生成结果的图片标识或任务不一致")
-    if result.get("image_sha256") != manifest["sha256"]:
-        raise ValueError("生成结果与清单图片不一致")
-    if result.get("status") == "ok" and not isinstance(result.get("text"), str):
-        raise ValueError("成功生成的结果必须包含文本")
-    return result
+    return load_generated_result(run_dir, manifest, task)
 
 
 def frozen_system(run_dir: Path, prompt_path: Path, stage: str) -> tuple[str, Path]:

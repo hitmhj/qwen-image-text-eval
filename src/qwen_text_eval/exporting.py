@@ -9,8 +9,7 @@ import tempfile
 from pathlib import Path
 
 from .dataset import load_manifest
-from .evaluation import load_candidate
-from .storage import fingerprint, read_json, read_jsonl, safe_image_path, write_jsonl
+from .storage import fingerprint, load_generated_result, read_json, read_jsonl, safe_image_path, write_jsonl
 
 TASKS = ["summary", "interpretation", "recommendation"]
 
@@ -35,7 +34,7 @@ def export_generation_results(run_dir: Path, output: Path | None = None) -> dict
                   "duplicate_of": image.get("duplicate_of"), "prompts": prompts,
                   "recommendation_requirement": None}
         for task in TASKS:
-            candidate = load_candidate(run_dir, image, task) if image["status"] == "ok" else None
+            candidate = load_generated_result(run_dir, image, task) if image["status"] == "ok" else None
             if candidate and candidate.get("prompt_sha256") != fingerprint(prompts[task]):
                 raise ValueError("候选结果的提示词与运行快照不一致")
             result[task] = candidate
