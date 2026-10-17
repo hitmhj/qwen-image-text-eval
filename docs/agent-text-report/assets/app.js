@@ -15,6 +15,18 @@ function scoring(r) {
     : `${f.items_quantity_legal ? 30 : 0} + ${f.stated_diet_constraints_met ? 30 : 0} + ${f.budget_met ? 40 : 0}`;
   return `<p class="result"><b>模型初稿 ${num(f.score_100)} 分 → 系统最终方案 ${num(r.final.score_100)} 分。</b><br>首次计分：${math} = ${num(f.score_100)}；各项顺序与上方量表一致。</p>`;
 }
+function evidence(r) {
+  let scores = '';
+  if(r.final) {
+    const dims = r.group==='paper' ? [['菜名含义',40,'semantic_correct_items'],['项目完整',20,'exact_coverage'],['价格与币种',20,'price_currency_correct_items'],['未知信息处理',20,'uncertainty_correct_items']] : [['菜品及数量',30,'items_quantity_legal'],['已给忌口',30,'stated_diet_constraints_met'],['预算',40,'budget_met']];
+    const value=(s,key,weight)=>typeof s[key]==='boolean'?(s[key]?weight:0):s[key]/6*weight;
+    scores=`<h4>评分明细</h4>${table(['检查项','满分','模型初稿','系统最终方案'],dims.map(([name,weight,key])=>[name,weight,num(value(r.first_draft,key,weight)),num(value(r.final,key,weight))]))}`;
+  }
+  const attempts=(r.attempts||[]).map((a,i)=>`<h4>推荐第 ${i+1} 次提交 · ${num(a.check.score_100)} 分</h4>${table(['菜品','数量','当次推荐理由原文'],a.picks.map(p=>[esc(r.menu.find(m=>m.id===p.id)?.translated||p.id),p.quantity,esc(p.reason)]))}<p>核算小计 ${money(a.check.total_minor)}；预算 ${money(a.check.budget_minor)}；${a.error?'超预算，退回重试':'通过方案校验'}。</p><pre>${esc(a.notes)}</pre>${a.error?`<p>程序反馈原文：${esc(a.error)}（金额单位为欧分，100欧分=1欧元）</p>`:''}`).join('');
+  const ticketAttempts=(r.ticket_attempts||[]).map((a,i)=>`<h4>票务第 ${i+1} 次提交</h4><p>选择：${a.args.kind==='family'?'家庭票':'按人数组合票'}；${a.args.adults}成人；儿童年龄：${esc((a.args.ages||[]).join('、')||'无')}。</p><pre>${esc(a.args.reason)}</pre>${a.result?.error?`<p class="changed">程序反馈：${esc(a.result.error)}</p>`:''}${a.result?.total_minor!=null?`<p>系统核算总价：${money(a.result.total_minor)}。${a.result.selected_is_cheapest===false?'存在更便宜的合法方案，当前选择不是最低价。':''}</p>`:''}`).join('');
+  return `<details><summary>查看评分明细与全部提交过程</summary>${scores}${attempts}${ticketAttempts}${!r.final&&!ticketAttempts?'<p>本类未设百分制；提问、预置答复与最终菜单见上方，审查意见见下方原始记录。</p>':''}</details>
+    <details><summary>查看本例文字长度与 token 记录</summary>${table(['指标','本例记录'],[['模型末轮回复',`${r.last_raw_reply_chars} 字符`],['系统最终回复',`${r.final_reply_chars} 字符`],['模型调用次数',`${r.model_calls} 次`],['累计输出',`${r.output_tokens_all_calls} tokens（全部调用相加）`],['单次输出峰值',`${r.max_single_call_output_tokens} / 4,096 tokens`],['因输出上限截断',`${r.finish_reasons.length||0} 次`]])}<p class="small">字符数不含空白及单独展示的菜单；token为接口记录，含工具参数。累计输出不能与单次上限比较。</p></details>`;
+}
 function translation(r) {
   const rows = r.menu.map(item => {
     const first = r.first_menu.find(x => x.original === item.original);
@@ -60,6 +72,7 @@ function showCase(group, id) {
   document.getElementById(`sample-${group}`).innerHTML=`${content}
     <h4>最终回复原文 <span class="small">· ${r.final_reply_chars} 字符</span></h4><pre>${esc(r.final_reply)}</pre>
     ${group==='paper'?'<p class="small">完整译文在上方菜单表内；本段只是随菜单展示的回复。</p>':''}
+    ${evidence(r)}
     <details><summary>查看原始记录</summary><h4>完整输入</h4><pre>${esc(r.prompt)}</pre>${ticketDraft?`<h4>首次票务说明</h4><pre>${esc(ticketDraft)}</pre>`:''}<h4>模型末轮回复 · ${r.last_raw_reply_chars} 字符</h4><p class="small">该回复可能已经过重试，不等于首次方案。</p><pre>${esc(r.last_raw_model_reply)}</pre><h4>既有独立审查意见</h4><p>${esc(r.independent_review_reason)}</p></details>`;
 }
 const defaults = {paper:'P01',food:'F01',ticket:'T01',interactive:'Q02'};
