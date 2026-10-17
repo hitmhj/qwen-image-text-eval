@@ -13,7 +13,7 @@ function scoring(r) {
   const math = r.group === 'paper'
     ? `${num(f.semantic_correct_items / 6 * 40)} + ${f.exact_coverage ? 20 : 0} + ${num(f.price_currency_correct_items / 6 * 20)} + ${num(f.uncertainty_correct_items / 6 * 20)}`
     : `${f.items_quantity_legal ? 30 : 0} + ${f.stated_diet_constraints_met ? 30 : 0} + ${f.budget_met ? 40 : 0}`;
-  return `<p class="result"><b>首次 ${num(f.score_100)} 分 → 最终 ${num(r.final.score_100)} 分。</b><br>首次计分：${math} = ${num(f.score_100)}；各项顺序与上方量表一致。</p>`;
+  return `<p class="result"><b>模型初稿 ${num(f.score_100)} 分 → 系统最终方案 ${num(r.final.score_100)} 分。</b><br>首次计分：${math} = ${num(f.score_100)}；各项顺序与上方量表一致。</p>`;
 }
 function translation(r) {
   const rows = r.menu.map(item => {
