@@ -1,25 +1,54 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="45个文字任务的输入、原始输出、最终结果与评分。离线可用的点餐助手实验展示。"><title>点餐助手 · 文字质量实验</title><link rel="stylesheet" href="assets/style.css"></head>
-<body>
-<header class="topbar"><a class="brand" href="#"><span class="brand-icon">文</span> Agent 实验观察</a><nav aria-label="页面导航"><a href="#results">结果</a><a href="#examples">样例</a><a href="#method">评分</a><a href="#length">长度</a></nav><button class="quiet" id="print">打印报告 ↗</button></header>
-<main>
-<section class="hero"><div class="eyebrow"><i></i> TEXT QUALITY REVIEW <span>2026.10.13</span></div><h1>文字质量，<br>看结果，也看过程。</h1><p class="hero-description">从菜单翻译到菜品推荐，逐例展示模型原始输出、工程修正和最终结果。<br class="desktop">让准确率、评分与文字长度都有可核对的依据。</p><div class="hero-bottom"><div class="chips"><span>Qwen3.5-35B-A3B API</span><span>v6.5 · 历史实验复核</span><span>45 个文字任务</span></div><a class="primary" href="#examples">查看真实样例 <span>↓</span></a></div></section>
-<section id="results" class="stats" aria-label="核心结果">
-<article><div class="stat-label">菜名语义可接受率</div><div class="stat-number">100<span>%</span></div><p>120 / 120 条 · 18 种原文表达</p><small>未知辣度仍有 40 条需要工程纠正</small></article>
-<article><div class="stat-label">推荐硬约束符合率</div><div class="stat-number flow">60<span>%</span><b>→</b>100<span>%</span></div><p>首次 6 / 10 → 最终 10 / 10</p><small>4 个案例曾给出超预算方案</small></article>
-<article><div class="stat-label">最终回复平均长度</div><div class="stat-number">132<span>字符</span></div><p>中位数 111 · 最长 259</p><small>不含单独展示的菜单与卡片</small></article>
-<article><div class="stat-label">输出上限截断</div><div class="stat-number">0<span>/ 129</span></div><p>单次实际峰值 411 tokens</p><small>本批未验证长文本极限</small></article>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>点餐助手文字评测报告</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><main>
+<header>
+<p class="meta">实验：2026-10-11 · 文字复核：2026-10-13 · 报告更新：2026-10-17</p>
+<h1>点餐助手文字评测报告</h1>
+<p class="lead">本批菜名翻译全部正确；推荐方案首次合规率为 60%，加入程序检查与重试后达到 100%。当前优先完善工程校验，暂无证据表明必须微调模型。</p>
+<nav aria-label="报告目录"><a href="#setup">实验设置</a><a href="#results">结果与评分</a><a href="#examples">实际样例</a><a href="#conclusion">结论</a></nav>
+</header>
+<section id="setup">
+<h2>1. 实验设置</h2>
+<dl class="setup">
+<dt>模型</dt><dd>Qwen3.5-35B-A3B，调用现成模型服务；温度 0（减少生成随机性），单次最多输出 4,096 tokens；未微调。</dd>
+<dt>任务</dt><dd>45 例：菜单翻译 20、菜品推荐 10、票务推荐 10、补充信息问答 5。</dd>
+<dt>输入</dt><dd>翻译使用英、法、西三语菜单图片，每张 6 项；推荐使用已正确识读的菜单、预算和忌口。</dd>
+<dt>方法</dt><dd>由另一个评审助手对照原图、菜单价格和用户条件核对结果，再按规则逐项评分；未做专业译者或用户盲评。</dd>
+</dl>
+<p class="definition"><b>首次方案</b>：模型第一次提交的菜单或推荐组合。<b>最终结果</b>：经过程序检查、必要时让模型重试，再整理给用户的内容。两者来自同一批任务。</p>
 </section>
-<aside class="key-finding"><span>核心判断</span><p>主要菜名能够译对；预算、未知属性和金额解释仍需要程序检查。<strong>最终结果的高分，是模型与工程校验共同作用的结果。</strong></p></aside>
-<section id="examples" class="section"><div class="section-head"><div><div class="eyebrow">CASE LIBRARY</div><h2>打开一例，看完整依据。</h2><p>四类任务全覆盖；点击卡片查看输入、输出、修正过程与分数。</p></div><label class="feature-switch"><input id="featured" type="checkbox" checked> 优先展示精选样例</label></div>
-<div class="filters"><div class="tabs" role="group" aria-label="任务类型"><button class="active" data-group="all" aria-pressed="true">全部 <em>45</em></button><button data-group="paper" aria-pressed="false">翻译 <em>20</em></button><button data-group="food" aria-pressed="false">菜品推荐 <em>10</em></button><button data-group="ticket" aria-pressed="false">票务推荐 <em>10</em></button><button data-group="interactive" aria-pressed="false">交互问答 <em>5</em></button></div><div class="filter-inputs"><input id="search" type="search" placeholder="搜索编号、任务或关键词…" aria-label="搜索样例"><select id="language" aria-label="语言筛选"><option value="all">全部语言</option><option value="English">英语</option><option value="French">法语</option><option value="Spanish">西班牙语</option></select><label><input type="checkbox" id="corrected"> 只看修正案例</label></div></div>
-<div class="list-caption"><span id="case-count" aria-live="polite"></span><span>百分制：翻译 / 菜品推荐；通过性审查：票务 / 问答</span></div><div id="case-grid" class="case-grid"></div><div id="empty" class="empty" hidden>没有匹配样例。试试关闭精选筛选或更换关键词。</div></section>
-<section id="method" class="section"><div class="section-head"><div><div class="eyebrow">SCORING & EVIDENCE</div><h2>分数有边界，判断有标准。</h2><p>本次事后补充客观百分制，原实验记录与判分保持不变。</p></div></div><div class="method-grid"><article class="panel"><div class="panel-kicker">20 个翻译案例</div><h3>翻译客观检查分</h3><div class="score-comparison"><span>原始首次 <b>93.33</b></span><span>→</span><span>最终结果 <b>100</b></span></div><ul class="rubric"><li><span>菜名含义</span><b>40</b></li><li><span>完整覆盖</span><b>20</b></li><li><span>价格与币种</span><b>20</b></li><li><span>未知信息处理</span><b>20</b></li></ul><p>逐项按正确比例计分；“辣面 / 辣面条”等同义译法可接受。未知信息不能被写成确定事实。</p></article><article class="panel"><div class="panel-kicker">10 个菜品推荐案例</div><h3>推荐硬约束分</h3><div class="score-comparison"><span>原始首次 <b>84</b></span><span>→</span><span>最终结果 <b>100</b></span></div><ul class="rubric"><li><span>菜品存在、数量合法</span><b>30</b></li><li><span>满足已给忌口</span><b>30</b></li><li><span>总价不超预算</span><b>40</b></li></ul><p>各维度满足得全分，否则得 0 分。评分不包含口味喜好、营养搭配、份量和用户满意度。</p></article><article class="panel dark"><div class="panel-kicker">怎么读这些结果</div><h3>三个必要区分</h3><ol><li><b>原始首次 ≠ 末轮原始回复</b><p>前者是首次提交的方案，后者可能已经经历工具反馈与重试。</p></li><li><b>客观满分 ≠ 语言总体满分</b><p>100 分只表示本量表全部检查项满足，不是人工语言质量或偏好盲评。</p></li><li><b>系统结果 ≠ 模型一次生成</b><p>最终内容包含工程纠错、确定性金额计算和格式整理。</p></li></ol></article></div></section>
-<section id="length" class="section"><div class="section-head"><div><div class="eyebrow">LENGTH & TRUNCATION</div><h2>文字有没有太长，有没有被截断？</h2><p>按去除空白后的字符数统计，字母、数字、标点均计入；不是 token 数。</p></div></div><div class="length-layout"><div class="panel"><div id="length-chart"></div><div class="legend"><span><i class="raw-dot"></i>末轮原始回复均长</span><span><i class="final-dot"></i>最终回复均长</span></div><p class="note">翻译结果的完整菜单另外展示，因此摘要缩短不意味着译文缺失。</p></div><div class="panel"><h3>129 次调用的结束情况</h3><div class="termination"><div style="flex:81">81 次<br><small>工具调用结束</small></div><div style="flex:48">48 次<br><small>自然回复结束</small></div></div><dl class="numbers"><div><dt>输出上限截断</dt><dd>0 次</dd></div><div><dt>单次配置上限</dt><dd>4,096 tokens</dd></div><div><dt>单次实际峰值</dt><dd>411 tokens</dd></div><div><dt>最终回复超过 300 字符</dt><dd>0 / 45</dd></div></dl><p class="note">300 字符仅为观察阈值。本批输出较短，未测试长菜单、长文极限或页面显示截断。</p></div></div></section>
-<section class="closing"><div><div class="eyebrow">TAKEAWAY</div><h2>先做好工程校验，<br>再判断微调的必要性。</h2></div><div><p>保留来源约束、预算检查与确定性计算，并分别核验“方案”和“解释”。下一步用新菜单、新任务和长文本检验剩余能力缺口，再评估 SFT。</p><p class="note">样本来自已用于开发的固定任务；20张菜单使用重复模板、6类菜品。结果不外推为开放场景准确率。本实验没有进行SFT对照。</p></div></section>
-<footer><div><b>点餐助手文字质量实验</b><p>2026-10-11 实验记录 · 2026-10-13 文字专项复核<br>Agent API 实验，与仓库本地模型三任务评测分开。</p></div><div class="footer-links"><a href="report.md">文字报告 ↗</a><a href="data/cases.json" download>下载逐例数据 ↓</a><a href="data/integrity.json">完整性清单 ↗</a></div></footer>
-</main>
-<dialog id="case-dialog" aria-labelledby="detail-title"><header class="dialog-header"><div><span id="detail-kicker" class="eyebrow"></span><h2 id="detail-title"></h2></div><button id="close-dialog" class="close" aria-label="关闭样例">×</button></header><div id="detail-content"></div><div class="dialog-footer"><span id="detail-position"></span><div><button id="previous" class="quiet">← 上一例</button><button id="next" class="quiet">下一例 →</button></div></div></dialog>
-<script src="assets/data.js"></script><script src="assets/app.js"></script>
-</body></html>
+<section id="results">
+<h2>2. 结果与评分</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>怎么算</th><th>首次方案</th><th>最终结果</th></tr></thead>
+<tbody>
+<tr><th>菜名翻译准确率</th><td>含义正确的中文菜名 ÷ 120 项；同义译法算正确</td><td>120/120<br><b>100%</b></td><td>120/120<br><b>100%</b></td></tr>
+<tr><th>未知信息处理正确率</th><td>不把未标明的辣度等信息当成事实的项目 ÷ 120 项</td><td>80/120<br><b>66.7%</b></td><td>120/120<br><b>100%</b></td></tr>
+<tr><th>推荐方案合规率</th><td>菜品及数量合法、满足已给忌口且不超预算的方案 ÷ 10 例</td><td>6/10<br><b>60%</b></td><td>10/10<br><b>100%</b></td></tr>
+<tr><th>翻译平均分</th><td>20 例按下方量表评分，再取平均</td><td><b>93.33</b>/100</td><td><b>100</b>/100</td></tr>
+<tr><th>推荐平均分</th><td>10 例按下方量表评分，再取平均</td><td><b>84</b>/100</td><td><b>100</b>/100</td></tr>
+</tbody></table></div>
+<p>翻译的问题是把 40 项未注明辣度的菜品写成“不辣”；推荐的问题是 4 例首次超预算。票务 10 例、问答 5 例的最终结果均通过既有审查，未另设百分制。</p>
+<h3>分数怎么打</h3>
+<div class="rubrics">
+<div><h4>翻译：满分 100</h4><p>菜名含义 40 分 + 项目完整 20 分 + 价格与币种 20 分 + 未知信息处理 20 分。</p><p class="small">项目完整要求不漏项、不多项；其余三项按正确比例给分。例如 6 项中 1 项辣度误判，扣 20÷6≈3.33 分。</p></div>
+<div><h4>推荐：满分 100</h4><p>菜品在菜单内且数量为正整数 30 分 + 满足已给忌口 30 分 + 不超预算 40 分。</p><p class="small">每项满足得全分，否则得 0 分。方案只要超预算，即使其他两项正确，也只能得 60 分。</p></div>
+</div>
+<p class="definition"><b>准确率看“多少项正确”，评分看“检查项得了多少分”。</b>推荐合规不代表符合个人口味；100 分也不代表说明文字完全正确。F03 的组合实际为 48 欧元，首次说明却写成 78 欧元，这个文字错误未计入方案分。</p>
+<h3>文字长度与截断</h3>
+<div class="table-wrap"><table class="length-table"><thead><tr><th>任务</th><th>模型末轮回复均长</th><th>最终回复均长</th><th>最终最长</th></tr></thead><tbody id="length-rows"></tbody></table></div>
+<p class="small">单位为字符：去掉空格和换行后，每个汉字、字母、数字、标点各算 1 个。这里只统计回复文字，不含单独展示的菜单与卡片。模型末轮回复可能已经过重试。</p>
+<p>最终回复平均 <b>132 字符</b>，最长 <b>259 字符</b>。129 次模型调用中，因达到输出上限而截断的次数为 <b>0</b>；单次最多输出 411 tokens，低于 4,096 的上限。</p>
+<p class="small">Token 是模型计算文本长度的单位，与字符数不一一对应。本批仅验证短回复，未验证长文或页面显示截断。</p>
+</section>
+<section id="examples"><h2>3. 实际样例</h2><p class="small">每类先展示 1 例，可切换查看全部 45 例。输入摘要为便于阅读而整理，输出原文保留在各例中。</p><div id="examples-list"></div><noscript>请启用 JavaScript 查看样例，或阅读 <a href="report.md">文字报告</a>。</noscript></section>
+<section id="conclusion">
+<h2>4. 结论</h2><ol>
+<li><b>基础翻译可用。</b>本批 120 项菜名含义均正确，但未知辣度需要按来源检查。</li>
+<li><b>优先完善工程。</b>预算校验、失败重试和程序计算金额已能纠正本批错误；还需核对说明文字与方案是否一致。</li>
+<li><b>暂不优先做模型微调。</b>SFT 是用正确示例继续训练模型。本实验未做微调对照，尚不能证明它比工程校验更必要，也不能证明工程能解决所有问题。</li>
+</ol><p class="small">适用范围：固定开发样本，20 张菜单重复使用 6 类菜品、18 种原文表达；结果不代表开放菜单准确率。下一步用未参与开发的新菜单和长文本复测，再决定是否调算法或做 SFT。</p>
+</section>
+<footer><a href="report.md">文字报告</a><a href="data/cases.json" download>全部数据</a><a href="data/integrity.json">文件校验清单</a><span>本页可离线打开 · 不含 GUI 验收</span></footer>
+</main><script src="assets/data.js"></script><script src="assets/app.js"></script></body></html>

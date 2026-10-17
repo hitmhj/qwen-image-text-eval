@@ -1,22 +1,21 @@
 {
-  "date": "2026-10-13",
+  "date": "2026-10-17",
   "description": "SHA-256 of published package files; excludes this manifest itself.",
   "cases": 45,
   "scored_cases": 30,
   "synthetic_menu_images": 20,
   "verification": {
-    "offline_browser": true,
-    "all_45_details": true,
-    "all_20_images": true,
-    "filters": true,
-    "desktop_and_mobile": true,
-    "javascript_errors": 0
+    "script_rendered_cases": 45,
+    "metrics_recalculated": true,
+    "image_files_checked": 20,
+    "browser_visual_check": false,
+    "browser_note": "No navigable browser connected during this report revision."
   },
   "files": [
     {
       "path": "assets/app.js",
-      "bytes": 13991,
-      "sha256": "8c8b4e1990bf56eb48f050efc2d84ed119065ab8b18eb01540aa472f2f882bc0"
+      "bytes": 7338,
+      "sha256": "e8362398a041064c684c06741281ee2a123e69fa4a2b606f04c6e9f4d4056df6"
     },
     {
       "path": "assets/data.js",
@@ -125,8 +124,8 @@
     },
     {
       "path": "assets/style.css",
-      "bytes": 15785,
-      "sha256": "6ba862e1ba9aced431e9f88a172511e45dad9334f9e13ed158284ed8b686a1d9"
+      "bytes": 3996,
+      "sha256": "a465ec1410d9e3ab9037c39fd8eacee8305fb849200397d9bf173e0b3cf1906c"
     },
     {
       "path": "data/cases.json",
@@ -135,18 +134,18 @@
     },
     {
       "path": "index.html",
-      "bytes": 8863,
-      "sha256": "339614ee0566e0c5e3b1d42bad76f328b51575ad7c2ccd1daeb7e6296c5e45a4"
+      "bytes": 6165,
+      "sha256": "818407b58924eb2c29894c29529e7813bb82fdb43c5f897a84843432743bed29"
     },
     {
       "path": "README.md",
-      "bytes": 1622,
-      "sha256": "c066d5acbd7b3638becf9101935cbaa02686e694981730fb89f114d04edff058"
+      "bytes": 837,
+      "sha256": "9e0fc67d49a7f520dcc2d863a48dc998ee7cfaed8dc3142c7195b1a6d48c4dd2"
     },
     {
       "path": "report.md",
-      "bytes": 8140,
-      "sha256": "f69d675cb886e794c7326419ddf195ece78796bf7581f57d2b5cca21fc576ced"
+      "bytes": 5710,
+      "sha256": "5b4df3fe70d147a7f8116c6a65a93c95ba8b5cec1fa197dfaf73ebe258a9b8b1"
     }
   ]
 }
