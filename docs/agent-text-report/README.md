@@ -7,10 +7,11 @@
 | [index.html](index.html) | 既有实验的基本结论、指标与长度/截断 |
 | [examples.html](examples.html) | 15个分类样例，逐例展示输入、模型输出、问题、结论 |
 | [all-cases.html](all-cases.html) | 全部45例；附程序修正过程、旧评分、字符数和token |
-| [evaluation-design.html](evaluation-design.html) | 面向模型基础能力的新评测方案：自然分流、五类领域、四类任务、证据与评分系统 |
+| [evaluation-design.html](evaluation-design.html) | 技术方案：形式化指标、独立样本、统计精度、人工与接口预算；公式可离线显示 |
 | [report.md](report.md) | 基本结论的Markdown版 |
-| [evaluation-design.md](evaluation-design.md) | 评测方案的Markdown版，含参考来源和6个构造判分示例 |
+| [evaluation-design.md](evaluation-design.md) | 技术方案的Markdown版，使用LaTeX公式，含参考来源与可复算预算 |
 | [evaluation-case-template.json](evaluation-case-template.json) | 未填充的样本、证据、标注与运行记录模板 |
+| [evaluation-budget.json](evaluation-budget.json) | 样本配置、假设工时、费用与统计精度的可复算数值 |
 | [data/cases.json](data/cases.json) | 既有45例数据 |
 | [data/integrity.json](data/integrity.json) | 文件SHA-256清单 |
 

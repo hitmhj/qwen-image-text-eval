@@ -1,0 +1,73 @@
+{
+  "status": "planning_assumptions_not_quotes_or_experiment_results",
+  "date": "2026-10-21",
+  "blind_cases": 200,
+  "calibration_cases": 40,
+  "outputs": 340,
+  "items": [
+    {
+      "item": "data_collection",
+      "hours": 20,
+      "rate_rmb_per_hour": 80,
+      "rmb": 1600
+    },
+    {
+      "item": "two_annotators_gold",
+      "hours": 32,
+      "rate_rmb_per_hour": 80,
+      "rmb": 2560
+    },
+    {
+      "item": "two_annotators_outputs",
+      "hours": 34,
+      "rate_rmb_per_hour": 80,
+      "rmb": 2720
+    },
+    {
+      "item": "professional_review",
+      "hours": 12,
+      "rate_rmb_per_hour": 300,
+      "rmb": 3600
+    },
+    {
+      "item": "engineering",
+      "hours": 16,
+      "rate_rmb_per_hour": 150,
+      "rmb": 2400
+    },
+    {
+      "item": "general_adjudication_quality",
+      "hours": 6,
+      "rate_rmb_per_hour": 100,
+      "rmb": 600
+    }
+  ],
+  "api_allowance_rmb": 300,
+  "labor_hours": 120,
+  "subtotal_rmb": 13780,
+  "contingency_rate": 0.15,
+  "contingency_rmb": 2067,
+  "total_rmb": 15847,
+  "example_api_cost_rmb": 65.28,
+  "planning_wilson_halfwidth_percentage_points_at_p_half": {
+    "10": 26.3,
+    "40": 14.8,
+    "50": 13.4,
+    "80": 10.7,
+    "200": 6.9,
+    "400": 4.9
+  },
+  "zero_error_one_sided_95_upper": {
+    "40": 0.0721575245055146,
+    "200": 0.014867039231272083,
+    "299": 0.009969146792899286
+  },
+  "tiny_pilot": {
+    "blind_cases": 50,
+    "calibration_cases": 10,
+    "outputs": 80,
+    "labor_hours": 32,
+    "assumed_direct_cost_rmb": 3780,
+    "total_with_15_percent_rmb": 4347
+  }
+}
