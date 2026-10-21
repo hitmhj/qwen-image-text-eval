@@ -6,4 +6,5 @@
 *.txt text eol=lf
 docs/agent-text-report/*.html text eol=lf
 docs/agent-text-report/assets/*.css text eol=lf
+docs/agent-text-report/assets/katex/*.css text eol=lf
 docs/agent-text-report/assets/*.js text eol=lf
