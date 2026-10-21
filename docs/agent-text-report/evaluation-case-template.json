@@ -1,0 +1,79 @@
+{
+  "status": "unfilled_template_not_a_measured_result",
+  "protocol_version": "proposal-20261021",
+  "case_id": "TO_BE_ASSIGNED",
+  "source_cluster_id": "same_product_or_template_family",
+  "split": "blind_test",
+  "input": {
+    "user_text": "",
+    "image_path": null,
+    "image_sha256": null,
+    "human_transcript": "",
+    "locale": null,
+    "image_readability": "to_annotate"
+  },
+  "gold_routing": {
+    "domain_labels": [],
+    "intent_is_ambiguous": null,
+    "required_intent_labels": [],
+    "acceptable_action_sets": [],
+    "missing_decisive_fields": []
+  },
+  "gold_evidence": {
+    "source_facts": [],
+    "required_fact_ids": [],
+    "critical_fact_ids": [],
+    "unknown_fields": [],
+    "allowed_derivations": [],
+    "external_documents": []
+  },
+  "fact_item_fields": [
+    "fact_id", "subject", "relation", "value", "unit", "negated",
+    "conditions", "source_id", "evidence_span", "critical"
+  ],
+  "external_document_fields": [
+    "document_id", "url", "snapshot_sha256", "version", "retrieved_at",
+    "jurisdiction", "product_variant", "relevant_spans"
+  ],
+  "task_constraints": {
+    "hard_constraints": [],
+    "optimization_objective": null,
+    "acceptable_solutions": [],
+    "phrase_required_slots": [],
+    "length_requirement": null
+  },
+  "annotations": {
+    "annotator_ids": [],
+    "independent_round_complete": false,
+    "adjudicator_id": null,
+    "gold_version": null,
+    "frozen_before_model_run": false
+  },
+  "model_run": {
+    "condition": null,
+    "model_version": null,
+    "complete_prompt_reference": null,
+    "temperature": null,
+    "max_output_tokens": null,
+    "tool_permissions": [],
+    "calls": [],
+    "first_raw_output": null,
+    "post_feedback_raw_outputs": [],
+    "program_edits": [],
+    "final_displayed_output": null,
+    "infrastructure_error": null
+  },
+  "claim_annotation_fields": [
+    "claim_id", "raw_output_span", "deduplicated_fact_id", "label",
+    "matched_required_fact_id", "evidence_ids", "error_category",
+    "critical", "annotator_ids", "adjudication_status"
+  ],
+  "claim_labels": ["supported", "contradicted", "not_supported", "pending_adjudication"],
+  "results": {
+    "metrics": null,
+    "metric_entry_fields": ["metric_id", "numerator", "denominator", "value", "not_applicable_reason"],
+    "case_critical_error": null,
+    "issue_evidence": [],
+    "conclusion": null
+  }
+}

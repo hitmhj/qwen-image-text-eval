@@ -1,17 +1,24 @@
 {
-  "date": "2026-10-17",
+  "date": "2026-10-21",
   "description": "SHA-256 of published package files; excludes this manifest itself.",
   "cases": 45,
   "scored_cases": 30,
   "synthetic_menu_images": 20,
   "verification": {
-    "script_rendered_cases": 45,
+    "static_case_records": 45,
+    "featured_case_records": 15,
     "metrics_recalculated": true,
     "image_files_checked": 20,
     "browser_visual_check": false,
-    "browser_note": "No navigable browser connected during this report revision."
+    "browser_note": "Local browser use is disabled in Work settings.",
+    "evaluation_design_status": "proposal_only_no_new_model_results"
   },
   "files": [
+    {
+      "path": "all-cases.html",
+      "bytes": 256120,
+      "sha256": "47b6c469d286f2449af381f5a9e727df90f3225ee482dd01c7a130906cecfda8"
+    },
     {
       "path": "assets/app.js",
       "bytes": 10184,
@@ -124,8 +131,8 @@
     },
     {
       "path": "assets/style.css",
-      "bytes": 4467,
-      "sha256": "b3da819c6087ba6f8afee1352b55bc325f02ddfe3426ee5786e2fc28866f0a08"
+      "bytes": 1489,
+      "sha256": "4e83dc385ef8f00246b998f8f21620076ec5aa8bc57b4652df9d47a9c392f9a9"
     },
     {
       "path": "data/cases.json",
@@ -133,24 +140,39 @@
       "sha256": "02c352099bb5b0eb8b437964ddd6679697a2910d3b5f0f463fe05ae464ea6b2d"
     },
     {
+      "path": "evaluation-case-template.json",
+      "bytes": 2374,
+      "sha256": "22d8453c9d838d72e3d39044286927852c3b3ab7d8d4ef184b80023fb546bdf5"
+    },
+    {
+      "path": "evaluation-design.html",
+      "bytes": 30009,
+      "sha256": "e24e54c100f805e272c7243f42e7dd638501dbb233d26f04a353de4b98204df3"
+    },
+    {
+      "path": "evaluation-design.md",
+      "bytes": 26627,
+      "sha256": "b2e525efe3c6885638aee4a3a04a1082a3a02f10a8f8efacbf9c9c2942062a78"
+    },
+    {
       "path": "examples.html",
-      "bytes": 251503,
-      "sha256": "b7f4fb996fa17697cb980afad9da89c9d9caadd5d0521d170e38f9ab64aacfab"
+      "bytes": 89852,
+      "sha256": "6f5a5d082f09149514ced52cf5433a272fa0161903df6c7985dc66bf7ba12b49"
     },
     {
       "path": "index.html",
-      "bytes": 9445,
-      "sha256": "c764862722668a1fc36e924e6d9aff005aa032f84cd6eb2dfe7b6fab164bde61"
+      "bytes": 4748,
+      "sha256": "1cc2d4bb023a242d03b63f27b68c7b4870082c7d7f5b87259cf69b45181b9162"
     },
     {
       "path": "README.md",
-      "bytes": 1027,
-      "sha256": "a3de2a9b27bbf019d966e9fa0fc3f14359be3373e42725114a400e6473d640ba"
+      "bytes": 1618,
+      "sha256": "cda4943fb959cb9b98eb86ebb75225f77940f9782f7c4aa161aa0afea6ca5edb"
     },
     {
       "path": "report.md",
-      "bytes": 8282,
-      "sha256": "e09ca20026eacfb1a0ab0272143d97d153e2f323e4f13c4be997542441ee4c69"
+      "bytes": 3532,
+      "sha256": "acf136808dcca37edf3d58c5b82d94e1a87e9b686a5566f5e2c33d5df6abdae8"
     }
   ]
 }

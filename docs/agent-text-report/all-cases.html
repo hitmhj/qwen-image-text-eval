@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>全部45例原始记录展示</title><link rel="stylesheet" href="assets/style.css"></head><body><main><h1>全部45例原始记录展示</h1><nav><a href="index.html">基本结论</a><a href="examples.html">分类样例</a><a href="all-cases.html">全部45例</a><a href="evaluation-design.html">新评测方案</a></nav><p>每例按“输入 → 模型原始输出 → 问题 → 结论”展示。引用的是既有实验记录；输入为结构化数据时保留其字段，未记录的首次输出明确标注。</p><p class="note">模型输入包含用户原话以及下方图片/菜单/条件；完整系统提示词不在本展示包中。此处不是重新运行实验。已有独立审查主要针对最终产物，不能代替模型原始回答的新金标准评测。</p><nav><a href="#paper">菜单翻译</a><a href="#food">菜品推荐组合</a><a href="#ticket">票务解读与推荐</a><a href="#interactive">补充信息与问答</a></nav><section id="paper"><h2>菜单翻译（20例）</h2><article id="case-P01"><h3>P01 英语菜单：菜名正确，辣度需纠正</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P01.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>7欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>12欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>8欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>4欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>14欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>7欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>12欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>8欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>4欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>178</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>504</td></tr><tr><td>单次输出峰值tokens</td><td>355</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为14.00/7.00/12.00/8.00/16.00/4.00欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>9c88848fa299cc625bd09236788cbfdd5a45b375916a9fa15bd97d8311cb8b6a</code></p></details></article><article id="case-P02"><h3>P02 法语菜单：逐项翻译与价格</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P02.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14.25欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7.25欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>12.25欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8.25欧元</td><td>不辣</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>16.25欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>4.25欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14.25欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7.25欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>12.25欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8.25欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>16.25欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>4.25欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>116</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>487</td></tr><tr><td>单次输出峰值tokens</td><td>377</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为14.25/7.25/12.25/8.25/16.25/4.25欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>0fd14f18bc0b5cc8818ccbd4b06ceadb5daa3ada4e63be63274e849492fdae9f</code></p></details></article><article id="case-P03"><h3>P03 西班牙语菜单：同义译法</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P03.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>14.5欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>7.5欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>12.5欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>8.5欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>16.5欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>4.5欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>14.5欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>7.5欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>12.5欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>8.5欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>16.5欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>4.5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>398</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>661</td></tr><tr><td>单次输出峰值tokens</td><td>370</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为14.50/7.50/12.50/8.50/16.50/4.50欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>9a9ce097871da1ae32ffeebd84e3c64a09bf81ee8fb9b991df2944a2663b77ca</code></p></details></article><article id="case-P04"><h3>P04 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P04.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>14.75欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>7.75欧元</td><td>不辣</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>12.75欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>8.75欧元</td><td>不辣</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>16.75欧元</td><td>不辣</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>4.75欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有5项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>14.75欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>7.75欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>12.75欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>8.75欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>16.75欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>4.75欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>83.33/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 1,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 83.3333
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>185</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>502</td></tr><tr><td>单次输出峰值tokens</td><td>355</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为14.75/7.75/12.75/8.75/16.75/4.75欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>f9f973dc7b754b60c1c46a102d4357fdb5793458e3e8cd0db73d09ae37466714</code></p></details></article><article id="case-P05"><h3>P05 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P05.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>15欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>8欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>13欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>9欧元</td><td>不辣</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>17欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>5欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>15欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>8欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>13欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>9欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>17欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>374</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>671</td></tr><tr><td>单次输出峰值tokens</td><td>377</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为15.00/8.00/13.00/9.00/17.00/5.00欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>35c9d2a228a53a2d8c3f4af004dadb7cc89ef8f1a374a91115ed0ae7f119fad5</code></p></details></article><article id="case-P06"><h3>P06 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P06.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>15.25欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>8.25欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>13.25欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>9.25欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>17.25欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>5.25欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>15.25欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>8.25欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>13.25欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>9.25欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>17.25欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>5.25欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>361</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>630</td></tr><tr><td>单次输出峰值tokens</td><td>364</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为15.25/8.25/13.25/9.25/17.25/5.25欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>a0741df36ed00a3fa07730a216e15f95d489f0dd89afecd1910a95c49dbebde8</code></p></details></article><article id="case-P07"><h3>P07 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P07.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>15.5欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>8.5欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>13.5欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>9.5欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>17.5欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>5.5欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>15.5欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>8.5欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>13.5欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>9.5欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>17.5欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>5.5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>177</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>501</td></tr><tr><td>单次输出峰值tokens</td><td>355</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为15.50/8.50/13.50/9.50/17.50/5.50欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>1f81b02b7a46e3beb3e49d10e9eb7803eebd69a2ec0508801d98e628f66c29d1</code></p></details></article><article id="case-P08"><h3>P08 价格缺失：保留未知</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P08.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>15.75欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>8.75欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>13.75欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>9.75欧元</td><td>不辣</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>未知</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>5.75欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+部分价格未提供，已标为待确认。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>15.75欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>8.75欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>13.75欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>9.75欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>未知</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>5.75欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>351</td></tr><tr><td>系统最终回复字符数</td><td>83</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>649</td></tr><tr><td>单次输出峰值tokens</td><td>373</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为15.75/8.75/13.75/9.75/未知/5.75欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>d9b31d25d9f7b0a84fc42e61dfa62663ddae558486596593fa8f8302c6417044</code></p></details></article><article id="case-P09"><h3>P09 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P09.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>16欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>9欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>14欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>10欧元</td><td>不辣</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>18欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>6欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>16欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>9欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>14欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>10欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>18欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>6欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>349</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>648</td></tr><tr><td>单次输出峰值tokens</td><td>378</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为16.00/9.00/14.00/10.00/18.00/6.00欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>e97f874191c650dfd9d7a3107810c4e20f6cf7dd4900b26bc7f5df5f5d7f6af1</code></p></details></article><article id="case-P10"><h3>P10 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P10.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>16.25欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>9.25欧元</td><td>不辣</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>14.25欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>10.25欧元</td><td>不辣</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>18.25欧元</td><td>不辣</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>6.25欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有5项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>16.25欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>9.25欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>14.25欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>10.25欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>18.25欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>6.25欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>83.33/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 1,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 83.3333
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>239</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>522</td></tr><tr><td>单次输出峰值tokens</td><td>356</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为16.25/9.25/14.25/10.25/18.25/6.25欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>d4e17f7e45f24d5eb70c97720be51854256736acc57219a20c50f8397b652189</code></p></details></article><article id="case-P11"><h3>P11 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P11.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>16.5欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>9.5欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>14.5欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>10.5欧元</td><td>不辣</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>18.5欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>6.5欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>16.5欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>9.5欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>14.5欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>10.5欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>18.5欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>6.5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>379</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>672</td></tr><tr><td>单次输出峰值tokens</td><td>378</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为16.50/9.50/14.50/10.50/18.50/6.50欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>00716bf301877433d3d0999b917ac9bc12522461e29fefd130721154892c3070</code></p></details></article><article id="case-P12"><h3>P12 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P12.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>16.75欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>9.75欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>14.75欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>10.75欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>18.75欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>6.75欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>16.75欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>9.75欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>14.75欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>10.75欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>18.75欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>6.75欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>261</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>546</td></tr><tr><td>单次输出峰值tokens</td><td>365</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为16.75/9.75/14.75/10.75/18.75/6.75欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>e07f96f51b67a12e5e87eefd29b4749c579b7644f8a363e71180eb3fe81bfb54</code></p></details></article><article id="case-P13"><h3>P13 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P13.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>17欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>10欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>15欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>11欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>19欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>7欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>17欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>10欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>15欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>11欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>19欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>7欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>168</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>511</td></tr><tr><td>单次输出峰值tokens</td><td>370</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为17.00/10.00/15.00/11.00/19.00/7.00欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>8ab281bd18f079ab0d09d457898c1355889d975894a17c440b12879478a7dd1b</code></p></details></article><article id="case-P14"><h3>P14 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P14.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>17.25欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>10.25欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>15.25欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>11.25欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>19.25欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>7.25欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>17.25欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>10.25欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>15.25欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>11.25欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>19.25欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>7.25欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>329</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>621</td></tr><tr><td>单次输出峰值tokens</td><td>366</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为17.25/10.25/15.25/11.25/19.25/7.25欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>a1dd283deea1550add329a1c68cd08e87013a4308c795302c2333d94f6f6bc20</code></p></details></article><article id="case-P15"><h3>P15 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P15.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>17.5欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>10.5欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>15.5欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>11.5欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>19.5欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>7.5欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>17.5欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>10.5欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>15.5欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>11.5欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>19.5欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>7.5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>387</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>650</td></tr><tr><td>单次输出峰值tokens</td><td>366</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为17.50/10.50/15.50/11.50/19.50/7.50欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>79cc4cf831eeccd1a5e3574d207cdcb36ee745cc9f37dc76f737322cb2bc0f59</code></p></details></article><article id="case-P16"><h3>P16 英语菜单：未知价格</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P16.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>17.75欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>10.75欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>15.75欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>11.75欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>未知</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>7.75欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+部分价格未提供，已标为待确认。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>17.75欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>10.75欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>15.75欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>11.75欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>未知</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>7.75欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>180</td></tr><tr><td>系统最终回复字符数</td><td>83</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>503</td></tr><tr><td>单次输出峰值tokens</td><td>353</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为17.75/10.75/15.75/11.75/未知/7.75欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>a0df87465b6ce743d8f7772333098219829120f233bcd3e00b0332a17b00ad50</code></p></details></article><article id="case-P17"><h3>P17 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P17.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>18欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>11欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面条</td><td>16欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>12欧元</td><td>不辣</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>20欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>8欧元</td><td>不辣</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有3项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>18欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>11欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面条</td><td>16欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>12欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>20欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>8欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>90.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 3,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 90.0
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>257</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>563</td></tr><tr><td>单次输出峰值tokens</td><td>379</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为18.00/11.00/16.00/12.00/20.00/8.00欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>57e7e870871ade501a9f78f04fc7cb89d2f423d2f042682aa5bdd1d487ea3030</code></p></details></article><article id="case-P18"><h3>P18 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P18.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>18.25欧元</td><td>不辣</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>11.25欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>16.25欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>12.25欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>20.25欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>8.25欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Pollo a la parrilla con arroz</td><td>烤鸡配米饭</td><td>18.25欧元</td><td>未知</td></tr><tr><td>Sopa de verduras</td><td>蔬菜汤</td><td>11.25欧元</td><td>未知</td></tr><tr><td>Fideos picantes</td><td>辣面条</td><td>16.25欧元</td><td>辣</td></tr><tr><td>Ensalada de tomate</td><td>番茄沙拉</td><td>12.25欧元</td><td>未知</td></tr><tr><td>Gambas al ajillo</td><td>蒜香虾</td><td>20.25欧元</td><td>未知</td></tr><tr><td>Limonada</td><td>柠檬水</td><td>8.25欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>263</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>550</td></tr><tr><td>单次输出峰值tokens</td><td>366</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为18.25/11.25/16.25/12.25/20.25/8.25欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>82ee981c75c2241b19412554f20e1a7ab3447bc9ebc9f36fe5f4560306ac353b</code></p></details></article><article id="case-P19"><h3>P19 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P19.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>18.5欧元</td><td>不辣</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>11.5欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>16.5欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>12.5欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>20.5欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>8.5欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Grilled chicken with rice</td><td>烤鸡配米饭</td><td>18.5欧元</td><td>未知</td></tr><tr><td>Vegetable soup</td><td>蔬菜汤</td><td>11.5欧元</td><td>未知</td></tr><tr><td>Spicy noodles</td><td>辣面</td><td>16.5欧元</td><td>辣</td></tr><tr><td>Tomato salad</td><td>番茄沙拉</td><td>12.5欧元</td><td>未知</td></tr><tr><td>Garlic prawns</td><td>蒜香虾</td><td>20.5欧元</td><td>未知</td></tr><tr><td>Lemonade</td><td>柠檬水</td><td>8.5欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>181</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>513</td></tr><tr><td>单次输出峰值tokens</td><td>357</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为18.50/11.50/16.50/12.50/20.50/8.50欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>c450ad5e34529818f720a7266d71cfcd6e686f8a2f03bff3c832a37b5c39c568</code></p></details></article><article id="case-P20"><h3>P20 多语菜单与价格对照</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请把图片里的菜单完整翻译成中文并整理为可勾选电子菜单。仅做翻译和电子化，价格未写明保留未知，不需要推荐。</pre><p><a href="assets/menus/P20.jpg">查看实际输入图片</a></p><h4>模型输出是什么</h4><p><b>模型首次提交的菜单内容：</b></p><div class="table-wrap"><table><thead><tr><th>原文</th><th>模型译文</th><th>价格</th><th>模型辣度标记</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>18.75欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>11.75欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>16.75欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>12.75欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>20.75欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>8.75欧元</td><td>未知</td></tr></tbody></table></div><h4>有哪些问题</h4><p>6项菜名含义在既有复核中均可接受，但有1项在原图未写辣度时被标为“不辣”。</p><h4>本例结论</h4><p>本例支持菜名翻译能力；属性判断仍会过度推断。后续将辣度改为“未知”的动作由程序完成，不能计为模型自行改对。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><p>系统保存菜单：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>最终译文</th><th>价格</th><th>最终辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>18.75欧元</td><td>未知</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>11.75欧元</td><td>未知</td></tr><tr><td>Nouilles épicées</td><td>辣面</td><td>16.75欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>12.75欧元</td><td>未知</td></tr><tr><td>Crevettes à l&#x27;ail</td><td>蒜香虾</td><td>20.75欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬水</td><td>8.75欧元</td><td>未知</td></tr></tbody></table></div><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>96.67/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 5,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 96.6667
+  },
+  &quot;final&quot;: {
+    &quot;semantic_correct_items&quot;: 6,
+    &quot;price_currency_correct_items&quot;: 6,
+    &quot;uncertainty_correct_items&quot;: 6,
+    &quot;covered_items&quot;: 6,
+    &quot;exact_coverage&quot;: true,
+    &quot;score_100&quot;: 100.0
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>151</td></tr><tr><td>系统最终回复字符数</td><td>68</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>500</td></tr><tr><td>单次输出峰值tokens</td><td>366</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>逐项核对6行原文及中文译文，价格为18.75/11.75/16.75/12.75/20.75/8.75欧，与已目视核验的同源图片一致；仅辣面标辣，其余未知且完整配料未确认；发布菜单完整、最终说明真实，无不必要追问、推荐或订单。</pre><p>原记录SHA-256：<code>fc8c1998668bebf0b09d59379baa20a0a1487d89c56d678977ecaad453c800fd</code></p></details></article></section><section id="food"><h2>菜品推荐组合（10例）</h2><article id="case-F01"><h3>F01 预算24欧：首次方案超支</h3><h4>输入是什么</h4><p>实验给定：1人，预算24欧元；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 1, &quot;budget_minor&quot;: 2400, &quot;no_spicy&quot;: false, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>1</td><td>主菜，非辣，价格适中</td></tr><tr><td>番茄沙拉</td><td>1</td><td>前菜，非辣，清爽</td></tr><tr><td>柠檬饮料</td><td>1</td><td>饮料，解腻</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>预算2400分（24欧元），当前组合总价2800分（28欧元）超预算。若需控制在预算内，可考虑：1) 仅选主菜+饮料（1800分）；2) 选前菜+饮料（1100分）；3) 选炒虾（1600分）+饮料（400分）=2000分。注意：炒虾辣度未知，蔬菜汤配料信息不全。份量未标明，不承诺一定够吃。请确认是否调整选择或接受超支。</pre><h4>有哪些问题</h4><p>首次实际小计26欧元，超过24欧元预算。首次说明又把实际26欧元写成28欧元，方案和解释都有错误。</p><h4>本例结论</h4><p>模型第一次推荐未满足预算；收到程序拒绝反馈后重试，最终组合通过。最终金额和说明含程序整理，不能全部归为模型的独立能力。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+1 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 14.00
+1 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 4.00
+菜单小计：EUR 18.00。
+预算：EUR 24.00。
+按菜单价格计算的预算余额：EUR 6.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 2600,
+    &quot;budget_minor&quot;: 2400,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;预算2400分（24欧元），当前组合总价2800分（28欧元）超预算。若需控制在预算内，可考虑：1) 仅选主菜+饮料（1800分）；2) 选前菜+饮料（1100分）；3) 选炒虾（1600分）+饮料（400分）=2000分。注意：炒虾辣度未知，蔬菜汤配料信息不全。份量未标明，不承诺一定够吃。请确认是否调整选择或接受超支。&quot;,
+  &quot;error&quot;: &quot;建议小计 2600 超过预算 2400&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;主菜，非辣，价格适中&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;前菜，非辣，清爽&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;饮料，解腻&quot;
+    }
+  ]
+}</pre><h4>推荐第2次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 2400,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;预算2400分（24欧元），当前组合总价1800分（18欧元），符合预算。烤鸡配米饭为非辣主菜，柠檬饮料清爽解腻。份量未标明，不承诺一定够吃。如需增加前菜，可考虑蔬菜汤（700分）或番茄沙拉（800分），但总费用将超预算。请确认是否调整选择。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;主菜，非辣，价格适中&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;饮料，解腻&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>60.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 2600,
+    &quot;budget_minor&quot;: 2400,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 2400,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>266</td></tr><tr><td>系统最终回复字符数</td><td>147</td></tr><tr><td>模型调用数</td><td>5</td></tr><tr><td>累计输出tokens</td><td>1096</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件1人、预算24欧均保存；推荐烤鸡配米饭×1、柠檬饮料×1，合计18欧、余6欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。此前1次超预算草稿被拒绝，最终自行修正。</pre><p>原记录SHA-256：<code>8f239adf11f23585f08f8b7ec86b958dbee16631db282d5df7cd7fd74ab6916f</code></p></details></article><article id="case-F02"><h3>F02 两人不吃辣：预算校验</h3><h4>输入是什么</h4><p>实验给定：2人，预算40欧元；不吃辣；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 2, &quot;budget_minor&quot;: 4000, &quot;no_spicy&quot;: true, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>非辣主菜，适合两人分享</td></tr><tr><td>番茄沙拉</td><td>1</td><td>非辣前菜，价格适中</td></tr><tr><td>柠檬饮料</td><td>2</td><td>非辣饮料</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>预算4000分内；已避开辣味菜品(f3)；份量未标明不承诺够吃；蔬菜汤配料未知需确认。</pre><h4>有哪些问题</h4><p>首次实际小计44欧元，超过40欧元预算。</p><h4>本例结论</h4><p>模型第一次推荐未满足预算；收到程序拒绝反馈后重试，最终组合通过。最终金额和说明含程序整理，不能全部归为模型的独立能力。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+菜单小计：EUR 36.00。
+预算：EUR 40.00。
+按菜单价格计算的预算余额：EUR 4.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 4000,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;预算4000分内；已避开辣味菜品(f3)；份量未标明不承诺够吃；蔬菜汤配料未知需确认。&quot;,
+  &quot;error&quot;: &quot;建议小计 4400 超过预算 4000&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，适合两人分享&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣前菜，价格适中&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣饮料&quot;
+    }
+  ]
+}</pre><h4>推荐第2次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 3600,
+    &quot;budget_minor&quot;: 4000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;预算4000分内；已避开辣味菜品(f3)；份量未标明不承诺够吃；蔬菜汤配料未知需确认。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，适合两人&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣前菜&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>60.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 4000,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 3600,
+    &quot;budget_minor&quot;: 4000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>194</td></tr><tr><td>系统最终回复字符数</td><td>154</td></tr><tr><td>模型调用数</td><td>5</td></tr><tr><td>累计输出tokens</td><td>878</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件2人、预算40欧、不吃辣均保存；推荐烤鸡配米饭×2、番茄沙拉×1，合计36欧、余4欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。此前1次超预算草稿被拒绝，最终自行修正。</pre><p>原记录SHA-256：<code>aa4efde59aa9a9fb6edde8c98febe654f87cd2bbe0c60c13b97648127b1d7434</code></p></details></article><article id="case-F03"><h3>F03 方案48欧，说明却写78欧</h3><h4>输入是什么</h4><p>实验给定：3人，预算65欧元；不吃辣；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 3, &quot;budget_minor&quot;: 6500, &quot;no_spicy&quot;: true, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>非辣主菜，适合3人分享</td></tr><tr><td>番茄沙拉</td><td>1</td><td>非辣前菜，补充蔬菜</td></tr><tr><td>柠檬饮料</td><td>3</td><td>非辣饮料，每人一杯</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>预算6500分（65欧元），已选：烤鸡配米饭x2、番茄沙拉x1、柠檬饮料x3。总价约7800分，略超预算；可考虑减少一份烤鸡或替换为更低价菜品。辣味面条因忌辣未推荐。炒虾辣度未知且价格较高，暂不推荐。份量未标明，不承诺一定够吃。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。但首次说明把实际48欧元写成78欧元，并误称超预算。</p><h4>本例结论</h4><p>仅检查推荐组合会漏掉说明错误。必须分别核验“所选方案”和“向用户解释的文字”；旧量表的100分不代表整体回答无误。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+3 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 12.00
+菜单小计：EUR 48.00。
+预算：EUR 65.00。
+按菜单价格计算的预算余额：EUR 17.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6500,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;预算6500分（65欧元），已选：烤鸡配米饭x2、番茄沙拉x1、柠檬饮料x3。总价约7800分，略超预算；可考虑减少一份烤鸡或替换为更低价菜品。辣味面条因忌辣未推荐。炒虾辣度未知且价格较高，暂不推荐。份量未标明，不承诺一定够吃。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，适合3人分享&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣前菜，补充蔬菜&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 3,
+      &quot;reason&quot;: &quot;非辣饮料，每人一杯&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6500,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6500,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>209</td></tr><tr><td>系统最终回复字符数</td><td>192</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>854</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件3人、预算65欧、不吃辣均保存；推荐烤鸡配米饭×2、番茄沙拉×1、柠檬饮料×3，合计48欧、余17欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>dcd03356d1ffb06a4b3e5d15b8fac4c1b5239565b20c052413990c23cfc0302e</code></p></details></article><article id="case-F04"><h3>F04 虾过敏：两次超预算后修正</h3><h4>输入是什么</h4><p>实验给定：2人，预算35欧元；过敏：虾。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 2, &quot;budget_minor&quot;: 3500, &quot;no_spicy&quot;: false, &quot;allergies&quot;: [&quot;shrimp&quot;]}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>烤鸡配米饭不含虾，非辣，适合两人分享；总价2800分</td></tr><tr><td>番茄沙拉</td><td>1</td><td>番茄沙拉不含虾，非辣，作为前菜；总价800分</td></tr><tr><td>柠檬饮料</td><td>2</td><td>柠檬饮料不含虾，非辣，适合两人；总价800分</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>总预算3500分内。已避开含虾菜品（炒虾f5）。份量未标明，不承诺一定够吃。辣味面条f3虽非过敏原但为辣味，因用户允许辣可考虑替换其中一道主菜，但当前推荐以稳妥为主。</pre><h4>有哪些问题</h4><p>首次实际小计44欧元，超过35欧元预算。第二次仍为36欧元，超出35欧元预算；第三次才改为32欧元。</p><h4>本例结论</h4><p>模型第一次推荐未满足预算；收到程序拒绝反馈后重试，最终组合通过。最终金额和说明含程序整理，不能全部归为模型的独立能力。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 4.00
+菜单小计：EUR 32.00。
+预算：EUR 35.00。
+按菜单价格计算的预算余额：EUR 3.00。
+需确认：无明确过敏原标记不等于无过敏风险，请向店员确认完整配料及交叉接触
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 3500,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;总预算3500分内。已避开含虾菜品（炒虾f5）。份量未标明，不承诺一定够吃。辣味面条f3虽非过敏原但为辣味，因用户允许辣可考虑替换其中一道主菜，但当前推荐以稳妥为主。&quot;,
+  &quot;error&quot;: &quot;建议小计 4400 超过预算 3500&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;烤鸡配米饭不含虾，非辣，适合两人分享；总价2800分&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;番茄沙拉不含虾，非辣，作为前菜；总价800分&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;柠檬饮料不含虾，非辣，适合两人；总价800分&quot;
+    }
+  ]
+}</pre><h4>推荐第2次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 3600,
+    &quot;budget_minor&quot;: 3500,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;总预算3500分内。已避开含虾菜品（炒虾f5）。份量未标明，不承诺一定够吃。当前推荐为两道主菜加饮品，共3600分仍超预算，需调整。&quot;,
+  &quot;error&quot;: &quot;建议小计 3600 超过预算 3500&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;烤鸡配米饭不含虾，非辣，适合两人；总价2800分&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;柠檬饮料不含虾，非辣，适合两人；总价800分&quot;
+    }
+  ]
+}</pre><h4>推荐第3次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 3200,
+    &quot;budget_minor&quot;: 3500,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;总预算3500分内（2800+400=3200）。已避开含虾菜品（炒虾f5）。份量未标明，不承诺一定够吃。剩余预算可加蔬菜汤或番茄沙拉，但当前推荐已满足基本需求。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;烤鸡配米饭不含虾，非辣，适合两人；总价2800分&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;柠檬饮料不含虾，非辣，一人份；总价400分&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>60.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 3500,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 3200,
+    &quot;budget_minor&quot;: 3500,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>185</td></tr><tr><td>系统最终回复字符数</td><td>183</td></tr><tr><td>模型调用数</td><td>6</td></tr><tr><td>累计输出tokens</td><td>1157</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件2人、预算35欧、虾过敏均保存；推荐烤鸡配米饭×2、柠檬饮料×1，合计32欧、余3欧。发布理由、说明和最终回复一致，含完整配料及交叉接触提醒；不承诺未知份量，未重复问条件或操作设备。此前2次超预算草稿被拒绝，最终自行修正。</pre><p>原记录SHA-256：<code>bce77f316b4e4f40e41a534e12ada0c38f079f56736898424f1437bf00500697</code></p></details></article><article id="case-F05"><h3>F05 人数、预算与忌口推荐</h3><h4>输入是什么</h4><p>实验给定：1人，预算22欧元；不吃辣；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 1, &quot;budget_minor&quot;: 2200, &quot;no_spicy&quot;: true, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>1</td><td>符合不辣要求，价格1400分，在预算内</td></tr><tr><td>柠檬饮料</td><td>1</td><td>非辣饮料，价格400分，搭配主食</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>推荐烤鸡配米饭+柠檬饮料，总价1800分，符合不辣、预算2200分以内。份量未标明，不承诺一定够吃；蔬菜汤配料未知，若介意需确认。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。</p><h4>本例结论</h4><p>本例首次组合合规；这只能证明给定约束下的方案正确，未评价口味、份量或用户满意度。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+1 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 14.00
+1 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 4.00
+菜单小计：EUR 18.00。
+预算：EUR 22.00。
+按菜单价格计算的预算余额：EUR 4.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 2200,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;推荐烤鸡配米饭+柠檬饮料，总价1800分，符合不辣、预算2200分以内。份量未标明，不承诺一定够吃；蔬菜汤配料未知，若介意需确认。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;符合不辣要求，价格1400分，在预算内&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣饮料，价格400分，搭配主食&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 2200,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 2200,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>141</td></tr><tr><td>系统最终回复字符数</td><td>147</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>741</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件1人、预算22欧、不吃辣均保存；推荐烤鸡配米饭×1、柠檬饮料×1，合计18欧、余4欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>37314dae29c67842b0b146489bbaa93025065d4d3d32d3ed01411dff0a81ca06</code></p></details></article><article id="case-F06"><h3>F06 四人用餐：过敏提示与预算</h3><h4>输入是什么</h4><p>实验给定：4人，预算80欧元；过敏：虾。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 4, &quot;budget_minor&quot;: 8000, &quot;no_spicy&quot;: false, &quot;allergies&quot;: [&quot;shrimp&quot;]}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>烤鸡配米饭，非辣，不含虾过敏原，适合多人分享</td></tr><tr><td>番茄沙拉</td><td>1</td><td>番茄沙拉，非辣，不含虾过敏原，作为前菜</td></tr><tr><td>柠檬饮料</td><td>4</td><td>柠檬饮料，非辣，不含虾过敏原，每人一杯</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>总预算8000分（80欧元），当前推荐总价：2×1400 + 800 + 4×400 = 2800+800+1600=5200分（52欧元），在预算内。已避开含虾菜品（f5）。份量未标明，不承诺一定够吃；蔬菜汤(f2)配料未知，若介意可替换为番茄沙拉或烤鸡。辣味面条(f3)含辣椒，虽用户允许辣，但建议优先选非辣选项以确保安全。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。</p><h4>本例结论</h4><p>本例首次组合合规；这只能证明给定约束下的方案正确，未评价口味、份量或用户满意度。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+4 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 16.00
+菜单小计：EUR 52.00。
+预算：EUR 80.00。
+按菜单价格计算的预算余额：EUR 28.00。
+需确认：无明确过敏原标记不等于无过敏风险，请向店员确认完整配料及交叉接触
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 5200,
+    &quot;budget_minor&quot;: 8000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;总预算8000分（80欧元），当前推荐总价：2×1400 + 800 + 4×400 = 2800+800+1600=5200分（52欧元），在预算内。已避开含虾菜品（f5）。份量未标明，不承诺一定够吃；蔬菜汤(f2)配料未知，若介意可替换为番茄沙拉或烤鸡。辣味面条(f3)含辣椒，虽用户允许辣，但建议优先选非辣选项以确保安全。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;烤鸡配米饭，非辣，不含虾过敏原，适合多人分享&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;番茄沙拉，非辣，不含虾过敏原，作为前菜&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 4,
+      &quot;reason&quot;: &quot;柠檬饮料，非辣，不含虾过敏原，每人一杯&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 5200,
+    &quot;budget_minor&quot;: 8000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 5200,
+    &quot;budget_minor&quot;: 8000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>224</td></tr><tr><td>系统最终回复字符数</td><td>228</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>916</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件4人、预算80欧、虾过敏均保存；推荐烤鸡配米饭×2、番茄沙拉×1、柠檬饮料×4，合计52欧、余28欧。发布理由、说明和最终回复一致，含完整配料及交叉接触提醒；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>fd8dd32b57cb6ec5a898e8d3758d482928507dc65564dadb3570aaa5f89792d9</code></p></details></article><article id="case-F07"><h3>F07 预算30欧：三次推荐尝试</h3><h4>输入是什么</h4><p>实验给定：2人，预算30欧元；不吃辣；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 2, &quot;budget_minor&quot;: 3000, &quot;no_spicy&quot;: true, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>非辣主菜，符合忌口；两人份总价2800分，在预算内</td></tr><tr><td>番茄沙拉</td><td>1</td><td>非辣前菜，补充搭配；总价3600分略超预算，可酌情减少或替换</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>当前推荐：烤鸡配米饭×2（非辣，总价2800分）+ 番茄沙拉×1（非辣）。若需严格控制在3000分以内，可考虑仅点两碗烤鸡配米饭，或替换为更便宜的前菜如蔬菜汤（700分）。注意：炒虾辣度未知，不建议选择；辣味面条不符合无辣要求。份量未标明，不承诺一定够吃。</pre><h4>有哪些问题</h4><p>首次实际小计36欧元，超过30欧元预算。第二次仍超预算，第三次才通过。</p><h4>本例结论</h4><p>模型第一次推荐未满足预算；收到程序拒绝反馈后重试，最终组合通过。最终金额和说明含程序整理，不能全部归为模型的独立能力。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+菜单小计：EUR 28.00。
+预算：EUR 30.00。
+按菜单价格计算的预算余额：EUR 2.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 3600,
+    &quot;budget_minor&quot;: 3000,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;当前推荐：烤鸡配米饭×2（非辣，总价2800分）+ 番茄沙拉×1（非辣）。若需严格控制在3000分以内，可考虑仅点两碗烤鸡配米饭，或替换为更便宜的前菜如蔬菜汤（700分）。注意：炒虾辣度未知，不建议选择；辣味面条不符合无辣要求。份量未标明，不承诺一定够吃。&quot;,
+  &quot;error&quot;: &quot;建议小计 3600 超过预算 3000&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，符合忌口；两人份总价2800分，在预算内&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣前菜，补充搭配；总价3600分略超预算，可酌情减少或替换&quot;
+    }
+  ]
+}</pre><h4>推荐第2次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 3200,
+    &quot;budget_minor&quot;: 3000,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;notes&quot;: &quot;当前推荐：烤鸡配米饭×2（非辣，总价2800分）+ 柠檬饮料×1（400分）。若需严格控制在3000分以内，可考虑仅点两碗烤鸡配米饭，或替换为更便宜的饮料。注意：炒虾辣度未知，不建议选择；辣味面条不符合无辣要求。份量未标明，不承诺一定够吃。&quot;,
+  &quot;error&quot;: &quot;建议小计 3200 超过预算 3000&quot;,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，符合忌口；两人份总价2800分，在预算内&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣饮料，补充搭配；总价3200分略超预算，可酌情减少或替换&quot;
+    }
+  ]
+}</pre><h4>推荐第3次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 2800,
+    &quot;budget_minor&quot;: 3000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;当前推荐：烤鸡配米饭×2（非辣，总价2800分），严格控制在3000分预算内。若需增加前菜或饮料，可考虑替换为更便宜的选项如蔬菜汤（700分）或柠檬饮料（400分），但需注意总预算。注意：炒虾辣度未知，不建议选择；辣味面条不符合无辣要求。份量未标明，不承诺一定够吃。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣主菜，符合忌口；两人份总价2800分，在预算内&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>60.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: false,
+    &quot;total_minor&quot;: 3600,
+    &quot;budget_minor&quot;: 3000,
+    &quot;all_hard_constraints_met&quot;: false,
+    &quot;score_100&quot;: 60
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 2800,
+    &quot;budget_minor&quot;: 3000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>219</td></tr><tr><td>系统最终回复字符数</td><td>111</td></tr><tr><td>模型调用数</td><td>6</td></tr><tr><td>累计输出tokens</td><td>1240</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件2人、预算30欧、不吃辣均保存；推荐烤鸡配米饭×2，合计28欧、余2欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。此前2次超预算草稿被拒绝，最终自行修正。</pre><p>原记录SHA-256：<code>0835163ec9d96c0951fff8f94f72e954eadfd3a7b158206a3ce55b3bd4b9d37d</code></p></details></article><article id="case-F08"><h3>F08 人数、预算与忌口推荐</h3><h4>输入是什么</h4><p>实验给定：2人，预算50欧元；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 2, &quot;budget_minor&quot;: 5000, &quot;no_spicy&quot;: false, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>烤鸡配米饭，非辣，适合两人主食</td></tr><tr><td>番茄沙拉</td><td>1</td><td>番茄沙拉，非辣，作为前菜</td></tr><tr><td>柠檬饮料</td><td>2</td><td>柠檬饮料，解腻</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>总预算5000分（50欧元），当前推荐总价：f1×2(2800) + f4(800) + f6×2(800) = 4400分。份量未标明，不承诺一定够吃；辣度允许，但本推荐避开辣味选项。蔬菜汤配料未知，暂不推荐。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。</p><h4>本例结论</h4><p>本例首次组合合规；这只能证明给定约束下的方案正确，未评价口味、份量或用户满意度。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+2 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 8.00
+菜单小计：EUR 44.00。
+预算：EUR 50.00。
+按菜单价格计算的预算余额：EUR 6.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 5000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;总预算5000分（50欧元），当前推荐总价：f1×2(2800) + f4(800) + f6×2(800) = 4400分。份量未标明，不承诺一定够吃；辣度允许，但本推荐避开辣味选项。蔬菜汤配料未知，暂不推荐。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;烤鸡配米饭，非辣，适合两人主食&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;番茄沙拉，非辣，作为前菜&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;柠檬饮料，解腻&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 5000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4400,
+    &quot;budget_minor&quot;: 5000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>137</td></tr><tr><td>系统最终回复字符数</td><td>190</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>784</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件2人、预算50欧均保存；推荐烤鸡配米饭×2、番茄沙拉×1、柠檬饮料×2，合计44欧、余6欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>ea6a837be94f5b2f66df8b0450979021cedc7ccaf3dc4d4523e8f87c0b44d0a9</code></p></details></article><article id="case-F09"><h3>F09 预算18欧：恰好满足</h3><h4>输入是什么</h4><p>实验给定：1人，预算18欧元；无其他过敏要求。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 1, &quot;budget_minor&quot;: 1800, &quot;no_spicy&quot;: false, &quot;allergies&quot;: []}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>1</td><td>主菜烤鸡配米饭，非辣，价格1400分，符合预算且无辣</td></tr><tr><td>柠檬饮料</td><td>1</td><td>饮料柠檬汁，非辣，价格400分，与主菜搭配总价1800分，刚好在预算内</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>推荐组合：烤鸡配米饭 + 柠檬饮料。总费用1800分，符合预算1800分。用户不忌辣，但本组合均为非辣菜品。份量未标明，不承诺一定够吃。蔬菜汤（700分）和番茄沙拉（800分）也可作为前菜选择，若选前菜则需减少主菜或饮料以控制预算。辣味面条含辣椒，若偏好辣可考虑替换主菜。炒虾辣度未知，慎选。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。</p><h4>本例结论</h4><p>本例首次组合合规；这只能证明给定约束下的方案正确，未评价口味、份量或用户满意度。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+1 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 14.00
+1 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 4.00
+菜单小计：EUR 18.00。
+预算：EUR 18.00。
+按菜单价格计算的预算余额：EUR 0.00。
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 1800,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;推荐组合：烤鸡配米饭 + 柠檬饮料。总费用1800分，符合预算1800分。用户不忌辣，但本组合均为非辣菜品。份量未标明，不承诺一定够吃。蔬菜汤（700分）和番茄沙拉（800分）也可作为前菜选择，若选前菜则需减少主菜或饮料以控制预算。辣味面条含辣椒，若偏好辣可考虑替换主菜。炒虾辣度未知，慎选。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;主菜烤鸡配米饭，非辣，价格1400分，符合预算且无辣&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;饮料柠檬汁，非辣，价格400分，与主菜搭配总价1800分，刚好在预算内&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 1800,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 1800,
+    &quot;budget_minor&quot;: 1800,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>255</td></tr><tr><td>系统最终回复字符数</td><td>147</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>929</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件1人、预算18欧均保存；推荐烤鸡配米饭×1、柠檬饮料×1，合计18欧、余0欧。发布理由、说明和最终回复一致；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>dcb9793610ec6e6bdfb05c9f573e8b4376342cd8134fa475aa0fdcd1a3182116</code></p></details></article><article id="case-F10"><h3>F10 不辣与虾过敏组合约束</h3><h4>输入是什么</h4><p>实验给定：3人，预算60欧元；不吃辣；过敏：虾。要求给出可勾选推荐，份量未知，不能承诺够吃。</p><p>给定菜单（已正确识读）：</p><div class="table-wrap"><table><thead><tr><th>原文</th><th>中文</th><th>单价</th><th>已给辣度</th></tr></thead><tbody><tr><td>Poulet grillé et riz</td><td>烤鸡配米饭</td><td>14欧元</td><td>不辣</td></tr><tr><td>Soupe de légumes</td><td>蔬菜汤</td><td>7欧元</td><td>不辣</td></tr><tr><td>Nouilles épicées</td><td>辣味面条</td><td>12欧元</td><td>辣</td></tr><tr><td>Salade de tomates</td><td>番茄沙拉</td><td>8欧元</td><td>不辣</td></tr><tr><td>Crevettes sautées</td><td>炒虾</td><td>16欧元</td><td>未知</td></tr><tr><td>Limonade</td><td>柠檬饮料</td><td>4欧元</td><td>不辣</td></tr></tbody></table></div><details><summary>完整输入原文与字段</summary><pre>本题只评估推荐，以下是已经正确识读的菜单字段，无需操作设备。请保存菜单和条件，给出可勾选建议。条件已完整：{&quot;people&quot;: 3, &quot;budget_minor&quot;: 6000, &quot;no_spicy&quot;: true, &quot;allergies&quot;: [&quot;shrimp&quot;]}。不限制其他偏好；份量未标明，不承诺一定够吃。菜单：[{&quot;id&quot;: &quot;f1&quot;, &quot;original&quot;: &quot;Poulet grillé et riz&quot;, &quot;translated&quot;: &quot;烤鸡配米饭&quot;, &quot;price_minor&quot;: 1400, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;chicken&quot;, &quot;rice&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f2&quot;, &quot;original&quot;: &quot;Soupe de légumes&quot;, &quot;translated&quot;: &quot;蔬菜汤&quot;, &quot;price_minor&quot;: 700, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;vegetables&quot;], &quot;ingredients_known&quot;: false}, {&quot;id&quot;: &quot;f3&quot;, &quot;original&quot;: &quot;Nouilles épicées&quot;, &quot;translated&quot;: &quot;辣味面条&quot;, &quot;price_minor&quot;: 1200, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;yes&quot;, &quot;ingredients&quot;: [&quot;wheat&quot;, &quot;chili&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f4&quot;, &quot;original&quot;: &quot;Salade de tomates&quot;, &quot;translated&quot;: &quot;番茄沙拉&quot;, &quot;price_minor&quot;: 800, &quot;category&quot;: &quot;Entrées&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;tomato&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f5&quot;, &quot;original&quot;: &quot;Crevettes sautées&quot;, &quot;translated&quot;: &quot;炒虾&quot;, &quot;price_minor&quot;: 1600, &quot;category&quot;: &quot;Plats&quot;, &quot;spicy&quot;: &quot;unknown&quot;, &quot;ingredients&quot;: [&quot;shrimp&quot;], &quot;ingredients_known&quot;: true}, {&quot;id&quot;: &quot;f6&quot;, &quot;original&quot;: &quot;Limonade&quot;, &quot;translated&quot;: &quot;柠檬饮料&quot;, &quot;price_minor&quot;: 400, &quot;category&quot;: &quot;Boissons&quot;, &quot;spicy&quot;: &quot;no&quot;, &quot;ingredients&quot;: [&quot;lemon&quot;], &quot;ingredients_known&quot;: true}]</pre></details><h4>模型输出是什么</h4><p><b>模型首次推荐：</b></p><div class="table-wrap"><table><thead><tr><th>菜品</th><th>数量</th><th>模型理由原文</th></tr></thead><tbody><tr><td>烤鸡配米饭</td><td>2</td><td>非辣、无虾过敏风险，适合多人分享</td></tr><tr><td>番茄沙拉</td><td>1</td><td>非辣、无虾过敏风险，作为前菜</td></tr><tr><td>柠檬饮料</td><td>3</td><td>非辣、无虾过敏风险，每人一杯饮料</td></tr></tbody></table></div><p><b>首次说明原文：</b></p><pre>预算6000分（60欧元），当前推荐总价：2×1400 + 800 + 3×400 = 2800+800+1200 = 4800分。剩余1200分可加其他非辣无虾菜品（如f2蔬菜汤，但配料未知）。避免f3（辣）和f5（含虾过敏原）。份量未标明，不承诺一定够吃。</pre><h4>有哪些问题</h4><p>首次组合满足本例所给菜品、数量、忌口与预算条件。</p><h4>本例结论</h4><p>本例首次组合合规；这只能证明给定约束下的方案正确，未评价口味、份量或用户满意度。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+3 × Limonade（柠檬饮料）；单价 EUR 4.00，小计 EUR 12.00
+菜单小计：EUR 48.00。
+预算：EUR 60.00。
+按菜单价格计算的预算余额：EUR 12.00。
+需确认：无明确过敏原标记不等于无过敏风险，请向店员确认完整配料及交叉接触
+请勾选并确认最终菜品。</pre><h4>推荐第1次提交</h4><pre>{
+  &quot;check&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;notes&quot;: &quot;预算6000分（60欧元），当前推荐总价：2×1400 + 800 + 3×400 = 2800+800+1200 = 4800分。剩余1200分可加其他非辣无虾菜品（如f2蔬菜汤，但配料未知）。避免f3（辣）和f5（含虾过敏原）。份量未标明，不承诺一定够吃。&quot;,
+  &quot;error&quot;: null,
+  &quot;picks&quot;: [
+    {
+      &quot;id&quot;: &quot;f1&quot;,
+      &quot;quantity&quot;: 2,
+      &quot;reason&quot;: &quot;非辣、无虾过敏风险，适合多人分享&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f4&quot;,
+      &quot;quantity&quot;: 1,
+      &quot;reason&quot;: &quot;非辣、无虾过敏风险，作为前菜&quot;
+    },
+    {
+      &quot;id&quot;: &quot;f6&quot;,
+      &quot;quantity&quot;: 3,
+      &quot;reason&quot;: &quot;非辣、无虾过敏风险，每人一杯饮料&quot;
+    }
+  ]
+}</pre><h4>旧版检查量表记录</h4><p>这是事后检查项分数，不是专业语言质量或基础能力总分。</p><div class="table-wrap"><table><thead><tr><th>阶段</th><th>检查分</th></tr></thead><tbody><tr><td>模型首次提交</td><td>100.00/100</td></tr><tr><td>系统最终产物</td><td>100.00/100</td></tr></tbody></table></div><pre>{
+  &quot;first_draft&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  },
+  &quot;final&quot;: {
+    &quot;items_quantity_legal&quot;: true,
+    &quot;stated_diet_constraints_met&quot;: true,
+    &quot;budget_met&quot;: true,
+    &quot;total_minor&quot;: 4800,
+    &quot;budget_minor&quot;: 6000,
+    &quot;all_hard_constraints_met&quot;: true,
+    &quot;score_100&quot;: 100
+  }
+}</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>219</td></tr><tr><td>系统最终回复字符数</td><td>228</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>892</td></tr><tr><td>单次输出峰值tokens</td><td>411</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原条件3人、预算60欧、不吃辣、虾过敏均保存；推荐烤鸡配米饭×2、番茄沙拉×1、柠檬饮料×3，合计48欧、余12欧。发布理由、说明和最终回复一致，含完整配料及交叉接触提醒；不承诺未知份量，未重复问条件或操作设备。</pre><p>原记录SHA-256：<code>5875c2cb8c01ae365b438e1bec16f14ecb0e35fe5567d964978ec7afe1ccc1ff</code></p></details></article></section><section id="ticket"><h2>票务解读与推荐（10例）</h2><article id="case-T01"><h3>T01 免费儿童：5岁不收票价</h3><h4>输入是什么</h4><p>输入摘要：1名成人；儿童年龄：5。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 1, &quot;ages&quot;: [5], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行1成人+1名5岁儿童（6岁以下免费），选择单人票最经济；含€2订单手续费。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 2 人：1 位成人、1 位儿童。
+儿童年龄：5 岁；其中 0 位使用付费儿童票、1 位免费入场。
+建议方案：单人票组合。票价小计 EUR 24.00 + 每单手续费 EUR 2.00 = 合计 EUR 26.00。
+有效方案（均含手续费）：单人票组合 EUR 26.00。
+最低价有效方案：单人票组合，EUR 26.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        5
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行1成人+1名5岁儿童（6岁以下免费），选择单人票最经济；含€2订单手续费。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        5
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 2 人：1 位成人、1 位儿童。\n儿童年龄：5 岁；其中 0 位使用付费儿童票、1 位免费入场。\n建议方案：单人票组合。票价小计 EUR 24.00 + 每单手续费 EUR 2.00 = 合计 EUR 26.00。\n有效方案（均含手续费）：单人票组合 EUR 26.00。\n最低价有效方案：单人票组合，EUR 26.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 2400,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 2600,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 0,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 1,
+        &quot;children&quot;: 1,
+        &quot;total_people&quot;: 2
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 2400,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 2600,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 0
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>197</td></tr><tr><td>系统最终回复字符数</td><td>190</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>247</td></tr><tr><td>单次输出峰值tokens</td><td>157</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行1成人、儿童年龄5，已发布2人、0付费儿童正确。单人票组合24欧+2欧费用=26欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>5c65154abc6d3cfc717f09e6e5bc276aa0b8845556a69a483e13b0122f562d05</code></p></details></article><article id="case-T02"><h3>T02 儿童年龄边界</h3><h4>输入是什么</h4><p>输入摘要：1名成人；儿童年龄：6。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 1, &quot;ages&quot;: [6], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行1成人+1名6岁儿童（需购儿童票），日期2026-10-20 11:00。最经济方案：1张成人票(€24)+1张儿童票(€12)=€36，加订单手续费€2，合计€38。家庭票需2成人+2儿童(€60)，不适用。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 2 人：1 位成人、1 位儿童。
+儿童年龄：6 岁；其中 1 位使用付费儿童票、0 位免费入场。
+建议方案：单人票组合。票价小计 EUR 36.00 + 每单手续费 EUR 2.00 = 合计 EUR 38.00。
+有效方案（均含手续费）：单人票组合 EUR 38.00。
+最低价有效方案：单人票组合，EUR 38.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        6
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行1成人+1名6岁儿童（需购儿童票），日期2026-10-20 11:00。最经济方案：1张成人票(€24)+1张儿童票(€12)=€36，加订单手续费€2，合计€38。家庭票需2成人+2儿童(€60)，不适用。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        6
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 2 人：1 位成人、1 位儿童。\n儿童年龄：6 岁；其中 1 位使用付费儿童票、0 位免费入场。\n建议方案：单人票组合。票价小计 EUR 36.00 + 每单手续费 EUR 2.00 = 合计 EUR 38.00。\n有效方案（均含手续费）：单人票组合 EUR 38.00。\n最低价有效方案：单人票组合，EUR 38.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 3600,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 3800,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 1,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 1,
+        &quot;children&quot;: 1,
+        &quot;total_people&quot;: 2
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 3600,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 3800,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 1
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>211</td></tr><tr><td>系统最终回复字符数</td><td>190</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>306</td></tr><tr><td>单次输出峰值tokens</td><td>157</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行1成人、儿童年龄6，已发布2人、1付费儿童正确。单人票组合36欧+2欧费用=38欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>77b253bc8b3aca27646e50dc8676e6c5632157967da36b486aae57c1ad835dc0</code></p></details></article><article id="case-T03"><h3>T03 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：1名成人；儿童年龄：17。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 1, &quot;ages&quot;: [17], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行1成人+1名17岁儿童（需购儿童票），日期2026-10-20 11:00。最经济方案：1张成人票(2400分)+1张儿童票(1200分)+手续费200分=3800分。家庭票需2成人+2儿童，不适用。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 2 人：1 位成人、1 位儿童。
+儿童年龄：17 岁；其中 1 位使用付费儿童票、0 位免费入场。
+建议方案：单人票组合。票价小计 EUR 36.00 + 每单手续费 EUR 2.00 = 合计 EUR 38.00。
+有效方案（均含手续费）：单人票组合 EUR 38.00。
+最低价有效方案：单人票组合，EUR 38.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行1成人+1名17岁儿童（需购儿童票），日期2026-10-20 11:00。最经济方案：1张成人票(2400分)+1张儿童票(1200分)+手续费200分=3800分。家庭票需2成人+2儿童，不适用。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 2 人：1 位成人、1 位儿童。\n儿童年龄：17 岁；其中 1 位使用付费儿童票、0 位免费入场。\n建议方案：单人票组合。票价小计 EUR 36.00 + 每单手续费 EUR 2.00 = 合计 EUR 38.00。\n有效方案（均含手续费）：单人票组合 EUR 38.00。\n最低价有效方案：单人票组合，EUR 38.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 3600,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 3800,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 1,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 1,
+        &quot;children&quot;: 1,
+        &quot;total_people&quot;: 2
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 3600,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 3800,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 1
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>210</td></tr><tr><td>系统最终回复字符数</td><td>191</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>313</td></tr><tr><td>单次输出峰值tokens</td><td>165</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行1成人、儿童年龄17，已发布2人、1付费儿童正确。单人票组合36欧+2欧费用=38欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>867b761f6826152960f8f551e896a2df95debe517f7ca062eb6968cb3aeb1edb</code></p></details></article><article id="case-T04"><h3>T04 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：6、17。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 2, &quot;ages&quot;: [6, 17], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>家庭票。</p><p><b>首次说明原文：</b></p><pre>同行2成人+2儿童(6岁和17岁)，家庭票覆盖2成人+2名6-17岁儿童，总价6000分；另加订单手续费200分。相比单独购买：2张成人票4800分 + 2张儿童票2400分 = 7200分 + 200分手续费 = 7400分。家庭票更经济且符合规则。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：6、17 岁；其中 2 位使用付费儿童票、0 位免费入场。
+建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。
+有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。
+最低价有效方案：家庭票，EUR 62.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行2成人+2儿童(6岁和17岁)，家庭票覆盖2成人+2名6-17岁儿童，总价6000分；另加订单手续费200分。相比单独购买：2张成人票4800分 + 2张儿童票2400分 = 7200分 + 200分手续费 = 7400分。家庭票更经济且符合规则。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：6、17 岁；其中 2 位使用付费儿童票、0 位免费入场。\n建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。\n最低价有效方案：家庭票，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 6000,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 6200,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        },
+        {
+          &quot;kind&quot;: &quot;family&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;family&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>228</td></tr><tr><td>系统最终回复字符数</td><td>201</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>353</td></tr><tr><td>单次输出峰值tokens</td><td>186</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行2成人、儿童年龄6/17，已发布4人、2付费儿童正确。家庭票60欧+2欧费用=62欧，比合法单买74欧便宜；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>cfd692b2a77aefc8014723d5016d12eefdb04e6d50d7925296263da1754789f1</code></p></details></article><article id="case-T05"><h3>T05 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：5、6。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 2, &quot;ages&quot;: [5, 6], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>家庭票。</p><p><b>首次说明原文：</b></p><pre>同行2成人+1名5岁免费儿童+1名6岁儿童，家庭票（2成人+2名6-17岁儿童）覆盖所有人员且最经济；含€2订单手续费。</pre><h4>有哪些问题</h4><p>首次给2成人、5岁和6岁儿童选择家庭票；家庭票需要两名6–17岁儿童，因此不适用。程序拒绝后重新选择。</p><h4>本例结论</h4><p>模型首次未正确处理免费儿童与家庭票条件，能在明确反馈后修正。最终通过只能表示系统完成本例。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：5、6 岁；其中 1 位使用付费儿童票、1 位免费入场。
+建议方案：单人票组合。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。
+有效方案（均含手续费）：单人票组合 EUR 62.00。
+最低价有效方案：单人票组合，EUR 62.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        5,
+        6
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行2成人+1名5岁免费儿童+1名6岁儿童，家庭票（2成人+2名6-17岁儿童）覆盖所有人员且最经济；含€2订单手续费。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;error&quot;: &quot;家庭票仅适用 2 成人和 2 位 6–17 岁儿童&quot;,
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 1
+        }
+      ]
+    }
+  },
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        5,
+        6
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行2成人+1名5岁免费儿童+1名6岁儿童；家庭票不适用（需2名6-17岁儿童），改用单张票：2张成人票+1张儿童票，另加€2订单手续费。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        5,
+        6
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：5、6 岁；其中 1 位使用付费儿童票、1 位免费入场。\n建议方案：单人票组合。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。\n有效方案（均含手续费）：单人票组合 EUR 62.00。\n最低价有效方案：单人票组合，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 6000,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 6200,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 1,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 1
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>203</td></tr><tr><td>系统最终回复字符数</td><td>192</td></tr><tr><td>模型调用数</td><td>3</td></tr><tr><td>累计输出tokens</td><td>393</td></tr><tr><td>单次输出峰值tokens</td><td>161</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行2成人、儿童年龄5/6，已发布4人、1付费儿童正确。单人票组合60欧+2欧费用=62欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。错误家庭票草稿已拒绝后修正。</pre><p>原记录SHA-256：<code>db034ed89f0a6112605ad6a965b41a98890687d0f51751a0973e49a9bca7a4c9</code></p></details></article><article id="case-T06"><h3>T06 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：6、7。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 2, &quot;ages&quot;: [6, 7], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>家庭票。</p><p><b>首次说明原文：</b></p><pre>同行2成人+2名儿童（6岁、7岁），符合家庭票定义（2成人+2名6-17岁儿童）。家庭票€60 + 手续费€2 = €62，比单独购买2张成人票(€48) + 2张儿童票(€24) + 手续费€2 = €74更经济。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：6、7 岁；其中 2 位使用付费儿童票、0 位免费入场。
+建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。
+有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。
+最低价有效方案：家庭票，EUR 62.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        7
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行2成人+2名儿童（6岁、7岁），符合家庭票定义（2成人+2名6-17岁儿童）。家庭票€60 + 手续费€2 = €62，比单独购买2张成人票(€48) + 2张儿童票(€24) + 手续费€2 = €74更经济。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        7
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：6、7 岁；其中 2 位使用付费儿童票、0 位免费入场。\n建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。\n最低价有效方案：家庭票，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 6000,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 6200,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        },
+        {
+          &quot;kind&quot;: &quot;family&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;family&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>186</td></tr><tr><td>系统最终回复字符数</td><td>200</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>297</td></tr><tr><td>单次输出峰值tokens</td><td>149</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行2成人、儿童年龄6/7，已发布4人、2付费儿童正确。家庭票60欧+2欧费用=62欧，比合法单买74欧便宜；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>fba30d6eaa85d603be00d860f85813635604fa7dc9a937dc586b1676d1ed97ff</code></p></details></article><article id="case-T07"><h3>T07 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：3名成人；儿童年龄：无。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 3, &quot;ages&quot;: [], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行3位成人，无儿童。按票规：成人票€24/张，家庭票需2大2小（6-17岁）不适用；选3张成人票最经济。手续费€2/单。总价=3×2400+200=7400分（€74）。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 3 人：3 位成人、0 位儿童。
+建议方案：单人票组合。票价小计 EUR 72.00 + 每单手续费 EUR 2.00 = 合计 EUR 74.00。
+有效方案（均含手续费）：单人票组合 EUR 74.00。
+最低价有效方案：单人票组合，EUR 74.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 3,
+      &quot;ages&quot;: [],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行3位成人，无儿童。按票规：成人票€24/张，家庭票需2大2小（6-17岁）不适用；选3张成人票最经济。手续费€2/单。总价=3×2400+200=7400分（€74）。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 3,
+      &quot;ages&quot;: [],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 3 人：3 位成人、0 位儿童。\n建议方案：单人票组合。票价小计 EUR 72.00 + 每单手续费 EUR 2.00 = 合计 EUR 74.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00。\n最低价有效方案：单人票组合，EUR 74.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 7200,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 7400,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 0,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 3,
+        &quot;children&quot;: 0,
+        &quot;total_people&quot;: 3
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 0
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>211</td></tr><tr><td>系统最终回复字符数</td><td>163</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>296</td></tr><tr><td>单次输出峰值tokens</td><td>161</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行3成人、儿童年龄无，已发布3人、0付费儿童正确。单人票组合72欧+2欧费用=74欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>c88f058f9ec875bc423d5554c69f4fd9139905a0eddc15207de139503ecfe2cb</code></p></details></article><article id="case-T08"><h3>T08 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：1名成人；儿童年龄：5、6、17。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 1, &quot;ages&quot;: [5, 6, 17], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行1成人+3儿童（5岁免费，6岁和17岁需儿童票），日期2026-10-20 11:00。按规则：5岁免票，6岁和17岁各购儿童票(€12)，成人购成人票(€24)。总票价€48 + 手续费€2 = €50。家庭票需2成人+2儿童(6-17岁)，当前仅1成人不符合条件，故推荐3张单票。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：1 位成人、3 位儿童。
+儿童年龄：5、6、17 岁；其中 2 位使用付费儿童票、1 位免费入场。
+建议方案：单人票组合。票价小计 EUR 48.00 + 每单手续费 EUR 2.00 = 合计 EUR 50.00。
+有效方案（均含手续费）：单人票组合 EUR 50.00。
+最低价有效方案：单人票组合，EUR 50.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        5,
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行1成人+3儿童（5岁免费，6岁和17岁需儿童票），日期2026-10-20 11:00。按规则：5岁免票，6岁和17岁各购儿童票(€12)，成人购成人票(€24)。总票价€48 + 手续费€2 = €50。家庭票需2成人+2儿童(6-17岁)，当前仅1成人不符合条件，故推荐3张单票。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 1,
+      &quot;ages&quot;: [
+        5,
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：1 位成人、3 位儿童。\n儿童年龄：5、6、17 岁；其中 2 位使用付费儿童票、1 位免费入场。\n建议方案：单人票组合。票价小计 EUR 48.00 + 每单手续费 EUR 2.00 = 合计 EUR 50.00。\n有效方案（均含手续费）：单人票组合 EUR 50.00。\n最低价有效方案：单人票组合，EUR 50.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 4800,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 5000,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 1,
+        &quot;children&quot;: 3,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 4800,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 5000,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>259</td></tr><tr><td>系统最终回复字符数</td><td>195</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>395</td></tr><tr><td>单次输出峰值tokens</td><td>209</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行1成人、儿童年龄5/6/17，已发布4人、2付费儿童正确。单人票组合48欧+2欧费用=50欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>b7fe6425baef3c83ffa6ed874c914b0db52a613cc245dfd022db3055d6c98532</code></p></details></article><article id="case-T09"><h3>T09 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：0、5。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 2, &quot;ages&quot;: [0, 5], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行2成人+2名6岁以下儿童（免费），按规则需购2张成人票，另加订单手续费€2。家庭票要求至少2名6-17岁儿童，不适用。</pre><h4>有哪些问题</h4><p>本例最终票型与金额通过既有独立审查；尚未对首次说明完成新的逐句事实标注，不能据此声称原始回答完全无误。</p><h4>本例结论</h4><p>当前证据支持本例最终票务结果符合规则；需要新的独立量表评价模型原始解读与说明。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：0、5 岁；其中 0 位使用付费儿童票、2 位免费入场。
+建议方案：单人票组合。票价小计 EUR 48.00 + 每单手续费 EUR 2.00 = 合计 EUR 50.00。
+有效方案（均含手续费）：单人票组合 EUR 50.00。
+最低价有效方案：单人票组合，EUR 50.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        0,
+        5
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行2成人+2名6岁以下儿童（免费），按规则需购2张成人票，另加订单手续费€2。家庭票要求至少2名6-17岁儿童，不适用。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        0,
+        5
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：0、5 岁；其中 0 位使用付费儿童票、2 位免费入场。\n建议方案：单人票组合。票价小计 EUR 48.00 + 每单手续费 EUR 2.00 = 合计 EUR 50.00。\n有效方案（均含手续费）：单人票组合 EUR 50.00。\n最低价有效方案：单人票组合，EUR 50.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 4800,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 5000,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 0,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 4800,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 5000,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 0
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;individual&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>261</td></tr><tr><td>系统最终回复字符数</td><td>192</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>302</td></tr><tr><td>单次输出峰值tokens</td><td>192</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行2成人、儿童年龄0/5，已发布4人、0付费儿童正确。单人票组合48欧+2欧费用=50欧；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>6d02c528236719a4dd76397f8c2963da9b3e6cbf21ffad045c587da0bc82e87b</code></p></details></article><article id="case-T10"><h3>T10 票型与总价核验</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：17、17。要求推荐最便宜的合法票型，并计入手续费。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>仅测试票种推荐，无需设备操作。票规已正确识读：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6–17 use child tickets. Family: 2 adults + 2 children aged 6–17. Booking fee €2 per order. Tickets are non-refundable.&quot;}。同行条件：{&quot;adults&quot;: 2, &quot;ages&quot;: [17, 17], &quot;date&quot;: &quot;2026-10-20&quot;, &quot;slot&quot;: &quot;11:00&quot;}。无其他要求，不限定预算，请推荐最经济的合法票种，并计入手续费。</pre></details><h4>模型输出是什么</h4><p><b>模型首次选择：</b>按人数组合票。</p><p><b>首次说明原文：</b></p><pre>同行2名成人（实际为17岁，符合儿童票年龄6-17），日期2026-10-20场次11:00。按规则：17岁适用儿童票(€12)，家庭票需2成人+2儿童(6-17岁)且含2儿童，当前仅2人不符合家庭票人数要求。故推荐2张儿童票，票价€24 + 手续费€2 = €26。若误用成人票则€48+€2=€50，更贵。</pre><h4>有哪些问题</h4><p>首次选择单买组合74欧元，未选更便宜的62欧元家庭票；首次文字还混淆了2名成人与2名17岁儿童。</p><h4>本例结论</h4><p>需要同时检查同行人数、票型条件、最便宜方案和文字说明，不能只检查最终总价。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：17、17 岁；其中 2 位使用付费儿童票、0 位免费入场。
+建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。
+有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。
+最低价有效方案：家庭票，EUR 62.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        17,
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行2名成人（实际为17岁，符合儿童票年龄6-17），日期2026-10-20场次11:00。按规则：17岁适用儿童票(€12)，家庭票需2成人+2儿童(6-17岁)且含2儿童，当前仅2人不符合家庭票人数要求。故推荐2张儿童票，票价€24 + 手续费€2 = €26。若误用成人票则€48+€2=€50，更贵。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        17,
+        17
+      ],
+      &quot;kind&quot;: &quot;individual&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：17、17 岁；其中 2 位使用付费儿童票、0 位免费入场。\n建议方案：单人票组合。票价小计 EUR 72.00 + 每单手续费 EUR 2.00 = 合计 EUR 74.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。\n最低价有效方案：家庭票，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 7200,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 7400,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        },
+        {
+          &quot;kind&quot;: &quot;family&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;family&quot;,
+      &quot;selected_is_cheapest&quot;: false
+    }
+  },
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        17,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行共4人：2位成人、2位儿童（年龄均为17岁，符合6–17岁儿童票条件）。日期2026-10-20场次11:00。家庭票（2成人+2儿童）总价€60 + 手续费€2 = €62，比单人票组合（€74）更经济且完全符合规则。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        17,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：17、17 岁；其中 2 位使用付费儿童票、0 位免费入场。\n建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。\n最低价有效方案：家庭票，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 6000,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 6200,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        },
+        {
+          &quot;kind&quot;: &quot;family&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;family&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>208</td></tr><tr><td>系统最终回复字符数</td><td>202</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>746</td></tr><tr><td>单次输出峰值tokens</td><td>242</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原同行2成人、儿童年龄17/17，已发布4人、2付费儿童正确。家庭票60欧+2欧费用=62欧，比合法单买74欧便宜；免费年龄/家庭组合边界与原票规一致，发布说明和最终回复一致；无多余追问或设备订单。</pre><p>原记录SHA-256：<code>655118adc94086a3c648354a74929b4206aef6525879efebc79c959f309f29a5</code></p></details></article></section><section id="interactive"><h2>补充信息与问答（5例）</h2><article id="case-Q01"><h3>Q01 询问人数，保存完整答复</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请翻译这张菜单，并根据我的情况推荐用餐搭配。先问必要信息。</pre><h4>模型输出是什么</h4><p><b>助手实际提问：</b></p><pre>请补充：用餐总人数</pre><p><b>实验预置用户答复：</b></p><pre>2 位成人，预算 40 欧元，不吃辣，没有过敏，不限制其他偏好。</pre><p><b>模型末轮说明原文：</b>可能已收到工具反馈，不应当成未经帮助的首次输出。</p><pre>已根据您的要求（2人、预算40欧元、不吃辣）为您推荐了以下搭配：
+
+*   **烤鸡配米饭 (Grilled chicken with rice)** x 2份
+    *   价格：€14.00/份，小计 €28.00
+*   **番茄沙拉 (Tomato salad)** x 1份
+    *   价格：€8.00/份，小计 €8.00
+
+**总计：€36.00**（在您的 €40 预算内）
+
+**需确认事项：**
+*   菜单上部分菜品的辣度和完整配料信息未标明。虽然推荐菜品本身不辣，但建议您点餐时向服务员再次确认是否含有您忌口的成分。
+
+请确认以上推荐是否符合您的需求，或告诉我是否需要调整。</pre><h4>有哪些问题</h4><p>实际提问与预置答复如下，既有审查确认最终保存条件与方案通过。本数据未单独保留可直接评分的首次菜单或推荐提交，不能补造首次百分制。</p><h4>本例结论</h4><p>可展示本例补充条件的过程；不能由本例推断开放用户输入的分流准确率，答复来自预置脚本。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Grilled chicken with rice（烤鸡配米饭）；单价 EUR 14.00，小计 EUR 28.00
+1 × Tomato salad（番茄沙拉）；单价 EUR 8.00，小计 EUR 8.00
+菜单小计：EUR 36.00。
+预算：EUR 40.00。
+按菜单价格计算的预算余额：EUR 4.00。
+需确认：1：辣度未知，需问店员；4：辣度未知，需问店员；Grilled chicken with rice：完整配料未标明，如有过敏或忌口请先核实。；Tomato salad：完整配料未标明，如有过敏或忌口请先核实。
+请勾选并确认最终菜品。</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>254</td></tr><tr><td>系统最终回复字符数</td><td>259</td></tr><tr><td>模型调用数</td><td>6</td></tr><tr><td>累计输出tokens</td><td>952</td></tr><tr><td>单次输出峰值tokens</td><td>393</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>原图6项完整翻译且价格一致；仅一次人数表单，收到2人/40欧/不辣/无过敏完整答复后未重复询问。推荐2鸡饭+1沙拉=36欧、余4欧，保留辣度与完整配料未知提示，未作不辣或份量保证。</pre><p>原记录SHA-256：<code>2a4c7e06826d5282be5ed3adda8fcb2675eddbd03ad4f1a9cbbbd4bf377e103d</code></p></details></article><article id="case-Q02"><h3>Q02 儿童年龄：选择家庭票</h3><h4>输入是什么</h4><p>输入摘要：2名成人；儿童年龄：6、17。原始提问只给人数，儿童年龄来自随后预置答复。</p><p>给定票规：成人24欧元；6–17岁儿童12欧元，未满6岁免费；2成人＋2名6–17岁儿童可买60欧元家庭票；每单手续费2欧元。</p><details><summary>完整输入原文</summary><pre>票规：{&quot;title&quot;: &quot;Garden Museum&quot;, &quot;currency&quot;: &quot;EUR&quot;, &quot;adult_minor&quot;: 2400, &quot;child_minor&quot;: 1200, &quot;family_minor&quot;: 6000, &quot;free_under&quot;: 6, &quot;child_under&quot;: 18, &quot;family_adults&quot;: 2, &quot;family_children&quot;: 2, &quot;fee_minor&quot;: 200, &quot;dates&quot;: [&quot;2026-10-20&quot;, &quot;2026-10-21&quot;], &quot;slots&quot;: [&quot;09:00&quot;, &quot;11:00&quot;, &quot;14:00&quot;], &quot;terms&quot;: &quot;Children under 6 enter free. Ages 6\u201317 use child tickets. Family: 2 adults + 2 children aged 6\u201317. Booking fee \u20ac2 per order. Tickets are non-refundable.&quot;}。请帮两位成人和两位儿童选经济的票，需要了解什么请问我。暂不操作设备。</pre></details><h4>模型输出是什么</h4><p><b>助手实际提问：</b></p><pre>请补充：每位儿童的实际年龄（含免费入场儿童；0–17岁，18岁及以上计入成人）</pre><p><b>实验预置用户答复：</b></p><pre>儿童是 6 岁和 17 岁；2026-10-20，11:00，预算 70 欧元，没有其他要求。</pre><p><b>模型首次选择：</b>家庭票。</p><p><b>首次说明原文：</b></p><pre>家庭票（2成人+2儿童6-17岁）含预订费€2，总价€60.02，符合预算€70。</pre><h4>有哪些问题</h4><p>助手询问了缺失的儿童年龄；首次票务说明却把60欧元票价加2欧元手续费写成60.02欧元。系统最终重算为62欧元。</p><h4>本例结论</h4><p>本例显示能够补问关键条件，但金额解释会错。问答能力与计算解释能力应分开计分。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>同行共 4 人：2 位成人、2 位儿童。
+儿童年龄：6、17 岁；其中 2 位使用付费儿童票、0 位免费入场。
+建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。
+有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。
+最低价有效方案：家庭票，EUR 62.00。
+家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。
+预算：EUR 70.00；按建议方案计算的余额：EUR 8.00。
+请确认票种及同行信息后继续。</pre><h4>票务各次提交及程序反馈</h4><pre>[
+  {
+    &quot;args&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;家庭票（2成人+2儿童6-17岁）含预订费€2，总价€60.02，符合预算€70。&quot;
+    },
+    &quot;result&quot;: {
+      &quot;adults&quot;: 2,
+      &quot;ages&quot;: [
+        6,
+        17
+      ],
+      &quot;kind&quot;: &quot;family&quot;,
+      &quot;reason&quot;: &quot;同行共 4 人：2 位成人、2 位儿童。\n儿童年龄：6、17 岁；其中 2 位使用付费儿童票、0 位免费入场。\n建议方案：家庭票。票价小计 EUR 60.00 + 每单手续费 EUR 2.00 = 合计 EUR 62.00。\n有效方案（均含手续费）：单人票组合 EUR 74.00；家庭票 EUR 62.00。\n最低价有效方案：家庭票，EUR 62.00。\n家庭票付费组合要求：2 位成人 + 2 位 6–17 岁儿童；未满 6 岁儿童免费入场。\n预算：EUR 70.00；按建议方案计算的余额：EUR 8.00。\n请确认票种及同行信息后继续。&quot;,
+      &quot;subtotal_minor&quot;: 6000,
+      &quot;fee_minor&quot;: 200,
+      &quot;total_minor&quot;: 6200,
+      &quot;currency&quot;: &quot;EUR&quot;,
+      &quot;paying_children&quot;: 2,
+      &quot;party&quot;: {
+        &quot;adults&quot;: 2,
+        &quot;children&quot;: 2,
+        &quot;total_people&quot;: 4
+      },
+      &quot;valid_options&quot;: [
+        {
+          &quot;kind&quot;: &quot;individual&quot;,
+          &quot;subtotal_minor&quot;: 7200,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 7400,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        },
+        {
+          &quot;kind&quot;: &quot;family&quot;,
+          &quot;subtotal_minor&quot;: 6000,
+          &quot;fee_minor&quot;: 200,
+          &quot;total_minor&quot;: 6200,
+          &quot;currency&quot;: &quot;EUR&quot;,
+          &quot;paying_children&quot;: 2
+        }
+      ],
+      &quot;cheapest_kind&quot;: &quot;family&quot;,
+      &quot;selected_is_cheapest&quot;: true
+    }
+  }
+]</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>174</td></tr><tr><td>系统最终回复字符数</td><td>232</td></tr><tr><td>模型调用数</td><td>4</td></tr><tr><td>累计输出tokens</td><td>386</td></tr><tr><td>单次输出峰值tokens</td><td>128</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>仅询问真正缺失的儿童实际年龄，范围包括免费儿童0–17岁；实际问答各一次，未额外询问已给成人数/日期场次。收到6/17岁、日期场次、70欧条件后发布4人家庭票62欧、单买74欧、余8欧，合法性及人数/费用真实且无设备操作。</pre><p>原记录SHA-256：<code>a866261cf0024a3d033f9bcbe19df556c23b21d51c0a756996238c6331531161</code></p></details></article><article id="case-Q03"><h3>Q03 自由填写：提取多项条件</h3><h4>输入是什么</h4><p>用户原话：</p><pre>把菜单整理好，并问我条件后推荐。我会自行填写。</pre><h4>模型输出是什么</h4><p><b>助手实际提问：</b></p><pre>请补充：用餐总人数</pre><p><b>实验预置用户答复：</b></p><pre>我们共 3 人，预算 65 欧元，不吃辣，也没有食物过敏。份量未知可以给搭配参考。</pre><p><b>模型末轮说明原文：</b>可能已收到工具反馈，不应当成未经帮助的首次输出。</p><pre>已为您生成点餐建议（3人，预算65欧元，不吃辣）：
+
+**推荐菜品：**
+- 2份 烤鸡配米饭（€14.25/份，共€28.50）
+- 1份 番茄沙拉（€8.25/份，共€8.25）
+
+**当前小计：€36.75**（剩余预算€28.25，可加汤或饮料）
+
+⚠️ **需确认事项：**
+1. 烤鸡配米饭和番茄沙拉的完整配料未标明，如有过敏请到店核实。
+2. 番茄沙拉辣度未知，建议询问店员。
+3. 份量未知，建议到店后确认。
+
+请告诉我您是否要添加其他菜品（如蔬菜汤、蒜香虾等），或直接确认以上推荐？</pre><h4>有哪些问题</h4><p>实际提问与预置答复如下，既有审查确认最终保存条件与方案通过。本数据未单独保留可直接评分的首次菜单或推荐提交，不能补造首次百分制。</p><h4>本例结论</h4><p>可展示本例补充条件的过程；不能由本例推断开放用户输入的分流准确率，答复来自预置脚本。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>建议菜品：
+2 × Poulet grillé et riz（烤鸡配米饭）；单价 EUR 14.25，小计 EUR 28.50
+1 × Salade de tomates（番茄沙拉）；单价 EUR 8.25，小计 EUR 8.25
+菜单小计：EUR 36.75。
+预算：EUR 65.00。
+按菜单价格计算的预算余额：EUR 28.25。
+需确认：1：辣度未知，需问店员；4：辣度未知，需问店员；Poulet grillé et riz：完整配料未标明，如有过敏或忌口请先核实。；Salade de tomates：完整配料未标明，如有过敏或忌口请先核实。
+请勾选并确认最终菜品。</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>229</td></tr><tr><td>系统最终回复字符数</td><td>258</td></tr><tr><td>模型调用数</td><td>6</td></tr><tr><td>累计输出tokens</td><td>884</td></tr><tr><td>单次输出峰值tokens</td><td>377</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>6项法文原图菜单完整，译文价格一致；一次必要表单接受3人/65欧/不辣/无过敏自填内容后未重问。2鸡饭+1沙拉=36.75欧、余28.25欧；未知辣度/配料明确提示，无预算下限、小费或份量保证。</pre><p>原记录SHA-256：<code>62454d48d028b9d8a77354e227579d1981943fa3996cb16e68097ecf66d45e2b</code></p></details></article><article id="case-Q04"><h3>Q04 只翻译：保存忌口、不推荐</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请翻译并保存菜单，不需要推荐。我不吃辣，对 shrimp 过敏，请保存这些要求。</pre><h4>模型输出是什么</h4><p><b>模型末轮说明原文：</b>可能已收到工具反馈，不应当成未经帮助的首次输出。</p><pre>菜单已翻译并保存，共6项。您的忌口要求（不吃辣、对虾过敏）也已记录。
+
+**双语菜单如下：**
+1.  **Pollo a la parrilla con arroz** - 烤鸡配米饭 (€14,50)
+2.  **Sopa de verduras** - 蔬菜汤 (€7,50)
+3.  **Fideos picantes** - 辣面条 (€12,50)
+4.  **Ensalada de tomate** - 番茄沙拉 (€8,50)
+5.  **Gambas al ajillo** - 蒜香虾 (€16,50)
+6.  **Limonada** - 柠檬水 (€4,50)
+
+*注：除明确标注为辣的菜品外，其他菜品的辣度未知；所有菜品的具体配料均未知。*</pre><h4>有哪些问题</h4><p>本例没有追问，最终结果通过既有审查；未对模型原始文字完成新的逐条事实评分。</p><h4>本例结论</h4><p>可作为仅翻译、保存条件或未知价格处理的展示；该类基础能力仍需新盲测集验证。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+已保存要求：不吃辣；过敏原：shrimp。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>282</td></tr><tr><td>系统最终回复字符数</td><td>89</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>606</td></tr><tr><td>单次输出峰值tokens</td><td>407</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>6项西班牙文原图菜单完整，译文价格一致；保存no_spicy=true及allergies=[shrimp]，最终明确已保存。未违背仅翻译的请求添加推荐/提问/订单；未知辣度配料未误作安全保证。</pre><p>原记录SHA-256：<code>e2af713d5b808d8f2c0b501b56220eca6eb4640f47da99557def2da09b498fd7</code></p></details></article><article id="case-Q05"><h3>Q05 只翻译：未知价格不补全</h3><h4>输入是什么</h4><p>用户原话：</p><pre>请完整翻译并整理菜单，未知价格保留未知。不需要推荐。</pre><h4>模型输出是什么</h4><p><b>模型末轮说明原文：</b>可能已收到工具反馈，不应当成未经帮助的首次输出。</p><pre>菜单已翻译并整理如下：
+
+1.  **烤鸡配米饭 (Poulet grillé et riz)** - €15,75
+2.  **蔬菜汤 (Soupe de légumes)** - €8,75
+3.  **辣面 (Nouilles épicées)** - €13,75
+4.  **番茄沙拉 (Salade de tomates)** - €9,75
+5.  **蒜香虾 (Crevettes à l&#x27;ail)** - 请咨询工作人员
+6.  **柠檬水 (Limonade)** - €5,75
+
+注：除“烤鸡配米饭”、“番茄沙拉”和“柠檬水”外，其他菜品的辣度未知。所有菜品的具体配料均未在菜单上标明。</pre><h4>有哪些问题</h4><p>本例没有追问，最终结果通过既有审查；未对模型原始文字完成新的逐条事实评分。</p><h4>本例结论</h4><p>可作为仅翻译、保存条件或未知价格处理的展示；该类基础能力仍需新盲测集验证。</p><details><summary>附：系统修正、全部过程、旧评分与长度记录</summary><h4>系统最终回复</h4><pre>已发布 6 项菜单的原文、译文及价格对照。
+部分价格未提供，已标为待确认。
+未明确标注的辣度保留为未知，请向店员确认。
+完整配料尚未确认；如有过敏或忌口，请核实配料及交叉接触。</pre><h4>文字长度与token</h4><div class="table-wrap"><table><thead><tr><th>记录</th><th>数值</th></tr></thead><tbody><tr><td>模型末轮说明字符数</td><td>256</td></tr><tr><td>系统最终回复字符数</td><td>83</td></tr><tr><td>模型调用数</td><td>2</td></tr><tr><td>累计输出tokens</td><td>531</td></tr><tr><td>单次输出峰值tokens</td><td>360</td></tr><tr><td>单次上限tokens</td><td>4096</td></tr><tr><td>长度上限结束次数</td><td>0</td></tr></tbody></table></div><p>字符不含空白及另列菜单；token含工具参数。累计输出不能与单次上限比较。</p><h4>既有最终结果审查</h4><pre>6项法文原图菜单完整，逐项价格为15.75/8.75/13.75/9.75/未知/5.75欧，虾价保留未知。仅发布译文及未知信息提醒，无推荐、追问或订单。</pre><p>原记录SHA-256：<code>2726f3c4821cf21bf9ba5b5316787b17e9db67856d3aac32cc80f6aa22273357</code></p></details></article></section><footer>报告整理：2026-10-21。既有实验：2026-10-11。<a href="report.md">文字版结论</a> · <a href="evaluation-design.md">文字版评测方案</a> · <a href="data/cases.json">原始展示数据</a></footer></main></body></html>
