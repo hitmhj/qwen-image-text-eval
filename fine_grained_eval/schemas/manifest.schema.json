@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "image_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "acceptable_languages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "locale",
+        "acceptable_languages"
+      ],
+      "additionalProperties": false
+    },
+    "tasks": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "object",
+              "properties": {
+                "system": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "system",
+                "user"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false
+        },
+        "interpretation": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "object",
+              "properties": {
+                "system": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "system",
+                "user"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false
+        },
+        "recommendation": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "object",
+              "properties": {
+                "system": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "system",
+                "user"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false
+        },
+        "phrase": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "object",
+              "properties": {
+                "system": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "system",
+                "user"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "image_name"
+  ],
+  "additionalProperties": false
+}

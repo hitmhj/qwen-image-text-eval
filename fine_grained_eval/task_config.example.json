@@ -1,0 +1,10 @@
+{
+  "schema_version": "fg-eval/1.1",
+  "context": {"locale": null, "acceptable_languages": []},
+  "tasks": {
+    "summary": {"prompt": {"system": "根据图片和用户请求完成任务。忠实于图片，区分事实与推断，不编造缺失信息。", "user": "请概括这张图片的主要内容。"}},
+    "interpretation": {"prompt": {"system": "根据图片和用户请求完成任务。忠实于图片，区分事实与推断，不编造缺失信息。", "user": "请你解读一下这张图片。"}},
+    "recommendation": {"prompt": {"system": "根据图片和用户请求完成任务。忠实于图片，区分事实与推断，不编造缺失信息。", "user": "请推荐一套菜品组合。"}},
+    "phrase": {"prompt": {"system": "根据图片和用户请求完成任务。忠实于图片，区分事实与推断，不编造缺失信息。", "user": "请推荐一套菜品组合，并给出在当地点餐时能用的表达。"}}
+  }
+}

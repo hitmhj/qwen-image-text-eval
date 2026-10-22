@@ -2,6 +2,8 @@
 
 对每张图片生成摘要、解读和菜品推荐，再使用 GPT 构造独立事实参考并评估。当前生成模型为本地 Hugging Face 格式的 **Qwen3.5-35B-A3B**，运行在 NVIDIA GPU 上。
 
+**2026-10-22 独立新版**：[fine_grained_eval](fine_grained_eval/README.md) 提供 `gen_truth.py → evaluate.py → gen_html.py` 三阶段工具，分别评价摘要、AI解读、组合约束和当地常用语。后续 `change.py` 请按其 [JSONL协议](fine_grained_eval/PROTOCOL.md) 对接；下文仍为原有流程的用法。
+
 三个阶段解耦：
 
 | 阶段 | 平台 | 工作与产物 |

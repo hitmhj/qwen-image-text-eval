@@ -1,0 +1,13 @@
+{
+  "account": "",
+  "sdk_module": "hm_aigc",
+  "model_agent": "yibu",
+  "reference_model": "",
+  "reference_version": "",
+  "judge_model": "",
+  "judge_version": "",
+  "timeout": 120,
+  "max_retries": 3,
+  "retry_wait": 1,
+  "request_options": {}
+}
