@@ -27,7 +27,7 @@ JUDGE_SYSTEM = """你是逐项评测员，只输出response_schema规定的JSON�
 根据原图、冻结参考和实际任务prompt核对同义含义，不能按字面匹配；每个判定给证据ID、理由及候选原文中的准确quote。
 summary：完整拆出候选所有独立事实，合并语义重复；supported_relevant须既有据又相关，完整保留对象/数字/单位/否定。covered_ids最多对应一个实际被正确完整覆盖的必需事实。不能漏掉错误和无关主张。
 interpretation：每个必需item_id恰好一次，correct仅在全部必要限定正确且无矛盾时；遗漏=missing。extra_claims仅列额外独立命题，正确相关可选=valid_optional，无依据/矛盾/无关分别标注。若是同一必需项的错误，related_item_id必须填写，不能重复扣分。
-recommendation：从候选原文提取全部实际选择(id按参考菜单匹配，无法匹配保留原名)、quantity和全部金额断言；不替候选纠错。没有数量时quantity=null，少给金额不得脑补。金额转最小货币单位整数，区分unit_price/item_subtotal/total/balance，保留币种。
+recommendation：从候选原文提取全部实际选择(id按参考菜单匹配，无法匹配保留原名)、quantity和全部金额断言；不替候选纠错。没有数量时quantity=null，少给金额不得脑补。金额精确转最小货币单位整数，区分unit_price/item_subtotal/total/balance，保留币种。金额不明确或精度无法精确表示为最小货币单位时value_minor=null，不得四舍五入把错误金额修成正确值；原始quote必须保留。
 semantic_checks仅对冻结参考中的semantic_constraints，逐ID返回。程序将独立计算预算、数量、菜品存在、忌口、金额；不得代替程序捏造最终正确率。
 phrase：逐预定表达unit_id返回四条件，目标语言必须属于accepted_languages；基于候选实际组合(联合输出中的组合或同输入给出的paired_recommendation_output)或用户明确指定组合判对应关系，不因组合超预算扣语言分。没有组合依据时selection_consistency=false，不得从语言表达本身倒推并假称存在推荐依据。缺表达quote为空且四条件全部false。
 所有quote必须为候选output原文子串；正确引用证据，不能照抄参考答案假装候选说过。issues列具体问题，不能伪造人工评审。"""

@@ -124,6 +124,9 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(calculate(t,'phrase',fake_hm.judge('phrase'),fake_hm.OUTPUTS['phrase'])['score'],1)
         j['selections'][0]['quantity']=None
         self.assertNotEqual(recommendation_score(t,j)['score'],1)
+        j=fake_hm.judge('recommendation');j['amount_claims'][0]['value_minor']=None
+        result=calculate(t,'recommendation',j,fake_hm.OUTPUTS['recommendation'])
+        self.assertEqual(next(c['status'] for c in result['details']['constraints'] if c['id']=='arithmetic_consistency'),'failed')
 
     def test_no_guessed_language_or_allergen_safety(self):
         ref=fake_hm.reference()

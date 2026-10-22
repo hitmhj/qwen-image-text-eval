@@ -79,7 +79,7 @@ EXTRA = obj({"id": NAME, "text": NAME, "quote": NAME,
              "related_item_id": NULL_TEXT, "evidence_ids": STRINGS, "reason": NAME})
 SELECTION = obj({"id": NAME, "quantity": {"type": ["number", "null"]}, "quote": NAME})
 AMOUNT = obj({"kind": enum("total", "balance", "unit_price", "item_subtotal"),
-              "item_id": NULL_TEXT, "value_minor": INT, "currency": NAME, "quote": NAME})
+              "item_id": NULL_TEXT, "value_minor": NULL_INT, "currency": NAME, "quote": NAME})
 PHRASE_VERDICT = obj({"id": NAME, "quote": TEXT, "language": NULL_TEXT,
     "target_language": BOOL, "intent_fidelity": BOOL, "selection_consistency": BOOL,
     "communicative_validity": BOOL, "reason": NAME})
